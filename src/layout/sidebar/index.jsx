@@ -7,7 +7,7 @@ import { Outlet } from "react-router-dom";
 
 export default function MiniDrawer() {
   return (
-    <Box sx={{ display: "flex", backgroundColor: "var(--color-background)" }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Header />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

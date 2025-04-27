@@ -67,7 +67,7 @@ export default function MenuItems() {
                   minWidth: 0,
                   mr: 3,
                   justifyContent: "center",
-                  color: activeMenu === item.menuName ? "#9B8A30" : "#fff",
+                  color: activeMenu === item.menuName ? "#85193C" : "#fff",
                 }}
               >
                 {item.icon}
@@ -75,7 +75,7 @@ export default function MenuItems() {
               <ListItemText
                 primary={item.label}
                 sx={{
-                  color: activeMenu === item.menuName ? "#9B8A30" : "#fff",
+                  color: activeMenu === item.menuName ? "#85193C" : "#fff",
                 }}
               />
             </ListItemButton>

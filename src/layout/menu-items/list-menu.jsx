@@ -8,4 +8,10 @@ export const listMenu = [
     menuName: "DashboardActive",
     icon: <Home sx={{ fontSize: "1.6em" }} />,
   },
+  {
+    label: "Dashboard",
+    path: "/admin/dashboard",
+    menuName: "SiswaActive",
+    icon: <Home sx={{ fontSize: "1.6em" }} />,
+  },
 ];

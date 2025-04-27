@@ -101,7 +101,7 @@ export default function Header() {
       <Drawer
         sx={{
           "& .MuiDrawer-paper": {
-            backgroundColor: "#9B8A30",
+            backgroundColor: "#85193C",
           },
         }}
         variant="permanent"
