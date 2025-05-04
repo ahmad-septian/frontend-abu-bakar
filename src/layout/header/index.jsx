@@ -10,6 +10,8 @@ import {
 import { Drawer, DrawerHeader, AppBar } from "../sidebar/drawerStyle";
 import MenuItems from "../menu-items";
 import MenuProfile from "./profile";
+import { useLocation } from "react-router-dom";
+import { listMenu } from "./../menu-items/list-menu";
 
 export default function Header() {
   const theme = useTheme();
@@ -45,11 +47,21 @@ export default function Header() {
     };
   }, []);
 
+  const location = useLocation();
+
+  // Cari nama label berdasarkan path
+  const currentMenu = listMenu.find((menu) =>
+    location.pathname.startsWith(menu.path)
+  );
+  const menuTitle = currentMenu
+    ? currentMenu.label
+    : "Sekolah Abu Bakar Ash Shiddiq";
+
   return (
     <div>
       <AppBar
         sx={{
-          backgroundColor: "#fff",
+          backgroundColor: "#fdf6f8",
           boxShadow: "none",
           borderBottom: "1px solid #ccc",
         }}
@@ -68,18 +80,17 @@ export default function Header() {
                 ...(open && { display: "none" }),
               }}
             >
-              <Menu sx={{ color: "#9B8A30" }} />
+              <Menu sx={{ color: "#85193C" }} />
             </IconButton>
             <Typography
               sx={{
                 color: "#333",
                 fontWeight: "bold",
                 fontSize: "1.3rem",
+                textTransform: "uppercase",
               }}
-              noWrap
-              component="div"
             >
-              Sekolah Abu Bakar Ash Shiddiq
+              {menuTitle}
             </Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -141,16 +152,6 @@ export default function Header() {
                   style={{
                     fontWeight: "bold",
                     fontSize: "1em",
-                    marginLeft: "10px",
-                    color: "#fff",
-                  }}
-                >
-                  KSC
-                </Typography>
-                <Typography
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "0.8em",
                     marginLeft: "10px",
                     color: "#fff",
                   }}
