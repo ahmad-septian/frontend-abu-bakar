@@ -18,6 +18,10 @@ import { Navigate } from "react-router-dom";
 import AbsenSiswa from "../pages/siswa/absen-siswa";
 import RapotSiswa from "../pages/siswa/rapot";
 import PembayaranSiswa from "../pages/siswa/pembayaran";
+import DetailTransaksiKelas from "../pages/admin/transaksi/detail-kelas";
+import DaftarTransaksiKelas from "../pages/admin/transaksi/daftar-kelas";
+import Transaksi from "../pages/admin/transaksi";
+import DetailTransaksi from "../pages/admin/transaksi/detail-transaksi";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +67,25 @@ const router = createBrowserRouter([
             path: "detail-siswa",
             element: <DetailSiswa />,
           },
+        ],
+      },
+      {
+        path: "transaksi",
+        children: [
+          { path: "", element: <Transaksi /> },
+          {
+            path: "daftar-transaksi-kelas",
+            element: <DaftarTransaksiKelas/>,
+          },
+          {
+            path: "detail-transaksi-kelas",
+            element: <DetailTransaksiKelas />,
+          },
+        {
+          path: "detail-transaksi",
+          element: <DetailTransaksi/>,
+        }
+          
         ],
       },
     ],
