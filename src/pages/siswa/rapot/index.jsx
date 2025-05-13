@@ -1,539 +1,360 @@
-import React, { useState, useEffect } from "react";
-import { 
-  Container, 
-  Paper, 
-  Typography, 
-  Grid, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
-  Box, 
-  Divider, 
-  Button,
-  useTheme,
-  useMediaQuery,
-  TextField,
-  InputAdornment,
-  IconButton
+import React, { useState } from "react";
+import {
+  Container,
+  Paper,
+  Typography,
+  Box,
+  Tabs,
+  Tab,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  AppBar,
+  Toolbar,
+  IconButton,
+  InputBase
 } from "@mui/material";
-import { School, Description, Download, Search, ArrowBack } from "@mui/icons-material";
-import { useParams, useNavigate } from "react-router-dom";
+import { ArrowBack, Search } from "@mui/icons-material";
 
-export default function RapotSiswa() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
-  // Warna maroon yang konsisten untuk semua header
-  const headerMaroon = "#85193C";
-  
-  const [siswa, setSiswa] = useState({
-    nama: "Dimas Pratama",
-    nis: "2024105",
-    kelas: "I B",
-    semester: "Ganjil",
-    tahunAjaran: "2024/2025",
-    waliKelas: "Ibu Ratna Sari, S.Pd."
-  });
+export default function ERapotSiswa() {
+  // State untuk tab yang aktif
+  const [activeTab, setActiveTab] = useState(0);
+  const [activeUlanganSubTab, setActiveUlanganSubTab] = useState(0);
 
-  const [nilaiMapel, setNilaiMapel] = useState([
-    { 
-      mapel: "Pendidikan Agama", 
-      harian: 85, 
-      praUTS: 82, 
-      UTS: 88, 
-      praUAS: 84, 
-      UAS: 90, 
-      nilai_akhir: 86, 
-      predikat: "A-"
-    },
-    { 
-      mapel: "Bahasa Indonesia", 
-      harian: 78, 
-      praUTS: 75, 
-      UTS: 80, 
-      praUAS: 82, 
-      UAS: 85, 
-      nilai_akhir: 80, 
-      predikat: "B+"
-    },
-    { 
-      mapel: "Matematika", 
-      harian: 76, 
-      praUTS: 70, 
-      UTS: 78, 
-      praUAS: 80, 
-      UAS: 82, 
-      nilai_akhir: 78, 
-      predikat: "B"
-    },
-    { 
-      mapel: "PPKn", 
-      harian: 88, 
-      praUTS: 85, 
-      UTS: 90, 
-      praUAS: 87, 
-      UAS: 92, 
-      nilai_akhir: 89, 
-      predikat: "A-"
-    },
-    { 
-      mapel: "SBDP", 
-      harian: 95, 
-      praUTS: 92, 
-      UTS: 94, 
-      praUAS: 96, 
-      UAS: 90, 
-      nilai_akhir: 93, 
-      predikat: "A"
-    },
-    { 
-      mapel: "PJOK", 
-      harian: 87, 
-      praUTS: 85, 
-      UTS: 88, 
-      praUAS: 84, 
-      UAS: 90, 
-      nilai_akhir: 87, 
-      predikat: "A-"
-    },
-  ]);
+  // Data nilai untuk berbagai kategori
+  const nilaiData = [
+    // UTS
+    [
+      { mapel: "Matematika", nilai: 85 },
+      { mapel: "Bahasa Indonesia", nilai: 88 },
+      { mapel: "IPA", nilai: 90 }
+    ],
+    // UAS
+    [
+      { mapel: "Matematika", nilai: 87 },
+      { mapel: "Bahasa Indonesia", nilai: 89 },
+      { mapel: "IPA", nilai: 92 }
+    ],
+    // Ulangan Harian (dengan subtab)
+    [
+      // Ulangan Harian 1
+      [
+        { mapel: "Matematika", nilai: 83 },
+        { mapel: "Bahasa Indonesia", nilai: 85 },
+        { mapel: "IPA", nilai: 87 }
+      ],
+      // Ulangan Harian 2
+      [
+        { mapel: "Matematika", nilai: 80 },
+        { mapel: "Bahasa Indonesia", nilai: 82 },
+        { mapel: "IPA", nilai: 84 }
+      ],
+      // Ulangan Harian 3
+      [
+        { mapel: "Matematika", nilai: 86 },
+        { mapel: "Bahasa Indonesia", nilai: 88 },
+        { mapel: "IPA", nilai: 90 }
+      ],
+      // Ulangan Harian 4
+      [
+        { mapel: "Matematika", nilai: 82 },
+        { mapel: "Bahasa Indonesia", nilai: 84 },
+        { mapel: "IPA", nilai: 86 }
+      ],
+      // Ulangan Harian 5
+      [
+        { mapel: "Matematika", nilai: 84 },
+        { mapel: "Bahasa Indonesia", nilai: 86 },
+        { mapel: "IPA", nilai: 88 }
+      ],
+      // Ulangan Harian 6
+      [
+        { mapel: "Matematika", nilai: 88 },
+        { mapel: "Bahasa Indonesia", nilai: 90 },
+        { mapel: "IPA", nilai: 92 }
+      ],
+      // Ulangan Harian 7
+      [
+        { mapel: "Matematika", nilai: 85 },
+        { mapel: "Bahasa Indonesia", nilai: 87 },
+        { mapel: "IPA", nilai: 89 }
+      ]
+    ],
+    // Hafalan
+    [
+      { mapel: "Al-Quran", nilai: 90 },
+      { mapel: "Hadits", nilai: 85 }
+    ],
+    // Predikat (tab baru)
+    [
+      { mapel: "Matematika", predikat: "B+" },
+      { mapel: "Bahasa Indonesia", predikat: "A-" },
+      { mapel: "IPA", predikat: "A" },
+      { mapel: "Al-Quran", predikat: "A" },
+      { mapel: "Hadits", predikat: "A-" }
+    ]
+  ];
 
-  const [kehadiran, setKehadiran] = useState({
-    sakit: 2,
-    izin: 1,
-    tanpaKeterangan: 0
-  });
+  // Fungsi untuk menampilkan item nilai
+  const renderNilaiItem = (item, index, arrayLength) => (
+    <React.Fragment key={index}>
+      <ListItem sx={{ py: 2 }}>
+        <ListItemText primary={item.mapel} />
+        {item.nilai && (
+          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+            {item.nilai}
+          </Typography>
+        )}
+        {item.predikat && (
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              fontWeight: "bold",
+              color: item.predikat.startsWith('A') ? '#4CAF50' : 
+                    item.predikat.startsWith('B') ? '#2196F3' : 
+                    item.predikat.startsWith('C') ? '#FF9800' : '#F44336'
+            }}
+          >
+            {item.predikat}
+          </Typography>
+        )}
+      </ListItem>
+      {index < arrayLength - 1 && <Divider />}
+    </React.Fragment>
+  );
 
-  const { id } = useParams();
-  const navigate = useNavigate();
+  // Fungsi untuk menghitung rata-rata nilai ulangan harian per mata pelajaran
+  const calculateAveragePerSubject = () => {
+    // Mendapatkan semua ulangan harian
+    const ulanganHarianData = nilaiData[2];
+    // Struktur untuk menyimpan jumlah total nilai dan jumlah ulangan per mapel
+    const mapelTotals = {};
+    const mapelCounts = {};
 
-  useEffect(() => {
-    // Simulasi fetch data
-  }, [id]);
+    // Iterasi melalui semua ulangan harian
+    ulanganHarianData.forEach(ulangan => {
+      ulangan.forEach(item => {
+        if (!mapelTotals[item.mapel]) {
+          mapelTotals[item.mapel] = 0;
+          mapelCounts[item.mapel] = 0;
+        }
+        mapelTotals[item.mapel] += item.nilai;
+        mapelCounts[item.mapel] += 1;
+      });
+    });
 
-  const calculateAverage = () => {
-    const sum = nilaiMapel.reduce((total, item) => total + item.nilai_akhir, 0);
-    return (sum / nilaiMapel.length).toFixed(2);
+    // Menghitung rata-rata
+    const averages = Object.keys(mapelTotals).map(mapel => ({
+      mapel,
+      nilai: Math.round(mapelTotals[mapel] / mapelCounts[mapel])
+    }));
+
+    return averages;
   };
 
-  // Style yang berubah berdasarkan ukuran layar
-  const containerPadding = isMobile ? { px: 1, py: 2 } : { p: 4 };
-  const titleSize = isMobile ? "h5" : "h4";
-  const headerPadding = isMobile ? { p: 1.5 } : { p: 2 };
-  const contentPadding = isMobile ? { p: 2 } : { p: 3 };
-  const gridSpacing = isMobile ? 1 : 3;
-  
+  // Fungsi untuk menampilkan konten berdasarkan tab yang aktif
+  const renderTabContent = () => {
+    const tabLabels = ["UTS", "UAS", "Ulangan Harian", "Hafalan", "Predikat"];
+    
+    // Khusus untuk Ulangan Harian (tab index 2)
+    if (activeTab === 2) {
+      // Membuat array label untuk ulangan harian 1-7
+      const ulanganLabels = Array.from({ length: 7 }, (_, i) => `Ulangan Harian ${i + 1}`);
+      // Tambahkan opsi untuk Rata-rata
+      ulanganLabels.push("Rata-rata");
+
+      return (
+        <>
+          <Typography variant="h6" className="nilai-header" sx={{ mt: 2, mb: 1, color: "#85193C", fontWeight: "bold" }}>
+            Nilai Ulangan Harian
+          </Typography>
+          
+          {/* Sub-tab untuk Ulangan Harian dengan scrolling */}
+          <Paper elevation={1} sx={{ mb: 2, borderRadius: 2, overflow: "hidden" }}>
+            <Box sx={{ 
+              maxWidth: { xs: "100%", sm: "100%" }, 
+              bgcolor: "background.paper",
+              position: "relative"
+            }}>
+              <Tabs
+                value={activeUlanganSubTab}
+                onChange={(e, newValue) => setActiveUlanganSubTab(newValue)}
+                variant="scrollable"
+                scrollButtons="auto"
+                textColor="primary"
+                sx={{ 
+                  bgcolor: "white",
+                  '& .MuiTab-root': { 
+                    textTransform: 'none',
+                    minWidth: 120,
+                    fontWeight: 'medium',
+                    fontSize: '14px',
+                    py: 1.2,
+                    color: 'rgba(0, 0, 0, 0.7)',
+                    '&.Mui-selected': {
+                      color: '#85193C',
+                      fontWeight: 'bold',
+                    },
+                  },
+                  '& .MuiTabs-indicator': {
+                    backgroundColor: '#85193C',
+                  }
+                }}
+              >
+                {ulanganLabels.map((label, index) => (
+                  <Tab key={index} label={label} />
+                ))}
+              </Tabs>
+            </Box>
+          </Paper>
+          
+          {/* Konten untuk sub-tab Ulangan Harian yang aktif */}
+          <Paper elevation={1} sx={{ borderRadius: 3, overflow: "hidden" }}>
+            {activeUlanganSubTab === 7 ? (
+              // Tampilkan nilai rata-rata
+              calculateAveragePerSubject().map((item, index, array) => 
+                renderNilaiItem(item, index, array.length)
+              )
+            ) : (
+              // Tampilkan nilai ulangan harian normal
+              nilaiData[2][activeUlanganSubTab].map((item, index, array) => 
+                renderNilaiItem(item, index, array.length)
+              )
+            )}
+          </Paper>
+        </>
+      );
+    }
+    
+    // Untuk tab lainnya
+    const currentData = nilaiData[activeTab];
+    
+    return (
+      <>
+        <Typography variant="h6" className="nilai-header" sx={{ mt: 2, mb: 1, color: "#85193C", fontWeight: "bold" }}>
+          Nilai {tabLabels[activeTab]}
+        </Typography>
+        <Paper elevation={1} sx={{ borderRadius: 3, overflow: "hidden" }}>
+          {currentData.map((item, index) => renderNilaiItem(item, index, currentData.length))}
+        </Paper>
+      </>
+    );
+  };
+
+  // Handler untuk perubahan tab
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+    // Reset ulangan subtab ke posisi pertama saat tab berubah
+    if (activeTab !== 2) {
+      setActiveUlanganSubTab(0);
+    }
+  };
+
   return (
     <>
-      {/* Hero Section */}
-      <div className="bg-[#85193C] text-white p-6 mt-0 shadow-md relative overflow-hidden">
-        <div className="flex justify-between items-start">
-          <div className="flex items-center">
-            <IconButton color="inherit" onClick={() => navigate(-1)} className="mr-2">
-              <ArrowBack />
-            </IconButton>
-            <div>
-              <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">
-                E-Rapor Siswa
-              </h2>
-              <p className="text-sm sm:text-base">
-                Laporan Perkembangan Belajar Semester {siswa.semester}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="mt-5">
-          <TextField
-            fullWidth
-            placeholder="Cari Rapor Lama"
-            size="small"
-            variant="outlined"
-            sx={{
-              backgroundColor: "white",
-              borderRadius: "10px",
-              input: { padding: "10px 12px" },
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "10px",
-              },
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search sx={{ color: "#85193C" }} />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-      </div>
-
-      <Container maxWidth="lg" sx={{ my: 2 }}>
-        <Paper elevation={3} sx={{ borderRadius: 2, ...containerPadding }}>
-          {/* Header Rapot */}
-          <Box display="flex" alignItems="center" mb={2}>
-            <School sx={{ fontSize: isMobile ? 24 : 36, mr: 1, color: headerMaroon }} />
-            <Typography variant={titleSize} component="h1" fontWeight="bold">
-              Laporan Perkembangan Belajar Siswa
+      {/* Header */}
+      <AppBar position="static" sx={{ bgcolor: "#85193C", boxShadow: 1 }}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="back">
+            <ArrowBack />
+          </IconButton>
+          <Box sx={{ flexGrow: 1, ml: 2 }}>
+            <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
+              e-Rapot Siswa
+            </Typography>
+            <Typography variant="body2" component="div">
+              Laporan Perkembangan Belajar
             </Typography>
           </Box>
+        </Toolbar>
+        <Box sx={{ px: 2, pb: 2 }}>
+          <Paper
+            component="form"
+            sx={{ 
+              p: '2px 4px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              borderRadius: 3
+            }}
+          >
+            <IconButton sx={{ p: '10px', color: '#85193C' }} aria-label="search">
+              <Search />
+            </IconButton>
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Cari Rapor Lama"
+              inputProps={{ 'aria-label': 'cari rapor lama' }}
+            />
+          </Paper>
+        </Box>
+      </AppBar>
 
-          <Divider sx={{ mb: 2 }} />
-
-          {/* Data Siswa */}
-          <Box sx={{ mb: 3 }}>
-            <Paper 
-              variant="outlined" 
+      {/* Main Content */}
+      <Container maxWidth="md" sx={{ py: 3, bgcolor: "white", minHeight: "calc(100vh - 136px)" }}>
+        {/* Tab Navigation */}
+        <Paper
+          elevation={1}
+          sx={{
+            borderRadius: 6,
+            overflow: "hidden",
+            mb: 3,
+            maxWidth: "100%",
+            mx: "auto"
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Tabs
+              value={activeTab}
+              onChange={handleTabChange}
+              variant="scrollable"
+              scrollButtons="auto"
+              textColor="primary"
+              TabIndicatorProps={{ style: { display: "none" } }}
+              centered
               sx={{ 
-                p: 0, 
-                borderRadius: 1,
-                overflow: 'hidden'
+                bgcolor: "white",
+                '& .MuiTabs-flexContainer': {
+                  justifyContent: "center",
+                },
+                '& .MuiTab-root': { 
+                  textTransform: 'none',
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                  minWidth: 120,
+                  px: 3,
+                  py: 1.5,
+                  color: 'rgba(0, 0, 0, 0.7)',
+                  '&.Mui-selected': {
+                    color: 'white',
+                    bgcolor: '#85193C',
+                    borderRadius: 6,
+                    mx: 0.5,
+                    my: 0.5
+                  },
+                },
               }}
             >
-              <Box sx={{ 
-                ...headerPadding, 
-                bgcolor: headerMaroon, 
-                borderTopLeftRadius: 1, 
-                borderTopRightRadius: 1
-              }}>
-                <Typography variant={isMobile ? "subtitle1" : "h6"} sx={{ color: 'white', fontWeight: "bold" }}>
-                  Data Siswa
-                </Typography>
-              </Box>
-              
-              <Box sx={{ ...contentPadding }}>
-                <Grid container spacing={1}>
-                  <Grid item xs={12} sm={4}>
-                    <Box sx={{ display: "flex", mb: 1.5, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
-                      <Typography variant="body1" sx={{ minWidth: isMobile ? '80px' : '120px', fontWeight: "medium" }}>Nama</Typography>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>: {siswa.nama}</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", mb: 1.5, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
-                      <Typography variant="body1" sx={{ minWidth: isMobile ? '80px' : '120px', fontWeight: "medium" }}>NIS</Typography>
-                      <Typography variant="body1">: {siswa.nis}</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", mb: { xs: 1.5, sm: 0 }, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
-                      <Typography variant="body1" sx={{ minWidth: isMobile ? '80px' : '120px', fontWeight: "medium" }}>Kelas</Typography>
-                      <Typography variant="body1">: {siswa.kelas}</Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={0} sm={4}>
-                    {/* Spacer column */}
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <Box sx={{ display: "flex", mb: 1.5, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
-                      <Typography variant="body1" sx={{ minWidth: isMobile ? '80px' : '120px', fontWeight: "medium" }}>Semester</Typography>
-                      <Typography variant="body1">: {siswa.semester}</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", mb: 1.5, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
-                      <Typography variant="body1" sx={{ minWidth: isMobile ? '80px' : '120px', fontWeight: "medium" }}>Tahun Ajaran</Typography>
-                      <Typography variant="body1">: {siswa.tahunAjaran}</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", mb: { xs: 1.5, sm: 0 }, flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
-                      <Typography variant="body1" sx={{ minWidth: isMobile ? '80px' : '120px', fontWeight: "medium" }}>Wali Kelas</Typography>
-                      <Typography variant="body1">: {siswa.waliKelas}</Typography>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Paper>
-          </Box>
-
-          {/* Nilai Akademik - Seperti gambar */}
-          <Box sx={{ mb: 3 }}>
-            {/* Header Nilai Akademik */}
-            <Box sx={{ 
-              p: 2, 
-              bgcolor: headerMaroon, 
-              color: 'white',
-              borderTopLeftRadius: 1, 
-              borderTopRightRadius: 1 
-            }}>
-              <Typography variant={isMobile ? "subtitle1" : "h6"} fontWeight="bold">
-                Hasil Belajar
-              </Typography>
-            </Box>
-            
-            {/* Tabel Nilai Akademik */}
-            <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 0 }}>
-              <Table size={isMobile ? "small" : "medium"}>
-                <TableHead sx={{ bgcolor: headerMaroon }}>
-                  <TableRow>
-                    <TableCell 
-                      sx={{ 
-                        color: 'white', 
-                        fontWeight: 'bold',
-                        borderBottom: 0,
-                        width: '5%'
-                      }}
-                    >
-                      No
-                    </TableCell>
-                    <TableCell 
-                      sx={{ 
-                        color: 'white', 
-                        fontWeight: 'bold',
-                        borderBottom: 0,
-                        width: '25%'
-                      }}
-                    >
-                      Mata Pelajaran
-                    </TableCell>
-                    <TableCell 
-                      align="center" 
-                      sx={{ 
-                        color: 'white', 
-                        fontWeight: 'bold',
-                        borderBottom: 0,
-                        width: '10%'
-                      }}
-                    >
-                      Harian
-                    </TableCell>
-                    <TableCell 
-                      align="center" 
-                      sx={{ 
-                        color: 'white', 
-                        fontWeight: 'bold',
-                        borderBottom: 0,
-                        width: '10%'
-                      }}
-                    >
-                      Pra UTS
-                    </TableCell>
-                    <TableCell 
-                      align="center" 
-                      sx={{ 
-                        color: 'white', 
-                        fontWeight: 'bold',
-                        borderBottom: 0,
-                        width: '10%'
-                      }}
-                    >
-                      UTS
-                    </TableCell>
-                    <TableCell 
-                      align="center" 
-                      sx={{ 
-                        color: 'white', 
-                        fontWeight: 'bold',
-                        borderBottom: 0,
-                        width: '10%'
-                      }}
-                    >
-                      Pra UAS
-                    </TableCell>
-                    <TableCell 
-                      align="center" 
-                      sx={{ 
-                        color: 'white', 
-                        fontWeight: 'bold',
-                        borderBottom: 0,
-                        width: '10%'
-                      }}
-                    >
-                      UAS
-                    </TableCell>
-                    <TableCell 
-                      align="center" 
-                      sx={{ 
-                        color: 'white', 
-                        fontWeight: 'bold',
-                        borderBottom: 0,
-                        width: '10%'
-                      }}
-                    >
-                      Nilai Akhir
-                    </TableCell>
-                    <TableCell 
-                      align="center" 
-                      sx={{ 
-                        color: 'white', 
-                        fontWeight: 'bold',
-                        borderBottom: 0,
-                        width: '10%'
-                      }}
-                    >
-                      Predikat
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {nilaiMapel.map((nilai, index) => (
-                    <TableRow key={index}>
-                      <TableCell 
-                        sx={{ 
-                          py: 1.5, 
-                          borderBottom: index === nilaiMapel.length - 1 ? 0 : '1px solid rgba(224, 224, 224, 1)'
-                        }}
-                      >
-                        {index + 1}
-                      </TableCell>
-                      <TableCell 
-                        sx={{ 
-                          py: 1.5,
-                          borderBottom: index === nilaiMapel.length - 1 ? 0 : '1px solid rgba(224, 224, 224, 1)'
-                        }}
-                      >
-                        {nilai.mapel}
-                      </TableCell>
-                      <TableCell 
-                        align="center" 
-                        sx={{ 
-                          py: 1.5,
-                          borderBottom: index === nilaiMapel.length - 1 ? 0 : '1px solid rgba(224, 224, 224, 1)'
-                        }}
-                      >
-                        {nilai.harian}
-                      </TableCell>
-                      <TableCell 
-                        align="center" 
-                        sx={{ 
-                          py: 1.5,
-                          borderBottom: index === nilaiMapel.length - 1 ? 0 : '1px solid rgba(224, 224, 224, 1)'
-                        }}
-                      >
-                        {nilai.praUTS}
-                      </TableCell>
-                      <TableCell 
-                        align="center" 
-                        sx={{ 
-                          py: 1.5,
-                          borderBottom: index === nilaiMapel.length - 1 ? 0 : '1px solid rgba(224, 224, 224, 1)'
-                        }}
-                      >
-                        {nilai.UTS}
-                      </TableCell>
-                      <TableCell 
-                        align="center" 
-                        sx={{ 
-                          py: 1.5,
-                          borderBottom: index === nilaiMapel.length - 1 ? 0 : '1px solid rgba(224, 224, 224, 1)'
-                        }}
-                      >
-                        {nilai.praUAS}
-                      </TableCell>
-                      <TableCell 
-                        align="center" 
-                        sx={{ 
-                          py: 1.5,
-                          borderBottom: index === nilaiMapel.length - 1 ? 0 : '1px solid rgba(224, 224, 224, 1)'
-                        }}
-                      >
-                        {nilai.UAS}
-                      </TableCell>
-                      <TableCell 
-                        align="center" 
-                        sx={{ 
-                          py: 1.5,
-                          borderBottom: index === nilaiMapel.length - 1 ? 0 : '1px solid rgba(224, 224, 224, 1)',
-                          fontWeight: 'bold',
-                          bgcolor: 'rgba(133, 25, 60, 0.05)'
-                        }}
-                      >
-                        {nilai.nilai_akhir}
-                      </TableCell>
-                      <TableCell 
-                        align="center" 
-                        sx={{ 
-                          py: 1.5,
-                          borderBottom: index === nilaiMapel.length - 1 ? 0 : '1px solid rgba(224, 224, 224, 1)',
-                          fontWeight: 'bold',
-                          color: nilai.predikat.startsWith('A') ? 'success.main' : 
-                                nilai.predikat.startsWith('B') ? 'info.main' : 
-                                nilai.predikat.startsWith('C') ? 'warning.main' : 'error.main'
-                        }}
-                      >
-                        {nilai.predikat}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-
-          {/* Kehadiran */}
-          <Box sx={{ mb: 3 }}>
-            <Box sx={{ 
-              ...headerPadding, 
-              bgcolor: headerMaroon, 
-              borderTopLeftRadius: 1, 
-              borderTopRightRadius: 1 
-            }}>
-              <Typography variant={isMobile ? "subtitle1" : "h6"} sx={{ color: 'white', fontWeight: "bold" }}>
-                Kehadiran
-              </Typography>
-            </Box>
-            
-            <Paper variant="outlined" sx={{ ...contentPadding, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
-              <Grid container spacing={gridSpacing}>
-                <Grid item xs={4} sm={4}>
-                  <Paper elevation={0} sx={{ p: isMobile ? 1 : 2, textAlign: "center", bgcolor: "info.lighter", borderRadius: 2 }}>
-                    <Typography variant={isMobile ? "h6" : "h5"}>{kehadiran.sakit}</Typography>
-                    <Typography variant={isMobile ? "body2" : "body1"}>Sakit</Typography>
-                  </Paper>
-                </Grid>
-                <Grid item xs={4} sm={4}>
-                  <Paper elevation={0} sx={{ p: isMobile ? 1 : 2, textAlign: "center", bgcolor: "warning.lighter", borderRadius: 2 }}>
-                    <Typography variant={isMobile ? "h6" : "h5"}>{kehadiran.izin}</Typography>
-                    <Typography variant={isMobile ? "body2" : "body1"}>Izin</Typography>
-                  </Paper>
-                </Grid>
-                <Grid item xs={4} sm={4}>
-                  <Paper elevation={0} sx={{ p: isMobile ? 1 : 2, textAlign: "center", bgcolor: "error.lighter", borderRadius: 2 }}>
-                    <Typography variant={isMobile ? "h6" : "h5"}>{kehadiran.tanpaKeterangan}</Typography>
-                    <Typography variant={isMobile ? "body2" : "body1"}>Tanpa Keterangan</Typography>
-                  </Paper>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Box>
-
-          {/* Catatan Wali Kelas */}
-          <Box sx={{ mb: 3 }}>
-            <Box sx={{ 
-              ...headerPadding, 
-              bgcolor: headerMaroon, 
-              borderTopLeftRadius: 1, 
-              borderTopRightRadius: 1 
-            }}>
-              <Typography variant={isMobile ? "subtitle1" : "h6"} sx={{ color: 'white', fontWeight: "bold" }}>
-                Catatan Wali Kelas
-              </Typography>
-            </Box>
-            
-            <Paper variant="outlined" sx={{ ...contentPadding, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
-              <Typography variant={isMobile ? "body2" : "body1"}>
-                Dimas adalah siswa yang ceria dan mulai beradaptasi dengan baik di kelas 1. Ia menunjukkan minat besar pada kegiatan mewarnai dan bernyanyi. Dimas perlu meningkatkan kemampuan membaca dan menulis dengan lebih banyak latihan di rumah. Dimas juga perlu dibiasakan untuk mengangkat tangan sebelum berbicara dan lebih tertib dalam berbaris. Orang tua diharapkan mendampingi Dimas membaca setiap hari minimal 15 menit dan membantu menyelesaikan PR dengan teratur.
-              </Typography>
-            </Paper>
-          </Box>
-
-          {/* Tombol Aksi */}
-          <Box display="flex" justifyContent="center" gap={isMobile ? 1 : 2} mt={3} flexWrap={isMobile ? "wrap" : "nowrap"}>
-            <Button 
-              variant="contained" 
-              startIcon={<Download />}
-              sx={{ bgcolor: headerMaroon }}
-              size={isMobile ? "medium" : "large"}
-              fullWidth={isMobile}
-            >
-              Unduh Rapor
-            </Button>
-            <Button 
-              variant="outlined" 
-              startIcon={<Description />}
-              sx={{ color: headerMaroon, borderColor: headerMaroon }}
-              size={isMobile ? "medium" : "large"}
-              fullWidth={isMobile}
-            >
-              Lihat Rapor Sebelumnya
-            </Button>
+              <Tab 
+                label="UTS" 
+                sx={{
+                  '&.Mui-selected': {
+                    bgcolor: '#85193C',
+                  }
+                }}
+              />
+              <Tab label="UAS" />
+              <Tab label="Ulangan Harian" />
+              <Tab label="Hafalan" />
+              <Tab label="Predikat" />
+            </Tabs>
           </Box>
         </Paper>
+
+        {/* Content Area */}
+        <Box sx={{ mt: 2 }}>
+          {renderTabContent()}
+        </Box>
       </Container>
     </>
   );
