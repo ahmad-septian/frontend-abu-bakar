@@ -22,6 +22,7 @@ import DetailTransaksiKelas from "../pages/admin/transaksi/detail-kelas";
 import DaftarTransaksiKelas from "../pages/admin/transaksi/daftar-kelas";
 import Transaksi from "../pages/admin/transaksi";
 import DetailTransaksi from "../pages/admin/transaksi/detail-transaksi";
+import MataPelajaran from "../pages/siswa/mata-pelajaran";
 
 const router = createBrowserRouter([
   {
@@ -75,17 +76,16 @@ const router = createBrowserRouter([
           { path: "", element: <Transaksi /> },
           {
             path: "daftar-transaksi-kelas",
-            element: <DaftarTransaksiKelas/>,
+            element: <DaftarTransaksiKelas />,
           },
           {
             path: "detail-transaksi-kelas",
             element: <DetailTransaksiKelas />,
           },
-        {
-          path: "detail-transaksi",
-          element: <DetailTransaksi/>,
-        }
-          
+          {
+            path: "detail-transaksi",
+            element: <DetailTransaksi />,
+          },
         ],
       },
     ],
@@ -205,6 +205,10 @@ const router = createBrowserRouter([
       {
         path: "rapot",
         element: <RapotSiswa />,
+      },
+      {
+        path: "mata-pelajaran",
+        element: <MataPelajaran />,
       },
       {
         path: "pembayaran",

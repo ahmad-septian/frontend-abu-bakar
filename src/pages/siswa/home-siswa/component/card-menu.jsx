@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const menus = [
   { title: "Absen", icon: <AssignmentTurnedIn />, url: "/siswa/absen" },
   { title: "E-Rapot", icon: <School />, url: "/siswa/rapot" },
-  { title: "Mata Pelajaran", icon: <MenuBook />, url: "/mata-pelajaran" },
+  { title: "Mata Pelajaran", icon: <MenuBook />, url: "/siswa/mata-pelajaran" },
   { title: "Kelas", icon: <Class />, url: "/kelas" },
   { title: "Pembayaran", icon: <MonetizationOn />, url: "/siswa/pembayaran" },
   { title: "Koperasi", icon: <Store />, url: "/koperasi" },
