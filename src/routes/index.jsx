@@ -18,6 +18,7 @@ import { Navigate } from "react-router-dom";
 import AbsenSiswa from "../pages/siswa/absen-siswa";
 import RapotSiswa from "../pages/siswa/rapot";
 import PembayaranSiswa from "../pages/siswa/pembayaran";
+import KelasSiswa from "../pages/siswa/kelas";
 
 const router = createBrowserRouter([
   {
@@ -169,7 +170,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Navigate to="home" replace />, // ganti loaderData dengan ini
+        element: <Navigate to="home" replace />,
       },
       {
         path: "home",
@@ -187,8 +188,13 @@ const router = createBrowserRouter([
         path: "pembayaran",
         element: <PembayaranSiswa />,
       },
+      {
+        path: "kelas",
+        element: <KelasSiswa />,
+      },
     ],
-  },
-]);
+  }  
+]
+);
 
 export default router;
