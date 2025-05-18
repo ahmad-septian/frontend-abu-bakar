@@ -18,7 +18,11 @@ import { Navigate } from "react-router-dom";
 import AbsenSiswa from "../pages/siswa/absen-siswa";
 import RapotSiswa from "../pages/siswa/rapot";
 import PembayaranSiswa from "../pages/siswa/pembayaran";
-import KelasSiswa from "../pages/siswa/kelas";
+import DetailTransaksiKelas from "../pages/admin/transaksi/detail-kelas";
+import DaftarTransaksiKelas from "../pages/admin/transaksi/daftar-kelas";
+import Transaksi from "../pages/admin/transaksi";
+import DetailTransaksi from "../pages/admin/transaksi/detail-transaksi";
+import MataPelajaran from "../pages/siswa/mata-pelajaran";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +67,24 @@ const router = createBrowserRouter([
           {
             path: "detail-siswa",
             element: <DetailSiswa />,
+          },
+        ],
+      },
+      {
+        path: "transaksi",
+        children: [
+          { path: "", element: <Transaksi /> },
+          {
+            path: "daftar-transaksi-kelas",
+            element: <DaftarTransaksiKelas />,
+          },
+          {
+            path: "detail-transaksi-kelas",
+            element: <DetailTransaksiKelas />,
+          },
+          {
+            path: "detail-transaksi",
+            element: <DetailTransaksi />,
           },
         ],
       },
@@ -183,6 +205,10 @@ const router = createBrowserRouter([
       {
         path: "rapot",
         element: <RapotSiswa />,
+      },
+      {
+        path: "mata-pelajaran",
+        element: <MataPelajaran />,
       },
       {
         path: "pembayaran",
