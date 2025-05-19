@@ -23,6 +23,7 @@ import DaftarTransaksiKelas from "../pages/admin/transaksi/daftar-kelas";
 import Transaksi from "../pages/admin/transaksi";
 import DetailTransaksi from "../pages/admin/transaksi/detail-transaksi";
 import MataPelajaran from "../pages/siswa/mata-pelajaran";
+import InformasiTerkini from "../pages/siswa/kelas";
 
 const router = createBrowserRouter([
   {
@@ -216,11 +217,10 @@ const router = createBrowserRouter([
       },
       {
         path: "kelas",
-        element: <KelasSiswa />,
+        element: <InformasiTerkini />,
       },
     ],
-  }  
-]
-);
+  },
+]);
 
 export default router;
