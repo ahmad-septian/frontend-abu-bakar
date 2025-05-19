@@ -216,7 +216,7 @@ const router = createBrowserRouter([
         element: <PembayaranSiswa />,
       },
       {
-        path: "kelas",
+        path: "informasi-kelas",
         element: <InformasiTerkini />,
       },
     ],
