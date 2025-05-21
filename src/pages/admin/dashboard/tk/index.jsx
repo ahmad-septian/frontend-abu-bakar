@@ -4,10 +4,10 @@ import { People, School, Work } from "@mui/icons-material";
 import {} from "react-router-dom";
 import DashboardCard from "./component/card-data";
 
-export default function Dashboard() {
+export default function DashboardTK() {
   return (
     <div>
-      <Typography sx={{ fontSize: "1.5rem" }}>Selamat Datang Admin</Typography>
+      <Typography sx={{ fontSize: "1.5rem" }}>Dashboard TK</Typography>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
         <DashboardCard
@@ -27,9 +27,7 @@ export default function Dashboard() {
         />
       </div>
 
-      <div className="mt-5">
-        
-      </div>
+      <div className="mt-5"></div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { DrawerHeader } from "./drawerStyle";
 import { Box } from "@mui/material";
-import Header from "@/layout/header";
+import Header from "../header";
 import { Outlet } from "react-router-dom";
 
 export default function MiniDrawer() {

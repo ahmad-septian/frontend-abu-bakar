@@ -1,18 +1,17 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
-import DefaultLayout from "../layout/sidebar";
-import Dashboard from "../pages/admin/dashboard";
-import Guru from "../pages/admin/guru";
-import TambahGuru from "../pages/admin/guru/component/tambah-guru";
-import DetailGuru from "../pages/admin/guru/component/detail-guru";
-import Siswa from "../pages/admin/siswa";
-import TambahSiswa from "../pages/admin/siswa/component/tambah-siswa";
-import DetailSiswa from "../pages/admin/siswa/component/detail-siswa";
-import AuthLayoutAdmin from "../layout/auth-admin";
+// ADMIN
+import DefaultLayout from "../layout/Admin/sidebar";
+import AuthLayoutAdmin from "../layout/Admin/auth-admin";
 import LoginForm from "../pages/admin/login-admin";
-import AuthLayoutGuru from "../layout/auth-guru";
+import TambahGuru from "../pages/admin/pegawai/component/tambah-guru";
+import DetailGuru from "../pages/admin/pegawai/component/detail-guru";
+// SISWA
+import Guru from "../pages/admin/pegawai";
+// GURU
+import AuthLayoutGuru from "../layout/Guru/auth-guru";
 import LoginFormSiswa from "../pages/siswa/login-siswa";
 import LoginFormGuru from "../pages/guru/login-guru";
-import ContentSiswa from "../layout/content-siswa";
+import ContentSiswa from "../layout/Siswa/content-siswa";
 import HomeSiswa from "../pages/siswa/home-siswa";
 import { Navigate } from "react-router-dom";
 import AbsenSiswa from "../pages/siswa/absen-siswa";
@@ -24,6 +23,18 @@ import Transaksi from "../pages/admin/transaksi";
 import DetailTransaksi from "../pages/admin/transaksi/detail-transaksi";
 import MataPelajaran from "../pages/siswa/mata-pelajaran";
 import InformasiTerkini from "../pages/siswa/kelas";
+import ContentGuru from "../layout/Guru/content-guru";
+import HomeGuru from "../pages/guru/home-guru";
+import AbsenSiswaGuru from "../pages/guru/absen-siswa";
+import InputRapot from "../pages/guru/input-rapot";
+import JadwalGuru from "../pages/guru/jadwal-guru";
+import InfoKelasGuru from "../pages/guru/info-kelas";
+import AbsenGuru from "../pages/guru/absen-guru";
+import DashboardTK from "../pages/admin/dashboard/tk";
+import DashboardSD from "../pages/admin/dashboard/sd";
+import SiswaTK from "../pages/admin/siswa/tk";
+import SiswaSD from "../pages/admin/siswa/sd";
+import DetailSiswaSd from "../pages/admin/siswa/sd/component/DetailSiswa";
 
 const router = createBrowserRouter([
   {
@@ -32,14 +43,54 @@ const router = createBrowserRouter([
     errorElement: "",
     children: [
       {
-        path: "",
-        // loader: checkAdminAuth,
-        loaderData: () => redirect("dashboard"),
+        index: true, // ini untuk path "/admin"
+        loader: () => redirect("/admin/dashboard/sd"),
       },
       {
         path: "dashboard",
-        // loader: checkAdminAuth,
-        element: <Dashboard />,
+        loader: () => redirect("/admin/dashboard/sd"),
+      },
+      {
+        path: "dashboard/tk",
+        element: <DashboardTK />,
+      },
+      {
+        path: "dashboard/sd",
+        element: <DashboardSD />,
+      },
+      {
+        path: "siswa",
+        children: [
+          {
+            path: "tk",
+            element: <SiswaTK />,
+          },
+          {
+            path: "sd",
+            children: [
+              {
+                path: "",
+                element: <SiswaSD />,
+              },
+              {
+                path: "detail-siswa-sd",
+                element: <DetailSiswaSd />,
+              },
+            ],
+          },
+          // {
+          //   path: "tambah-siswa-tk",
+          //   element: <TambahSiswaTK />,
+          // },
+          // {
+          //   path: "tambah-siswa-sd",
+          //   element: <TambahSiswaSD />,
+          // },
+          // {
+          //   path: "detail-siswa-tk",
+          //   element: <DetailSiswaTK />,
+          // },
+        ],
       },
       {
         path: "pengajar",
@@ -56,21 +107,7 @@ const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "siswa",
-        // loader: checkAdminAuth,
-        children: [
-          { path: "", element: <Siswa /> },
-          {
-            path: "tambah-siswa",
-            element: <TambahSiswa />,
-          },
-          {
-            path: "detail-siswa",
-            element: <DetailSiswa />,
-          },
-        ],
-      },
+
       {
         path: "transaksi",
         children: [
@@ -218,6 +255,43 @@ const router = createBrowserRouter([
       {
         path: "informasi-kelas",
         element: <InformasiTerkini />,
+      },
+    ],
+  },
+
+  // KONTEN GURU
+  {
+    path: "/guru",
+    element: <ContentGuru />,
+    errorElement: "",
+    children: [
+      {
+        path: "",
+        element: <Navigate to="home" replace />,
+      },
+      {
+        path: "home",
+        element: <HomeGuru />,
+      },
+      {
+        path: "absen-siswa",
+        element: <AbsenSiswaGuru />,
+      },
+      {
+        path: "absen-guru",
+        element: <AbsenGuru />,
+      },
+      {
+        path: "input-rapot",
+        element: <InputRapot />,
+      },
+      {
+        path: "jadwal-guru",
+        element: <JadwalGuru />,
+      },
+      {
+        path: "informasi-kelas",
+        element: <InfoKelasGuru />,
       },
     ],
   },
