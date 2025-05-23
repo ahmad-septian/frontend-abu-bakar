@@ -21,15 +21,6 @@ export default function MenuItems() {
   const [activeMenu, setActiveMenu] = useState("DashboardActive");
   const [openSettings, setOpenSettings] = useState(false);
 
-  const setActiveMenuBasedOnRoute = (currentPath) => {
-    for (const menuItem of listMenu) {
-      if (currentPath.startsWith(menuItem.path)) {
-        setActiveMenu(menuItem.menuName);
-        return;
-      }
-    }
-  };
-
   const toggleMenu = (menuName) => {
     setOpenMenus((prev) => ({
       ...prev,

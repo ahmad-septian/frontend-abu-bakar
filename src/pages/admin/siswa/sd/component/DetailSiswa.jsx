@@ -6,6 +6,9 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import DataSiswaSd from "./DataSiswa";
+import RapotSiswaSd from "./RapotSiswaSd";
+import AbsensiSiswaSd from "./AbsensiSiswa";
+import PembayaranSiswaSd from "./PembayaranSiswa";
 
 export default function DetailSiswaSd() {
   const [value, setValue] = React.useState("1");
@@ -73,9 +76,15 @@ export default function DetailSiswaSd() {
           <TabPanel value="1">
             <DataSiswaSd />
           </TabPanel>
-          <TabPanel value="2">Item Two</TabPanel>
-          <TabPanel value="3">Item Three</TabPanel>
-          <TabPanel value="4">Item Four</TabPanel>
+          <TabPanel value="2">
+            <AbsensiSiswaSd />
+          </TabPanel>
+          <TabPanel value="3">
+            <RapotSiswaSd />
+          </TabPanel>
+          <TabPanel value="4">
+            <PembayaranSiswaSd />
+          </TabPanel>
         </TabContext>
       </Box>
     </div>

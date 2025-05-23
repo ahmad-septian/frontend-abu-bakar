@@ -35,6 +35,13 @@ import DashboardSD from "../pages/admin/dashboard/sd";
 import SiswaTK from "../pages/admin/siswa/tk";
 import SiswaSD from "../pages/admin/siswa/sd";
 import DetailSiswaSd from "../pages/admin/siswa/sd/component/DetailSiswa";
+import KelasTk from "../pages/admin/kelas/tk";
+import KelasSd from "../pages/admin/kelas/sd";
+import MataPelajaranSd from "../pages/admin/mata-pelajaran/sd";
+import TahunAjaranSd from "../pages/admin/tahun-ajaran/sd";
+import MataPelajaranTk from "../pages/admin/mata-pelajaran/tk";
+import PembayaranSd from "../pages/admin/pembayaran/sd";
+import JadwalPelajaranSd from "../pages/admin/jadwal-pelajaran/sd";
 
 const router = createBrowserRouter([
   {
@@ -78,23 +85,10 @@ const router = createBrowserRouter([
               },
             ],
           },
-          // {
-          //   path: "tambah-siswa-tk",
-          //   element: <TambahSiswaTK />,
-          // },
-          // {
-          //   path: "tambah-siswa-sd",
-          //   element: <TambahSiswaSD />,
-          // },
-          // {
-          //   path: "detail-siswa-tk",
-          //   element: <DetailSiswaTK />,
-          // },
         ],
       },
       {
         path: "pengajar",
-        // loader: checkAdminAuth,
         children: [
           { path: "", element: <Guru /> },
           {
@@ -107,25 +101,90 @@ const router = createBrowserRouter([
           },
         ],
       },
-
       {
-        path: "transaksi",
+        path: "kelas",
         children: [
-          { path: "", element: <Transaksi /> },
           {
-            path: "daftar-transaksi-kelas",
-            element: <DaftarTransaksiKelas />,
+            path: "tk",
+            element: <KelasTk />,
           },
           {
-            path: "detail-transaksi-kelas",
-            element: <DetailTransaksiKelas />,
-          },
-          {
-            path: "detail-transaksi",
-            element: <DetailTransaksi />,
+            path: "sd",
+            element: <KelasSd />,
           },
         ],
       },
+      {
+        path: "mata-pelajaran",
+        children: [
+          {
+            path: "tk",
+            element: <MataPelajaranTk />,
+          },
+          {
+            path: "sd",
+            element: <MataPelajaranSd />,
+          },
+        ],
+      },
+      {
+        path: "jadwal-pelajaran",
+        children: [
+          {
+            path: "tk",
+            element: "",
+          },
+          {
+            path: "sd",
+            element: <JadwalPelajaranSd />,
+          },
+        ],
+      },
+      {
+        path: "tahun-ajaran",
+        children: [
+          {
+            path: "tk",
+            element: "",
+          },
+          {
+            path: "sd",
+            element: <TahunAjaranSd />,
+          },
+        ],
+      },
+      {
+        path: "pembayaran",
+        children: [
+          {
+            path: "tk",
+            element: "",
+          },
+          {
+            path: "sd",
+            element: <PembayaranSd />,
+          },
+        ],
+      },
+
+      // {
+      //   path: "transaksi",
+      //   children: [
+      //     { path: "", element: <Transaksi /> },
+      //     {
+      //       path: "daftar-transaksi-kelas",
+      //       element: <DaftarTransaksiKelas />,
+      //     },
+      //     {
+      //       path: "detail-transaksi-kelas",
+      //       element: <DetailTransaksiKelas />,
+      //     },
+      //     {
+      //       path: "detail-transaksi",
+      //       element: <DetailTransaksi />,
+      //     },
+      //   ],
+      // },
     ],
   },
   // LOGIN UNTUK ADMIN
