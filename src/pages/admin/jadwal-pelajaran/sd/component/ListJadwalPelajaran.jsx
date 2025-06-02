@@ -17,39 +17,7 @@ import {
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import {} from "react-router-dom";
-
-const dataJadwalPelajaran = [
-  {
-    id: 1,
-    kelas: "1A",
-    mataPelajaran: "Bahasa Indonesia",
-    pengajar: "Bapak Balmond",
-    hari: "Senin",
-    jamMulai: "08.00",
-    jamSelesai: "10.00",
-    isActive: true,
-  },
-  {
-    id: 2,
-    kelas: "1A",
-    mataPelajaran: "Matematika",
-    pengajar: "Ibu Floryn",
-    hari: "Senin",
-    jamMulai: "10.00",
-    jamSelesai: "12.00",
-    isActive: true,
-  },
-  {
-    id: 3,
-    kelas: "1A",
-    mataPelajaran: "IPS",
-    pengajar: "Ibu Change",
-    hari: "Senin",
-    jamMulai: "13.00",
-    jamSelesai: "15.00",
-    isActive: true,
-  },
-];
+import PaginationComponent from "@/component-global/pagination";
 
 export default function ListJadwalPelajaranSd(props) {
   const {
@@ -57,6 +25,12 @@ export default function ListJadwalPelajaranSd(props) {
     pilihKelas,
     setPilihKelas,
     ClickOpenEditJadwalPelajaran,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    rowsPerPage,
+    page,
+    data,
+    totalItems,
   } = props;
 
   return (
@@ -143,7 +117,7 @@ export default function ListJadwalPelajaranSd(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataJadwalPelajaran.map((mapel, index) => (
+            {data.map((mapel, index) => (
               <TableRow
                 key={index}
                 sx={{
@@ -153,12 +127,20 @@ export default function ListJadwalPelajaranSd(props) {
                   },
                 }}
               >
-                <TableCell align="center">{mapel.kelas}</TableCell>
-                <TableCell align="center">{mapel.mataPelajaran}</TableCell>
-                <TableCell align="center">{mapel.pengajar}</TableCell>
+                <TableCell align="center">{mapel.kelas.namaKelas}</TableCell>
+                <TableCell align="center">
+                  {mapel.mataPelajaran.namaMataPelajaran}
+                </TableCell>
+                <TableCell align="center">
+                  {mapel.pengajar.namaLengkap}
+                </TableCell>
                 <TableCell align="center">{mapel.hari}</TableCell>
-                <TableCell align="center">{mapel.jamMulai}</TableCell>
-                <TableCell align="center">{mapel.jamSelesai}</TableCell>
+                <TableCell align="center">
+                  {mapel.jamMulai.slice(0, 5)}
+                </TableCell>
+                <TableCell align="center">
+                  {mapel.jamSelesai.slice(0, 5)}
+                </TableCell>
                 <TableCell align="center">
                   <Chip
                     label={mapel.isActive ? "Aktif" : "Nonaktif"}
@@ -169,7 +151,7 @@ export default function ListJadwalPelajaranSd(props) {
                 </TableCell>
                 <TableCell align="center">
                   <IconButton
-                    onClick={ClickOpenEditJadwalPelajaran}
+                    onClick={() => ClickOpenEditJadwalPelajaran(mapel.id)}
                     sx={{ color: "#85193C" }}
                   >
                     <Edit />
@@ -179,6 +161,14 @@ export default function ListJadwalPelajaranSd(props) {
             ))}
           </TableBody>
         </Table>
+        <PaginationComponent
+          component="div"
+          count={totalItems}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
   );

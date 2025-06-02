@@ -20,6 +20,7 @@ import {
   AnimasiDialog,
   BootstrapDialog,
 } from "@/component-global/component-dialog";
+import { NumericFormat } from "react-number-format";
 
 export default function TambahPembayaranSd(props) {
   const {
@@ -27,8 +28,10 @@ export default function TambahPembayaranSd(props) {
     ClickCloseTambahPembayaran,
     formDataPembayaran,
     handleChange,
-    checked,
+    ChangeInputNumber,
     handleInstallment,
+    handleSubmitCreate,
+    setFormDataPembayaran,
   } = props;
   return (
     <BootstrapDialog
@@ -56,6 +59,7 @@ export default function TambahPembayaranSd(props) {
       >
         <Close />
       </IconButton>
+
       <DialogContent dividers>
         <div className="mb-3">
           <Typography>Nama Pembayaran</Typography>
@@ -68,22 +72,23 @@ export default function TambahPembayaranSd(props) {
             onChange={handleChange}
           />
         </div>
+
         <div className="mb-3">
           <Typography>Harga Pembayaran</Typography>
-          <TextField
-            name="hargaPembayaran"
-            fullWidth
-            size="small"
-            margin="dense"
+
+          <NumericFormat
             value={formDataPembayaran.hargaPembayaran}
-            onChange={handleChange}
+            onChange={ChangeInputNumber}
+            allowLeadingZeros
+            thousandSeparator=","
+            className="appearance-none border border-[#ddd] rounded-md w-full p-2 text-gray-700 focus:outline-none focus:border-blue-500 h-14 hover:border-black"
           />
         </div>
 
-        <div>
+        <div className="mb-3">
           <Typography>Bisa Diangsur?</Typography>
           <Switch
-            checked={checked}
+            checked={formDataPembayaran.isInstallment}
             onChange={handleInstallment}
             inputProps={{ "aria-label": "controlled" }}
           />
@@ -93,11 +98,12 @@ export default function TambahPembayaranSd(props) {
           <Typography>Model Pembayaran</Typography>
           <FormControl fullWidth margin="dense" size="small">
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={formDataPembayaran.tipe}
+              name="modelPembayaran"
+              value={formDataPembayaran.modelPembayaran}
               onChange={handleChange}
+              displayEmpty
             >
+              <MenuItem value="">Pilih Model</MenuItem>
               <MenuItem value="BULANAN">BULANAN</MenuItem>
               <MenuItem value="DIAWAL">DIAWAL</MenuItem>
             </Select>
@@ -107,21 +113,25 @@ export default function TambahPembayaranSd(props) {
         <FormControlLabel
           control={
             <Checkbox
-              name="isActive"
-              checked={formDataPembayaran.isActive}
-              onChange={handleChange}
+              name="aktif"
+              checked={formDataPembayaran.aktif}
+              onChange={(e) =>
+                setFormDataPembayaran((prev) => ({
+                  ...prev,
+                  aktif: e.target.checked,
+                }))
+              }
             />
           }
           label="Pembayaran Aktif?"
         />
       </DialogContent>
+
       <DialogActions dividers>
         <Button
-          sx={{
-            backgroundColor: "#85193C",
-          }}
+          sx={{ backgroundColor: "#85193C" }}
           variant="contained"
-          onClick={ClickCloseTambahPembayaran}
+          onClick={handleSubmitCreate}
         >
           Save changes
         </Button>

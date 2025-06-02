@@ -17,49 +17,7 @@ import {
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import {} from "react-router-dom";
-
-const dataMataPelajaran = [
-  {
-    id: 1,
-    namaMataPelajaran: "Bahasa Indonesia",
-    kodePelajaran: "BI",
-    deskripsi: "Bahasa Indonesia",
-    isActive: true,
-    tipe: "WAJIB",
-  },
-  {
-    id: 2,
-    namaMataPelajaran: "Bahasa Melayu",
-    kodePelajaran: "BM",
-    deskripsi: "Bahasa Melayu",
-    isActive: true,
-    tipe: "WAJIB",
-  },
-  {
-    id: 3,
-    namaMataPelajaran: "English",
-    kodePelajaran: "EN",
-    deskripsi: "English",
-    isActive: true,
-    tipe: "WAJIB",
-  },
-  {
-    id: 4,
-    namaMataPelajaran: "Mathematics",
-    kodePelajaran: "MA",
-    deskripsi: "Mathematics",
-    isActive: true,
-    tipe: "WAJIB",
-  },
-  {
-    id: 5,
-    namaMataPelajaran: "PRAMUKA",
-    kodePelajaran: "PRM",
-    deskripsi: "Pramuka",
-    isActive: true,
-    tipe: "ESKUL",
-  },
-];
+import PaginationComponent from "@/component-global/pagination";
 
 export default function ListMataPelajaranSd(props) {
   const {
@@ -67,6 +25,12 @@ export default function ListMataPelajaranSd(props) {
     pilihKelas,
     setPilihKelas,
     ClickOpenEditMataPelajaran,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    rowsPerPage,
+    page,
+    data,
+    totalItems,
   } = props;
 
   return (
@@ -135,7 +99,7 @@ export default function ListMataPelajaranSd(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataMataPelajaran.map((mapel, index) => (
+            {data.map((mapel, index) => (
               <TableRow
                 key={index}
                 sx={{
@@ -158,7 +122,7 @@ export default function ListMataPelajaranSd(props) {
                 </TableCell>
                 <TableCell align="center">
                   <IconButton
-                    onClick={ClickOpenEditMataPelajaran}
+                    onClick={() => ClickOpenEditMataPelajaran(mapel.id)}
                     sx={{ color: "#85193C" }}
                   >
                     <Edit />
@@ -168,6 +132,14 @@ export default function ListMataPelajaranSd(props) {
             ))}
           </TableBody>
         </Table>
+        <PaginationComponent
+          component="div"
+          count={totalItems}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
   );

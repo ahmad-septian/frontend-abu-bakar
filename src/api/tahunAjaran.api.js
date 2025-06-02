@@ -38,7 +38,7 @@ export async function GetTahunAjaranPaginated(
         "Content-Type": "application/json",
       },
     });
-    return resp;
+    return resp.data;
   } catch (error) {
     console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
     throw error;
@@ -66,9 +66,10 @@ export async function GetOneTahunAjaran(id) {
 export async function CreateTahunAjaran(
   tahunAjaran,
   code,
+  semester,
   tanggalMulai,
   tanggalSelesai,
-  isActive
+  aktif
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -79,14 +80,15 @@ export async function CreateTahunAjaran(
       {
         tahunAjaran,
         code,
+        semester,
         tanggalMulai,
         tanggalSelesai,
-        isActive,
+        aktif,
       },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer token`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -101,9 +103,10 @@ export async function UpdateTahunAjaran(
   id,
   tahunAjaran,
   code,
+  semester,
   tanggalMulai,
   tanggalSelesai,
-  isActive
+  aktif
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -114,14 +117,15 @@ export async function UpdateTahunAjaran(
       {
         tahunAjaran,
         code,
+        semester,
         tanggalMulai,
         tanggalSelesai,
-        isActive,
+        aktif,
       },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer token`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

@@ -9,6 +9,9 @@ import {
   TextField,
   Checkbox,
   FormControlLabel,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import {} from "react-router-dom";
@@ -23,6 +26,8 @@ export default function TambahKelasSd(props) {
     ClickCloseTambahKelas,
     formDataKelas,
     handleChange,
+    dataGuru,
+    handleSubmitCreate,
   } = props;
   return (
     <BootstrapDialog
@@ -62,6 +67,7 @@ export default function TambahKelasSd(props) {
             onChange={handleChange}
           />
         </div>
+
         <div className="mb-3">
           <Typography>Tingkat Kelas</Typography>
           <TextField
@@ -72,6 +78,26 @@ export default function TambahKelasSd(props) {
             value={formDataKelas.tingkat}
             onChange={handleChange}
           />
+        </div>
+        <div className="mb-3">
+          <Typography>Wali Kelas</Typography>
+          <FormControl fullWidth margin="dense" size="small">
+            <Select
+              name="waliKelas"
+              value={formDataKelas.waliKelas}
+              onChange={handleChange}
+            >
+              {dataGuru.length > 0 ? (
+                dataGuru.map((guru) => (
+                  <MenuItem key={guru.id} value={guru.id}>
+                    {guru.namaLengkap}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Loading...</MenuItem>
+              )}
+            </Select>
+          </FormControl>
         </div>
         <div className="mb-3">
           <Typography>Deskripsi Kelas</Typography>
@@ -103,7 +129,7 @@ export default function TambahKelasSd(props) {
             backgroundColor: "#85193C",
           }}
           variant="contained"
-          onClick={ClickCloseTambahKelas}
+          onClick={handleSubmitCreate}
         >
           Save changes
         </Button>

@@ -23,18 +23,25 @@ export async function LoginPegawai(login, password) {
 
 export async function CekLoginPegawai() {
   const token = localStorage.getItem("tokenPegawai");
-  if (!token) throw new Error("No access token found");
+
+  if (!token) {
+    return { isLoggedIn: false };
+  }
 
   try {
-    const resp = await api.get(`/auth/check-login`, {
+    const response = await api.get("/auth/cek-login", {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
     });
-    return resp;
+
+    if (response.data?.pegawai?.role === "ADMIN") {
+      return { isLoggedIn: true, data: response.data.pegawai };
+    } else {
+      return { isLoggedIn: false };
+    }
   } catch (error) {
-    console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
-    throw error;
+    console.error("Gagal cek login:", error);
+    return { isLoggedIn: false };
   }
 }

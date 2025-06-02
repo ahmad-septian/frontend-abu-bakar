@@ -11,7 +11,7 @@ export async function GetAllPembayaran() {
         "Content-Type": "application/json",
       },
     });
-    return resp;
+    return resp.data;
   } catch (error) {
     console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
     throw error;
@@ -34,7 +34,7 @@ export async function GetPembayaranPaginated(page = 1, take = 10, search = "") {
         "Content-Type": "application/json",
       },
     });
-    return resp;
+    return resp.data;
   } catch (error) {
     console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
     throw error;
@@ -82,7 +82,7 @@ export async function CreatePembayaran(
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer token`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -117,7 +117,7 @@ export async function UpdatePembayaran(
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer token`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

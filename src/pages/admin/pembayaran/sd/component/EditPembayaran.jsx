@@ -20,6 +20,7 @@ import {
   AnimasiDialog,
   BootstrapDialog,
 } from "@/component-global/component-dialog";
+import { NumericFormat } from "react-number-format";
 
 export default function EditPembayaranSd(props) {
   const {
@@ -29,6 +30,9 @@ export default function EditPembayaranSd(props) {
     openEditPembayaran,
     checked,
     handleInstallment,
+    handleSubmitEdit,
+    setFormDataPembayaran,
+    ChangeInputNumber,
   } = props;
   return (
     <BootstrapDialog
@@ -42,7 +46,7 @@ export default function EditPembayaranSd(props) {
       maxWidth="md"
     >
       <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-        Edit Pembayaran SD
+        Edit Pembayaran {formDataPembayaran.namaPembayaran}
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -68,22 +72,23 @@ export default function EditPembayaranSd(props) {
             onChange={handleChange}
           />
         </div>
+
         <div className="mb-3">
           <Typography>Harga Pembayaran</Typography>
-          <TextField
-            name="hargaPembayaran"
-            fullWidth
-            size="small"
-            margin="dense"
+
+          <NumericFormat
             value={formDataPembayaran.hargaPembayaran}
-            onChange={handleChange}
+            onChange={ChangeInputNumber}
+            allowLeadingZeros
+            thousandSeparator=","
+            className="appearance-none border border-[#ddd] rounded-md w-full p-2 text-gray-700 focus:outline-none focus:border-blue-500 h-14 hover:border-black"
           />
         </div>
 
-        <div>
+        <div className="mb-3">
           <Typography>Bisa Diangsur?</Typography>
           <Switch
-            checked={checked}
+            checked={formDataPembayaran.isInstallment}
             onChange={handleInstallment}
             inputProps={{ "aria-label": "controlled" }}
           />
@@ -93,11 +98,12 @@ export default function EditPembayaranSd(props) {
           <Typography>Model Pembayaran</Typography>
           <FormControl fullWidth margin="dense" size="small">
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={formDataPembayaran.tipe}
+              name="modelPembayaran"
+              value={formDataPembayaran.modelPembayaran}
               onChange={handleChange}
+              displayEmpty
             >
+              <MenuItem value="">Pilih Model</MenuItem>
               <MenuItem value="BULANAN">BULANAN</MenuItem>
               <MenuItem value="DIAWAL">DIAWAL</MenuItem>
             </Select>
@@ -107,21 +113,27 @@ export default function EditPembayaranSd(props) {
         <FormControlLabel
           control={
             <Checkbox
-              name="isActive"
-              checked={formDataPembayaran.isActive}
-              onChange={handleChange}
+              name="aktif"
+              checked={formDataPembayaran.aktif}
+              onChange={(e) =>
+                setFormDataPembayaran((prev) => ({
+                  ...prev,
+                  aktif: e.target.checked,
+                }))
+              }
             />
           }
           label="Pembayaran Aktif?"
         />
       </DialogContent>
+
       <DialogActions dividers>
         <Button
           sx={{
             backgroundColor: "#85193C",
           }}
           variant="contained"
-          onClick={ClickCloseEditPembayaran}
+          onClick={handleSubmitEdit}
         >
           Save changes
         </Button>

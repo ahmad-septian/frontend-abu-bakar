@@ -42,6 +42,15 @@ import TahunAjaranSd from "../pages/admin/tahun-ajaran/sd";
 import MataPelajaranTk from "../pages/admin/mata-pelajaran/tk";
 import PembayaranSd from "../pages/admin/pembayaran/sd";
 import JadwalPelajaranSd from "../pages/admin/jadwal-pelajaran/sd";
+import { CekLoginPegawai } from "../api/loginPegawai.api";
+
+export async function checkAdminAuth() {
+  const result = await CekLoginPegawai();
+  if (!result.isLoggedIn) {
+    return redirect("/auth/admin/login");
+  }
+  return null;
+}
 
 const router = createBrowserRouter([
   {
@@ -50,7 +59,7 @@ const router = createBrowserRouter([
     errorElement: "",
     children: [
       {
-        index: true, // ini untuk path "/admin"
+        index: true,
         loader: () => redirect("/admin/dashboard/sd"),
       },
       {

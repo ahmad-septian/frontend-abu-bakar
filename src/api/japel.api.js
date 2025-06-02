@@ -38,7 +38,7 @@ export async function GetJadwalPelajaranPaginated(
         "Content-Type": "application/json",
       },
     });
-    return resp;
+    return resp.data;
   } catch (error) {
     console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
     throw error;
@@ -90,7 +90,7 @@ export async function CreateJadwalPelajaran(
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer token`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -118,7 +118,7 @@ export async function UpdateJadwalPelajaran(
     const resp = await api.put(
       `/jadwal-pelajaran/${id}/update`,
       {
-        nkelas,
+        kelas,
         mataPelajaran,
         hari,
         jamMulai,
@@ -129,7 +129,7 @@ export async function UpdateJadwalPelajaran(
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer token`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

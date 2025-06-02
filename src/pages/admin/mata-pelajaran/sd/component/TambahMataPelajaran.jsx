@@ -26,6 +26,7 @@ export default function TambahMataPelajaranSd(props) {
     ClickCloseTambahMataPelajaran,
     formDataMataPelajaran,
     handleChange,
+    handleSubmitCreate,
   } = props;
   return (
     <BootstrapDialog
@@ -94,6 +95,7 @@ export default function TambahMataPelajaranSd(props) {
           <Typography>Deskripsi Mata Pelajaran</Typography>
           <FormControl fullWidth margin="dense" size="small">
             <Select
+              name="tipe"
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={formDataMataPelajaran.tipe}
@@ -121,7 +123,7 @@ export default function TambahMataPelajaranSd(props) {
             backgroundColor: "#85193C",
           }}
           variant="contained"
-          onClick={ClickCloseTambahMataPelajaran}
+          onClick={handleSubmitCreate}
         >
           Save changes
         </Button>

@@ -26,15 +26,14 @@ export default function TambahTahuAjaran(props) {
     ClickCloseTambahTahunAjaran,
     formDataTahunAjaran,
     handleChange,
+    handleSubmitCreate,
   } = props;
   return (
     <BootstrapDialog
       sx={{ backdropFilter: "blur(8px)" }}
       aria-labelledby="customized-dialog-title"
       open={openTambahTahunAjaran}
-      slots={{
-        transition: AnimasiDialog,
-      }}
+      slots={{ transition: AnimasiDialog }}
       fullWidth={true}
       maxWidth="md"
     >
@@ -54,88 +53,89 @@ export default function TambahTahuAjaran(props) {
         <Close />
       </IconButton>
       <DialogContent dividers>
-        <div className="mb-3">
-          <Typography>Nama Tahun Ajaran</Typography>
-          <TextField
-            name="namaTahunAjaran"
-            fullWidth
-            size="small"
-            margin="dense"
-            value={formDataTahunAjaran.namaTahunAjaran}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-3">
-          <Typography>Kode Tahun Ajaran</Typography>
-          <TextField
-            name="code"
-            fullWidth
-            size="small"
-            margin="dense"
-            value={formDataTahunAjaran.code}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-3">
-          <Typography>Semester</Typography>
-          <FormControl fullWidth margin="dense" size="small">
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={formDataTahunAjaran.semester}
-              onChange={handleChange}
-            >
-              <MenuItem value="GANJIL">GANJIL</MenuItem>
-              <MenuItem value="GENAP">GENAP</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div className="mb-3">
-          <Typography>Tanggal Mulai</Typography>
-          <TextField
-            name="startDate"
-            fullWidth
-            size="small"
-            margin="dense"
-            type="date"
-            value={formDataTahunAjaran.startDate}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-3">
-          <Typography>Tanggal Selesai</Typography>
-          <TextField
-            name="endDate"
-            fullWidth
-            size="small"
-            margin="dense"
-            type="date"
-            value={formDataTahunAjaran.endDate}
-            onChange={handleChange}
-          />
-        </div>
-        <FormControlLabel
-          control={
-            <Checkbox
-              name="isActive"
-              checked={formDataTahunAjaran.isActive}
+        <form onSubmit={handleSubmitCreate}>
+          <div className="mb-3">
+            <Typography>Nama Tahun Ajaran</Typography>
+            <TextField
+              name="tahunAjaran"
+              fullWidth
+              size="small"
+              margin="dense"
+              value={formDataTahunAjaran.tahunAjaran}
               onChange={handleChange}
             />
-          }
-          label="Mata Pelajaran Aktif?"
-        />
+          </div>
+          <div className="mb-3">
+            <Typography>Kode Tahun Ajaran</Typography>
+            <TextField
+              name="code"
+              fullWidth
+              size="small"
+              margin="dense"
+              value={formDataTahunAjaran.code}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-3">
+            <Typography>Semester</Typography>
+            <FormControl fullWidth margin="dense" size="small">
+              <Select
+                name="semester"
+                value={formDataTahunAjaran.semester}
+                onChange={handleChange}
+              >
+                <MenuItem value="GANJIL">GANJIL</MenuItem>
+                <MenuItem value="GENAP">GENAP</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="mb-3">
+            <Typography>Tanggal Mulai</Typography>
+            <TextField
+              name="tanggalMulai"
+              fullWidth
+              size="small"
+              margin="dense"
+              type="date"
+              value={formDataTahunAjaran.tanggalMulai}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+            />
+          </div>
+          <div className="mb-3">
+            <Typography>Tanggal Selesai</Typography>
+            <TextField
+              name="tanggalSelesai"
+              fullWidth
+              size="small"
+              margin="dense"
+              type="date"
+              value={formDataTahunAjaran.tanggalSelesai}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+            />
+          </div>
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="aktif"
+                checked={formDataTahunAjaran.aktif}
+                onChange={handleChange}
+              />
+            }
+            label="Tahun Ajaran Aktif?"
+          />
+          <DialogActions sx={{ mt: 2 }}>
+            <Button
+              sx={{ backgroundColor: "#85193C" }}
+              variant="contained"
+              type="submit"
+            >
+              Simpan
+            </Button>
+          </DialogActions>
+        </form>
       </DialogContent>
-      <DialogActions dividers>
-        <Button
-          sx={{
-            backgroundColor: "#85193C",
-          }}
-          variant="contained"
-          onClick={ClickCloseTambahTahunAjaran}
-        >
-          Save changes
-        </Button>
-      </DialogActions>
     </BootstrapDialog>
   );
 }

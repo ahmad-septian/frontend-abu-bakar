@@ -9,6 +9,9 @@ import {
   TextField,
   Checkbox,
   FormControlLabel,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import {
@@ -17,8 +20,14 @@ import {
 } from "@/component-global/component-dialog";
 
 export default function EditKelasSd(props) {
-  const { formDataKelas, handleChange, ClickCloseEditKelas, openEditKelas } =
-    props;
+  const {
+    formDataKelas,
+    handleChange,
+    ClickCloseEditKelas,
+    openEditKelas,
+    dataGuru,
+    handleSubmitEdit,
+  } = props;
   return (
     <BootstrapDialog
       sx={{ backdropFilter: "blur(8px)" }}
@@ -57,6 +66,7 @@ export default function EditKelasSd(props) {
             onChange={handleChange}
           />
         </div>
+
         <div className="mb-3">
           <Typography>Tingkat Kelas</Typography>
           <TextField
@@ -67,6 +77,26 @@ export default function EditKelasSd(props) {
             value={formDataKelas.tingkat}
             onChange={handleChange}
           />
+        </div>
+        <div className="mb-3">
+          <Typography>Wali Kelas</Typography>
+          <FormControl fullWidth margin="dense" size="small">
+            <Select
+              name="waliKelas"
+              value={formDataKelas.waliKelas}
+              onChange={handleChange}
+            >
+              {dataGuru.length > 0 ? (
+                dataGuru.map((guru) => (
+                  <MenuItem key={guru.id} value={guru.id}>
+                    {guru.namaLengkap}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Loading...</MenuItem>
+              )}
+            </Select>
+          </FormControl>
         </div>
         <div className="mb-3">
           <Typography>Deskripsi Kelas</Typography>
@@ -98,7 +128,7 @@ export default function EditKelasSd(props) {
             backgroundColor: "#85193C",
           }}
           variant="contained"
-          onClick={ClickCloseEditKelas}
+          onClick={handleSubmitEdit}
         >
           Save changes
         </Button>

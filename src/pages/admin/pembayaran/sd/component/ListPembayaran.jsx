@@ -10,52 +10,23 @@ import {
   IconButton,
   Button,
   Chip,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import {} from "react-router-dom";
 import { formatUang } from "../../../../../component-global/format-uang";
-
-const dataPembayaran = [
-  {
-    id: 1,
-    namaPembayaran: "UANG PANGKAL",
-    hargaPembayaran: 2000000,
-    isInstallment: true,
-    PaymentModel: "DIAWAL",
-    isActive: true,
-  },
-  {
-    id: 2,
-    namaPembayaran: "UANG SERAGAM",
-    hargaPembayaran: 500000,
-    isInstallment: true,
-    PaymentModel: "DIAWAL",
-    isActive: true,
-  },
-  {
-    id: 3,
-    namaPembayaran: "UANG SPP",
-    hargaPembayaran: 350000,
-    isInstallment: false,
-    PaymentModel: "BULANAN",
-    isActive: true,
-  },
-  {
-    id: 4,
-    namaPembayaran: "UANG UJIAN",
-    hargaPembayaran: 400000,
-    isInstallment: false,
-    PaymentModel: "BULANAN",
-    isActive: true,
-  },
-];
+import PaginationComponent from "../../../../../component-global/pagination";
 
 export default function ListPembayaranSd(props) {
-  const { ClickOpenTambahPembayaran, ClickOpenEditPembayaran } = props;
+  const {
+    ClickOpenTambahPembayaran,
+    ClickOpenEditPembayaran,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    rowsPerPage,
+    page,
+    data,
+    totalItems,
+  } = props;
 
   return (
     <div className=" grid grid-cols-1 overflow-x-auto mt-5">
@@ -115,7 +86,7 @@ export default function ListPembayaranSd(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataPembayaran.map((pembayaran, index) => (
+            {data.map((pembayaran, index) => (
               <TableRow
                 key={index}
                 sx={{
@@ -136,9 +107,9 @@ export default function ListPembayaranSd(props) {
                 </TableCell>
                 <TableCell align="center">
                   <Chip
-                    label={pembayaran.PaymentModel}
+                    label={pembayaran.modelPembayaran}
                     color={
-                      pembayaran.PaymentModel === "DIAWAL"
+                      pembayaran.modelPembayaran === "DIAWAL"
                         ? "primary"
                         : "success"
                     }
@@ -149,15 +120,17 @@ export default function ListPembayaranSd(props) {
 
                 <TableCell align="center">
                   <Chip
-                    label={pembayaran.isActive ? "Aktif" : "Nonaktif"}
-                    color={pembayaran.isActive ? "primary" : "error"}
+                    label={pembayaran.aktif ? "Aktif" : "Nonaktif"}
+                    color={pembayaran.aktif ? "primary" : "error"}
                     variant="contained"
                     size="small"
                   />
                 </TableCell>
                 <TableCell align="center">
                   <IconButton
-                    onClick={ClickOpenEditPembayaran}
+                    onClick={() => {
+                      ClickOpenEditPembayaran(pembayaran.id);
+                    }}
                     sx={{ color: "#85193C" }}
                   >
                     <Edit />
@@ -167,6 +140,14 @@ export default function ListPembayaranSd(props) {
             ))}
           </TableBody>
         </Table>
+        <PaginationComponent
+          component="div"
+          count={totalItems}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
   );

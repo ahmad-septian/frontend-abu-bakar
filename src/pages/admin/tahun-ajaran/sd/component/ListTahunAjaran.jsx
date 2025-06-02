@@ -14,6 +14,7 @@ import {
 import { Edit } from "@mui/icons-material";
 import {} from "react-router-dom";
 import { FormatTanggal } from "../../../../../component-global/format-tanggal";
+import PaginationComponent from "../../../../../component-global/pagination";
 
 const dataTahunAjaran = [
   {
@@ -56,7 +57,16 @@ const dataTahunAjaran = [
 ];
 
 export default function ListTahunAjaran(props) {
-  const { ClickOpenTambahTahunAjaran, ClickOpenEditTahunAjaran } = props;
+  const {
+    ClickOpenTambahTahunAjaran,
+    ClickOpenEditTahunAjaran,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    rowsPerPage,
+    page,
+    data,
+    totalItems,
+  } = props;
 
   return (
     <div className=" grid grid-cols-1 overflow-x-auto mt-5">
@@ -122,7 +132,7 @@ export default function ListTahunAjaran(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataTahunAjaran.map((tajar, index) => (
+            {data.map((tajar, index) => (
               <TableRow
                 key={index}
                 sx={{
@@ -132,26 +142,28 @@ export default function ListTahunAjaran(props) {
                   },
                 }}
               >
-                <TableCell align="center">{tajar.namaTahunAjaran}</TableCell>
+                <TableCell align="center">{tajar.tahunAjaran}</TableCell>
                 <TableCell align="center">{tajar.code}</TableCell>
                 <TableCell align="center">{tajar.semester}</TableCell>
                 <TableCell align="center">
-                  {FormatTanggal(tajar.startDate)}{" "}
+                  {FormatTanggal(tajar.tanggalMulai)}{" "}
                 </TableCell>
                 <TableCell align="center">
-                  {FormatTanggal(tajar.endDate)}
+                  {FormatTanggal(tajar.tanggalSelesai)}
                 </TableCell>
                 <TableCell align="center">
                   <Chip
-                    label={tajar.isActive ? "Aktif" : "Nonaktif"}
-                    color={tajar.isActive ? "primary" : "error"}
+                    label={tajar.aktif ? "Aktif" : "Nonaktif"}
+                    color={tajar.aktif ? "primary" : "error"}
                     variant="contained"
                     size="small"
                   />
                 </TableCell>
                 <TableCell align="center">
                   <IconButton
-                    onClick={ClickOpenEditTahunAjaran}
+                    onClick={() => {
+                      ClickOpenEditTahunAjaran(tajar.id);
+                    }}
                     sx={{ color: "#85193C" }}
                   >
                     <Edit />
@@ -161,6 +173,14 @@ export default function ListTahunAjaran(props) {
             ))}
           </TableBody>
         </Table>
+        <PaginationComponent
+          component="div"
+          count={totalItems}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
   );

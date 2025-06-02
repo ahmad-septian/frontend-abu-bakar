@@ -26,6 +26,10 @@ export default function TambahJadwalPelajaranSd(props) {
     ClickCloseTambahJadwalPelajaran,
     formDataJadwalPelajaran,
     handleChange,
+    handleSubmitCreate,
+    dataMapel,
+    dataKelas,
+    dataGuru,
   } = props;
   return (
     <BootstrapDialog
@@ -58,47 +62,61 @@ export default function TambahJadwalPelajaranSd(props) {
           <Typography>Nama Kelas</Typography>
           <FormControl fullWidth margin="dense" size="small">
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              name="kelas"
               value={formDataJadwalPelajaran.kelas}
               onChange={handleChange}
             >
-              <MenuItem value="1A">1A</MenuItem>
-              <MenuItem value="1B">1B</MenuItem>
-              <MenuItem value="2A">2A</MenuItem>
-              <MenuItem value="2B">2B</MenuItem>
-              <MenuItem value="3A">3A</MenuItem>
-              <MenuItem value="3B">3B</MenuItem>
+              {dataKelas.length > 0 ? (
+                dataKelas.map((kelas) => (
+                  <MenuItem key={kelas.id} value={kelas.id}>
+                    {kelas.namaKelas}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Loading...</MenuItem>
+              )}
             </Select>
           </FormControl>
         </div>
+
         <div className="mb-3">
           <Typography>Mata Pelajaran</Typography>
           <FormControl fullWidth margin="dense" size="small">
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              name="mataPelajaran"
               value={formDataJadwalPelajaran.mataPelajaran}
               onChange={handleChange}
             >
-              <MenuItem value="BI">Bahasa Indonesia</MenuItem>
-              <MenuItem value="MAT">Matematika</MenuItem>
-              <MenuItem value="IPS">IPS</MenuItem>
+              {dataMapel.length > 0 ? (
+                dataMapel.map((mapel) => (
+                  <MenuItem key={mapel.id} value={mapel.id}>
+                    {mapel.namaMataPelajaran}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Loading...</MenuItem>
+              )}
             </Select>
           </FormControl>
         </div>
+
         <div className="mb-3">
           <Typography>Pengajar</Typography>
           <FormControl fullWidth margin="dense" size="small">
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              name="pengajar"
               value={formDataJadwalPelajaran.pengajar}
               onChange={handleChange}
             >
-              <MenuItem value="01-GR">Ibu Floryn</MenuItem>
-              <MenuItem value="02-GR">Ibu Change</MenuItem>
-              <MenuItem value="03-GR">Bapak Balmond</MenuItem>
+              {dataGuru.length > 0 ? (
+                dataGuru.map((guru) => (
+                  <MenuItem key={guru.id} value={guru.id}>
+                    {guru.namaLengkap}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>Loading...</MenuItem>
+              )}
             </Select>
           </FormControl>
         </div>
@@ -107,8 +125,7 @@ export default function TambahJadwalPelajaranSd(props) {
           <Typography>Hari Jadwal</Typography>
           <FormControl fullWidth margin="dense" size="small">
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              name="hari"
               value={formDataJadwalPelajaran.hari}
               onChange={handleChange}
             >
@@ -120,6 +137,7 @@ export default function TambahJadwalPelajaranSd(props) {
             </Select>
           </FormControl>
         </div>
+
         <div className="mb-3">
           <Typography>Jam Mulai</Typography>
           <TextField
@@ -132,6 +150,7 @@ export default function TambahJadwalPelajaranSd(props) {
             onChange={handleChange}
           />
         </div>
+
         <div className="mb-3">
           <Typography>Jam Selesai</Typography>
           <TextField
@@ -144,6 +163,7 @@ export default function TambahJadwalPelajaranSd(props) {
             onChange={handleChange}
           />
         </div>
+
         <FormControlLabel
           control={
             <Checkbox
@@ -161,7 +181,7 @@ export default function TambahJadwalPelajaranSd(props) {
             backgroundColor: "#85193C",
           }}
           variant="contained"
-          onClick={ClickCloseTambahJadwalPelajaran}
+          onClick={handleSubmitCreate}
         >
           Save changes
         </Button>

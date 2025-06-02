@@ -15,30 +15,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
-
-const dataKelas = [
-  {
-    id: 1,
-    namaKelas: "1A",
-    tingkat: "1",
-    deskripsi: "lorem ipsum dolor sit amet ",
-    isActive: true,
-  },
-  {
-    id: 2,
-    namaKelas: "1B",
-    tingkat: "1",
-    deskripsi: "lorem ipsum dolor sit amet ",
-    isActive: true,
-  },
-  {
-    id: 3,
-    namaKelas: "1C",
-    tingkat: "1",
-    deskripsi: "lorem ipsum dolor sit amet ",
-    isActive: false,
-  },
-];
+import PaginationComponent from "@/component-global/pagination";
 
 const ListKelas = (props) => {
   const {
@@ -46,10 +23,16 @@ const ListKelas = (props) => {
     pilihKelas,
     setPilihKelas,
     ClickOpenEditKelas,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    totalItems,
+    rowsPerPage,
+    page,
+    data,
   } = props;
 
   return (
-    <div className=" grid grid-cols-1 overflow-x-auto mt-5">
+    <div className="grid grid-cols-1 overflow-x-auto mt-5">
       <div className="mb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <Button
           variant="contained"
@@ -97,6 +80,12 @@ const ListKelas = (props) => {
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
+                Wali Kelas
+              </TableCell>
+              <TableCell
+                align="center"
+                sx={{ fontWeight: "bold", color: "#fff" }}
+              >
                 Status
               </TableCell>
               <TableCell
@@ -108,19 +97,21 @@ const ListKelas = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataKelas.map((kelas, index) => (
+            {data.map((kelas, index) => (
               <TableRow
-                key={index}
+                key={kelas.id}
                 sx={{
                   "&:hover": {
                     backgroundColor: "#FFFBF4",
                     cursor: "pointer",
                   },
                 }}
-                // onClick={() => handleClickDetail()}
               >
                 <TableCell align="center">{kelas.namaKelas}</TableCell>
                 <TableCell align="center">{kelas.tingkat}</TableCell>
+                <TableCell align="center">
+                  {kelas.waliKelas.namaLengkap}
+                </TableCell>
                 <TableCell align="center">
                   <Chip
                     label={kelas.isActive ? "Aktif" : "Nonaktif"}
@@ -131,7 +122,7 @@ const ListKelas = (props) => {
                 </TableCell>
                 <TableCell align="center">
                   <IconButton
-                    onClick={ClickOpenEditKelas}
+                    onClick={() => ClickOpenEditKelas(kelas.id)}
                     sx={{ color: "#85193C" }}
                   >
                     <Edit />
@@ -141,6 +132,14 @@ const ListKelas = (props) => {
             ))}
           </TableBody>
         </Table>
+        <PaginationComponent
+          component="div"
+          count={totalItems}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
   );

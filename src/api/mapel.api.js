@@ -38,7 +38,7 @@ export async function GetMataPelajaranPaginated(
         "Content-Type": "application/json",
       },
     });
-    return resp;
+    return resp.data;
   } catch (error) {
     console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
     throw error;
@@ -67,8 +67,8 @@ export async function CreateMataPelajaran(
   namaMataPelajaran,
   kodePelajaran,
   deskripsi,
-  isActive,
-  tipePelajaran
+  aktif,
+  tipe
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -80,13 +80,13 @@ export async function CreateMataPelajaran(
         namaMataPelajaran,
         kodePelajaran,
         deskripsi,
-        isActive,
-        tipePelajaran,
+        aktif,
+        tipe,
       },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer token`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -103,7 +103,7 @@ export async function UpdateMataPelajaran(
   kodePelajaran,
   deskripsi,
   isActive,
-  tipePelajaran
+  tipe
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -116,12 +116,12 @@ export async function UpdateMataPelajaran(
         kodePelajaran,
         deskripsi,
         isActive,
-        tipePelajaran,
+        tipe,
       },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer token`,
+          Authorization: `Bearer ${token}`,
         },
       }
     );

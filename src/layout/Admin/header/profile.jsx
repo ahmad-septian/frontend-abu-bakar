@@ -8,6 +8,11 @@ export default function MenuProfile(props) {
   const { handleClose, openProfile, anchorEl } = props;
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/auth/admin/login");
+  };
+
   return (
     <Menu
       anchorEl={anchorEl}
@@ -49,7 +54,7 @@ export default function MenuProfile(props) {
         Administrator
       </MenuItem>
       <Divider />
-      <MenuItem>
+      <MenuItem onClick={handleLogout}>
         <ListItemIcon>
           <Logout fontSize="small" />
         </ListItemIcon>
