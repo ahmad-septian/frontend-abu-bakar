@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   MenuItem,
@@ -8,40 +8,30 @@ import {
   Select,
   Avatar,
 } from "@mui/material";
+import {} from "@mui/icons-material";
 import { useParams } from "react-router-dom";
-import { stringAvatar } from "@/component-global/format-avatar";
 import {
-  GetOneSiswa,
-  UpdateSiswa,
-  UploadFotoSiswa,
-} from "../../../../../api/siswa.api";
+  GetOnePegawai,
+  UpdatePegawai,
+  UploadFotoPegawai,
+} from "../../../../../api/pegawai.api";
 import { toast } from "react-toastify";
-import { GetAllKelas } from "@/api/kelas.api";
-import { GetAllTahunAjaran } from "../../../../../api/tahunAjaran.api";
-
-export default function DataSiswaSd() {
+import { stringAvatar } from "@/component-global/format-avatar";
+export default function DataPegawai() {
   const { id } = useParams();
-
   const [formData, setFormData] = useState({
-    nisn: "",
     namaLengkap: "",
+    nik: "",
+    nuptk: "",
     tempatLahir: "",
-    namaAyah: "",
-    namaIbu: "",
-    noHpAyah: "",
-    noHpIbu: "",
     tanggalLahir: "",
-    jenisKelamin: "",
-    namaWali: "",
-    noHpWali: "",
-    tahunMasuk: "",
-    kelas: "",
     alamat: "",
-    tahunAjaran: "",
-    foto: "",
+    noHp: "",
+    email: "",
+    role: "",
+    pendidikanTerakhir: "",
+    jenisKelamin: "",
   });
-  const [dataKelas, setDataKelas] = useState([]);
-  const [dataTahunAjaran, setDataTahunAjaran] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,33 +40,29 @@ export default function DataSiswaSd() {
 
   const getOneData = async () => {
     try {
-      const response = await GetOneSiswa(id);
+      const response = await GetOnePegawai(id);
       const data = response.data;
 
       setFormData({
-        nisn: data.nisn || "",
         namaLengkap: data.namaLengkap || "",
+        nik: data.nik || "",
+        nuptk: data.nuptk || "",
         tempatLahir: data.tempatLahir || "",
-        namaAyah: data.namaAyah || "",
-        namaIbu: data.namaIbu || "",
-        noHpAyah: data.noHpAyah || "",
-        noHpIbu: data.noHpIbu || "",
         tanggalLahir: data.tanggalLahir || "",
-        jenisKelamin: data.jenisKelamin || "",
-        namaWali: data.namaWali || "",
-        noHpWali: data.noHpWali || "",
-        tahunMasuk: data.tahunMasuk || "",
-        kelas: data.kelas?.id || "",
         alamat: data.alamat || "",
-        tahunAjaran: data.tahunAjaran?.id || "",
+        noHp: data.noHp || "",
+        email: data.email || "",
+        role: data.role || "",
+        pendidikanTerakhir: data.pendidikanTerakhir || "",
         foto: data.foto || "",
+        jenisKelamin: data.jenisKelamin || "",
       });
     } catch (error) {
       console.error("Error Fetching All Schedules", error);
     }
   };
 
-  const uploadImageSiswa = async (e) => {
+  const uploadImagePegawai = async (e) => {
     const foto = e.target.files[0];
     if (!foto) {
       toast.error("Tidak ada file yang dipilih");
@@ -87,7 +73,7 @@ export default function DataSiswaSd() {
     formData.append("foto", foto);
 
     try {
-      const resp = await UploadFotoSiswa(id, formData);
+      const resp = await UploadFotoPegawai(id, formData);
       setFormData({ ...formData, foto: resp.data.url });
       toast.success("Foto siswa berhasil diupload!");
     } catch (error) {
@@ -100,13 +86,14 @@ export default function DataSiswaSd() {
 
     const requiredFields = [
       "namaLengkap",
-      "jenisKelamin",
+      "nik",
       "tempatLahir",
       "tanggalLahir",
-      "tahunMasuk",
-      "kelas",
-      "tahunAjaran",
       "alamat",
+      "noHp",
+      "email",
+      "role",
+      "jenisKelamin",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -116,54 +103,29 @@ export default function DataSiswaSd() {
     }
 
     try {
-      await UpdateSiswa(
+      await UpdatePegawai(
         id,
         formData.namaLengkap,
-        formData.jenisKelamin,
+        formData.nik,
+        formData.nuptk,
         formData.tempatLahir,
         formData.tanggalLahir,
-        formData.nisn,
-        formData.namaAyah,
-        formData.namaIbu,
-        formData.namaWali,
-        formData.noHpAyah,
-        formData.noHpIbu,
-        formData.noHpWali,
         formData.alamat,
-        formData.tahunMasuk,
-        formData.kelas,
-        formData.tahunAjaran
+        formData.noHp,
+        formData.email,
+        formData.role,
+        formData.pendidikanTerakhir,
+        formData.jenisKelamin
       );
-      toast.success("Siswa berhasil diupdate!");
+      toast.success("Pegawai berhasil diupdate!");
     } catch (error) {
       toast.error(error?.response?.data?.message || "Gagal menambahkan siswa!");
     }
   };
 
-  const getAllDataKelas = async () => {
-    try {
-      const response = await GetAllKelas();
-      setDataKelas(response.data);
-    } catch (error) {
-      console.error("Error Fetching All Schedules", error);
-    }
-  };
-
-  const getAllDataTahunAjaran = async () => {
-    try {
-      const response = await GetAllTahunAjaran();
-      setDataTahunAjaran(response.data);
-    } catch (error) {
-      console.error("Error Fetching All Schedules", error);
-    }
-  };
-
   useEffect(() => {
-    getAllDataKelas();
-    getAllDataTahunAjaran();
     getOneData();
-  }, []);
-
+  }, [id]);
   return (
     <div className="bg-white p-6 rounded-xl border border-gray-200 mx-auto mt-2">
       <Typography variant="h6" className="text-[#85193C] font-semibold mb-4">
@@ -172,7 +134,9 @@ export default function DataSiswaSd() {
       <div className="flex justify-center mb-4 flex-col items-center">
         {formData.foto ? (
           <img
-            src={"http://localhost:5001/api/siswa/foto-siswa/" + formData.foto}
+            src={
+              "http://localhost:5001/api/pegawai/foto-pegawai/" + formData.foto
+            }
             alt="Foto Siswa"
             className="w-32 h-32 rounded-full object-cover border-2 border-[#85193C]"
           />
@@ -188,17 +152,15 @@ export default function DataSiswaSd() {
           />
         )}
 
-        {/* Input file hidden */}
         <input
           type="file"
-          id="foto-siswa"
+          id="foto-pegawai"
           accept="image/*"
           style={{ display: "none" }}
-          onChange={uploadImageSiswa} // ← handler dari kamu
+          onChange={uploadImagePegawai} // ← handler dari kamu
         />
 
-        {/* Label sebagai tombol upload */}
-        <label htmlFor="foto-siswa">
+        <label htmlFor="foto-pegawai">
           <Button
             component="span"
             variant="contained"
@@ -213,22 +175,10 @@ export default function DataSiswaSd() {
           </Button>
         </label>
       </div>
-
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-1 md:grid-cols-2 gap-4"
       >
-        <div className="mt-3">
-          <Typography>NISN</Typography>
-          <TextField
-            name="nisn"
-            fullWidth
-            size="small"
-            margin="dense"
-            value={formData.nisn}
-            onChange={handleChange}
-          />
-        </div>
         <div className="mt-3">
           <Typography>Nama Lengkap</Typography>
           <TextField
@@ -237,6 +187,28 @@ export default function DataSiswaSd() {
             size="small"
             margin="dense"
             value={formData.namaLengkap}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mt-3">
+          <Typography>NIK</Typography>
+          <TextField
+            name="nik"
+            fullWidth
+            size="small"
+            margin="dense"
+            value={formData.nik}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mt-3">
+          <Typography>NUPTK</Typography>
+          <TextField
+            name="nuptk"
+            fullWidth
+            size="small"
+            margin="dense"
+            value={formData.nuptk}
             onChange={handleChange}
           />
         </div>
@@ -252,62 +224,14 @@ export default function DataSiswaSd() {
           />
         </div>
         <div className="mt-3">
-          <Typography>Nama Ayah</Typography>
-          <TextField
-            name="namaAyah"
-            fullWidth
-            size="small"
-            margin="dense"
-            value={formData.namaAyah}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mt-3">
-          <Typography>Nama Ibu</Typography>
-          <TextField
-            name="namaIbu"
-            fullWidth
-            size="small"
-            margin="dense"
-            value={formData.namaIbu}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mt-3">
-          <Typography>No Handphone Ayah</Typography>
-          <TextField
-            name="noHpAyah"
-            fullWidth
-            size="small"
-            margin="dense"
-            value={formData.noHpAyah}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mt-3">
-          <Typography>No Handphone Ibu</Typography>
-          <TextField
-            name="noHpIbu"
-            fullWidth
-            size="small"
-            margin="dense"
-            value={formData.noHpIbu}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mt-3">
           <Typography>Tanggal Lahir</Typography>
           <TextField
             name="tanggalLahir"
+            type="date"
             fullWidth
             size="small"
             margin="dense"
-            type="date"
-            value={
-              formData.tanggalLahir
-                ? new Date(formData.tanggalLahir).toISOString().split("T")[0]
-                : ""
-            }
+            value={formData.tanggalLahir}
             onChange={handleChange}
           />
         </div>
@@ -326,76 +250,59 @@ export default function DataSiswaSd() {
             </Select>
           </FormControl>
         </div>
-
         <div className="mt-3">
-          <Typography>Nama Wali</Typography>
+          <Typography>No Handphone</Typography>
           <TextField
-            name="namaWali"
+            name="noHp"
             fullWidth
             size="small"
             margin="dense"
-            value={formData.namaWali}
+            value={formData.noHp}
             onChange={handleChange}
           />
         </div>
         <div className="mt-3">
-          <Typography>No Handphone Wali</Typography>
+          <Typography>Email</Typography>
           <TextField
-            name="noHpWali"
+            name="email"
             fullWidth
             size="small"
             margin="dense"
-            value={formData.noHpWali}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="mt-3">
-          <Typography>Tahun Masuk</Typography>
-          <TextField
-            name="tahunMasuk"
-            fullWidth
-            size="small"
-            margin="dense"
-            value={formData.tahunMasuk}
+            value={formData.email}
             onChange={handleChange}
           />
         </div>
         <div className="mt-3">
-          <Typography>Kelas</Typography>
-          <FormControl fullWidth margin="dense" size="small">
-            <Select name="kelas" value={formData.kelas} onChange={handleChange}>
-              {dataKelas.length > 0 ? (
-                dataKelas.map((kelas) => (
-                  <MenuItem key={kelas.id} value={kelas.id}>
-                    {kelas.namaKelas}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>Loading...</MenuItem>
-              )}
-            </Select>
-          </FormControl>
-        </div>
-        <div className="mt-3">
-          <Typography>Tahun Ajaran</Typography>
+          <Typography>Role Pegawai</Typography>
           <FormControl fullWidth margin="dense" size="small">
             <Select
-              name="tahunAjaran"
-              value={formData.tahunAjaran}
+              name="role"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={formData.role}
               onChange={handleChange}
             >
-              {dataTahunAjaran.length > 0 ? (
-                dataTahunAjaran.map((kelas) => (
-                  <MenuItem key={kelas.id} value={kelas.id}>
-                    {kelas.code} - {kelas.tahunAjaran}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>Loading...</MenuItem>
-              )}
+              <MenuItem value="KEPALA_SEKOLAH"> KEPALA SEKOLAH</MenuItem>
+              <MenuItem value="WAKIL_KEPSEK">WAKIL KEPSEK</MenuItem>
+              <MenuItem value="PENGAJAR">PENGAJAR</MenuItem>
+              <MenuItem value="TU">TATA USAHA</MenuItem>
+              <MenuItem value="ADMIN">ADMIN</MenuItem>
+              <MenuItem value="KEBERSIHAN">KEBERSIHAN</MenuItem>
+              <MenuItem value="SATPAM">SATPAM</MenuItem>
             </Select>
           </FormControl>
+        </div>
+
+        <div className="mt-3">
+          <Typography>Pendidikan Terakhir</Typography>
+          <TextField
+            name="pendidikanTerakhir"
+            fullWidth
+            size="small"
+            margin="dense"
+            value={formData.pendidikanTerakhir}
+            onChange={handleChange}
+          />
         </div>
         <div className="mt-3">
           <Typography>Alamat Lengkap</Typography>

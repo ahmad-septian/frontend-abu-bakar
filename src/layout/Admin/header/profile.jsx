@@ -9,7 +9,7 @@ export default function MenuProfile(props) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("tokenPegawai");
     navigate("/auth/admin/login");
   };
 

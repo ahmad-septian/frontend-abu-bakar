@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -10,10 +11,12 @@ import {
   Chip,
   TextField,
 } from "@mui/material";
+import {} from "@mui/icons-material";
 import { FormatTanggal } from "@/component-global/format-tanggal";
 import PaginationComponent from "@/component-global/pagination";
+import {} from "react-router-dom";
 
-const ListSiswa = (props) => {
+export default function ListPegawai(props) {
   const {
     handleClickTambah,
     handleClickDetail,
@@ -26,13 +29,11 @@ const ListSiswa = (props) => {
     search,
   } = props;
 
-  const getChipColorByStatus = (statusSiswa) => {
-    switch (statusSiswa) {
+  const getChipColorByStatus = (statusPegawai) => {
+    switch (statusPegawai) {
       case "AKTIF":
         return "success";
-      case "LULUS":
-        return "primary";
-      case "KELUAR":
+      case "RESIGN":
         return "warning";
       case "TIDAK_AKTIF":
         return "error";
@@ -50,12 +51,12 @@ const ListSiswa = (props) => {
           size="medium"
           onClick={handleClickTambah}
         >
-          Tambah Siswa
+          Tambah pegawai
         </Button>
 
         <TextField
           size="small"
-          placeholder="Cari Siswa..."
+          placeholder="Cari pegawai..."
           variant="outlined"
           sx={{
             backgroundColor: "#fff",
@@ -68,7 +69,7 @@ const ListSiswa = (props) => {
       <TableContainer component={Paper} sx={{ border: "1px solid #333" }}>
         <Table
           sx={{ minWidth: 650, borderRadius: "10px" }}
-          aria-label="siswa table"
+          aria-label="pegawai table"
         >
           <TableHead>
             <TableRow sx={{ backgroundColor: "#85193C" }}>
@@ -76,7 +77,7 @@ const ListSiswa = (props) => {
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
-                NIS
+                NIK
               </TableCell>
               <TableCell
                 align="center"
@@ -88,58 +89,49 @@ const ListSiswa = (props) => {
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
-                Jenis Kelamin
+                Email
               </TableCell>
               <TableCell
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
-                Tanggal Lahir
+                Nomer Telepon
               </TableCell>
               <TableCell
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
-                Tanggal Lahir
+                Role Pegawai
               </TableCell>
               <TableCell
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
-                Tahun Masuk
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontWeight: "bold", color: "#fff" }}
-              >
-                Status Siswa
+                Status Pegawai
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((siswa, index) => (
+            {data.map((pegawai, index) => (
               <TableRow
-                key={index}
+                key={pegawai.id}
                 sx={{
                   "&:hover": {
                     backgroundColor: "#FFFBF4",
                     cursor: "pointer",
                   },
                 }}
-                onClick={() => handleClickDetail(siswa.id)}
+                onClick={() => handleClickDetail(pegawai.id)}
               >
-                <TableCell align="center">{siswa.nis}</TableCell>
-                <TableCell align="center">{siswa.namaLengkap}</TableCell>
-                <TableCell align="center">{siswa.jenisKelamin}</TableCell>
-                <TableCell align="center">{siswa.tempatLahir}</TableCell>
-                <TableCell align="center">
-                  {FormatTanggal(siswa.tanggalLahir)}{" "}
-                </TableCell>
-                <TableCell align="center">{siswa.tahunMasuk}</TableCell>
+                <TableCell align="center">{pegawai.nik}</TableCell>
+                <TableCell align="center">{pegawai.namaLengkap}</TableCell>
+                <TableCell align="center">{pegawai.email}</TableCell>
+                <TableCell align="center">{pegawai.noHp}</TableCell>
+                <TableCell align="center">{pegawai.role}</TableCell>
                 <TableCell align="center">
                   <Chip
-                    label={siswa.statusSiswa}
-                    color={getChipColorByStatus(siswa.statusSiswa)}
+                    label={pegawai.statusPegawai}
+                    color={getChipColorByStatus(pegawai.statusPegawai)}
                   />
                 </TableCell>
               </TableRow>
@@ -157,6 +149,4 @@ const ListSiswa = (props) => {
       </TableContainer>
     </div>
   );
-};
-
-export default ListSiswa;
+}

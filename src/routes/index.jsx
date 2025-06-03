@@ -1,13 +1,7 @@
 import { createBrowserRouter, redirect } from "react-router-dom";
-// ADMIN
 import DefaultLayout from "../layout/Admin/sidebar";
 import AuthLayoutAdmin from "../layout/Admin/auth-admin";
 import LoginForm from "../pages/admin/login-admin";
-import TambahGuru from "../pages/admin/pegawai/component/tambah-guru";
-import DetailGuru from "../pages/admin/pegawai/component/detail-guru";
-// SISWA
-import Guru from "../pages/admin/pegawai";
-// GURU
 import AuthLayoutGuru from "../layout/Guru/auth-guru";
 import LoginFormSiswa from "../pages/siswa/login-siswa";
 import LoginFormGuru from "../pages/guru/login-guru";
@@ -17,10 +11,6 @@ import { Navigate } from "react-router-dom";
 import AbsenSiswa from "../pages/siswa/absen-siswa";
 import RapotSiswa from "../pages/siswa/rapot";
 import PembayaranSiswa from "../pages/siswa/pembayaran";
-import DetailTransaksiKelas from "../pages/admin/transaksi/detail-kelas";
-import DaftarTransaksiKelas from "../pages/admin/transaksi/daftar-kelas";
-import Transaksi from "../pages/admin/transaksi";
-import DetailTransaksi from "../pages/admin/transaksi/detail-transaksi";
 import MataPelajaran from "../pages/siswa/mata-pelajaran";
 import InformasiTerkini from "../pages/siswa/kelas";
 import ContentGuru from "../layout/Guru/content-guru";
@@ -43,20 +33,37 @@ import MataPelajaranTk from "../pages/admin/mata-pelajaran/tk";
 import PembayaranSd from "../pages/admin/pembayaran/sd";
 import JadwalPelajaranSd from "../pages/admin/jadwal-pelajaran/sd";
 import { CekLoginPegawai } from "../api/loginPegawai.api";
+import TambahSiswa from "../pages/admin/siswa/sd/component/tambah-siswa";
+import PegawaiSd from "../pages/admin/pegawai/sd";
+import TambahPegawai from "../pages/admin/pegawai/sd/component/TambahPegawai";
+import DetailPegawai from "../pages/admin/pegawai/sd/component/DetailPegawai";
 
 export async function checkAdminAuth() {
-  const result = await CekLoginPegawai();
-  if (!result.isLoggedIn) {
+  try {
+    const isLoggedIn = await CekLoginPegawai();
+    console.log("Cek login admin:", isLoggedIn?.isLoggedIn);
+
+    if (!isLoggedIn?.isLoggedIn) {
+      return redirect("/auth/admin/login");
+    }
+
+    return null; // lanjutkan ke halaman admin
+  } catch (error) {
+    console.error("Cek login admin gagal:", error);
     return redirect("/auth/admin/login");
   }
-  return null;
 }
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    loader: () => redirect("/admin"),
+  },
+  {
     path: "/admin",
     element: <DefaultLayout />,
     errorElement: "",
+    loader: checkAdminAuth,
     children: [
       {
         index: true,
@@ -89,7 +96,11 @@ const router = createBrowserRouter([
                 element: <SiswaSD />,
               },
               {
-                path: "detail-siswa-sd",
+                path: "tambah-siswa-sd",
+                element: <TambahSiswa />,
+              },
+              {
+                path: "detail-siswa-sd/:id",
                 element: <DetailSiswaSd />,
               },
             ],
@@ -97,16 +108,28 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "pengajar",
+        path: "pegawai",
         children: [
-          { path: "", element: <Guru /> },
           {
-            path: "tambah-pengajar",
-            element: <TambahGuru />,
+            path: "tk",
+            element: <SiswaTK />,
           },
           {
-            path: "detail-pengajar",
-            element: <DetailGuru />,
+            path: "sd",
+            children: [
+              {
+                path: "",
+                element: <PegawaiSd />,
+              },
+              {
+                path: "tambah-pegawai-sd",
+                element: <TambahPegawai />,
+              },
+              {
+                path: "detail-pegawai-sd/:id",
+                element: <DetailPegawai />,
+              },
+            ],
           },
         ],
       },
@@ -175,25 +198,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-
-      // {
-      //   path: "transaksi",
-      //   children: [
-      //     { path: "", element: <Transaksi /> },
-      //     {
-      //       path: "daftar-transaksi-kelas",
-      //       element: <DaftarTransaksiKelas />,
-      //     },
-      //     {
-      //       path: "detail-transaksi-kelas",
-      //       element: <DetailTransaksiKelas />,
-      //     },
-      //     {
-      //       path: "detail-transaksi",
-      //       element: <DetailTransaksi />,
-      //     },
-      //   ],
-      // },
     ],
   },
   // LOGIN UNTUK ADMIN
@@ -210,19 +214,15 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        // loader: async () => {
-        //   try {
-        //     const isLoggedIn = await cekLogin();
-        //     if (isLoggedIn.status === 200) {
-        //       return redirect("/lapang");
-        //     }
+        loader: async () => {
+          const isLoggedIn = await CekLoginPegawai();
 
-        //     return null;
-        //   } catch (error) {
-        //     console.error(error);
-        //     return null;
-        //   }
-        // },
+          if (isLoggedIn?.isLoggedIn) {
+            return redirect("/admin/dashboard/sd");
+          }
+
+          return null;
+        },
         element: <LoginForm />,
       },
     ],

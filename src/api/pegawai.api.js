@@ -34,7 +34,7 @@ export async function GetPegawaiPaginated(page = 1, take = 10, search = "") {
         "Content-Type": "application/json",
       },
     });
-    return resp;
+    return resp.data;
   } catch (error) {
     console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
     throw error;
@@ -65,12 +65,12 @@ export async function CreatePegawai(
   nuptk,
   tempatLahir,
   tanggalLahir,
-  agama,
   alamat,
   noHp,
   email,
   role,
-  pendidikanTerakhir
+  pendidikanTerakhir,
+  jenisKelamin
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -84,12 +84,12 @@ export async function CreatePegawai(
         nuptk,
         tempatLahir,
         tanggalLahir,
-        agama,
         alamat,
         noHp,
         email,
         role,
         pendidikanTerakhir,
+        jenisKelamin,
       },
       {
         headers: {
@@ -112,12 +112,12 @@ export async function UpdatePegawai(
   nuptk,
   tempatLahir,
   tanggalLahir,
-  agama,
   alamat,
   noHp,
   email,
   role,
-  pendidikanTerakhir
+  pendidikanTerakhir,
+  jenisKelamin
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -131,12 +131,12 @@ export async function UpdatePegawai(
         nuptk,
         tempatLahir,
         tanggalLahir,
-        agama,
         alamat,
         noHp,
         email,
         role,
         pendidikanTerakhir,
+        jenisKelamin,
       },
       {
         headers: {
@@ -201,12 +201,11 @@ export async function StatusPegawai(id, status) {
   }
 }
 
-export async function UploadFotoPegawai(id, foto) {
+export async function UploadFotoPegawai(id, formData) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
 
-  const formData = new FormData();
-  formData.append("foto", foto);
+  
   try {
     const resp = await api.post(`/pegawai/${id}/upload-foto`, formData, {
       headers: {

@@ -34,7 +34,7 @@ export async function GetSiswaPaginated(page = 1, take = 10, search = "") {
         "Content-Type": "application/json",
       },
     });
-    return resp;
+    return resp.data;
   } catch (error) {
     console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
     throw error;
@@ -73,9 +73,8 @@ export async function CreateSiswa(
   noHpWali,
   alamat,
   tahunMasuk,
-  isActive,
   kelas,
-  statusSiswa
+  tahunAjaran
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -97,9 +96,8 @@ export async function CreateSiswa(
         noHpWali,
         alamat,
         tahunMasuk,
-        isActive,
         kelas,
-        statusSiswa,
+        tahunAjaran,
       },
       {
         headers: {
@@ -130,7 +128,8 @@ export async function UpdateSiswa(
   noHpWali,
   alamat,
   tahunMasuk,
-  kelas
+  kelas,
+  tahunAjaran
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -153,6 +152,7 @@ export async function UpdateSiswa(
         alamat,
         tahunMasuk,
         kelas,
+        tahunAjaran,
       },
       {
         headers: {
@@ -217,12 +217,10 @@ export async function StatusSiswa(id, status) {
   }
 }
 
-export async function UploadFotoSiswa(id, foto) {
+export async function UploadFotoSiswa(id, formData) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
 
-  const formData = new FormData();
-  formData.append("foto", foto);
   try {
     const resp = await api.post(`/siswa/${id}/upload-foto`, formData, {
       headers: {

@@ -1,4 +1,5 @@
 import api from "../lib/axios";
+import { AxiosError } from "axios";
 
 export async function LoginPegawai(login, password) {
   try {
@@ -25,23 +26,31 @@ export async function CekLoginPegawai() {
   const token = localStorage.getItem("tokenPegawai");
 
   if (!token) {
-    return { isLoggedIn: false };
+    return { isLoggedIn: false }; // token tidak ada, dianggap belum login
   }
 
   try {
-    const response = await api.get("/auth/cek-login", {
+    const resp = await api.get("/auth/check-login", {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
 
-    if (response.data?.pegawai?.role === "ADMIN") {
-      return { isLoggedIn: true, data: response.data.pegawai };
-    } else {
-      return { isLoggedIn: false };
-    }
+    return {
+      isLoggedIn: true,
+      user: resp.data,
+    };
   } catch (error) {
-    console.error("Gagal cek login:", error);
+    if (error instanceof AxiosError) {
+      // kalau 401 atau token expired
+      if (error.response?.status === 401) {
+        return { isLoggedIn: false };
+      }
+    }
+
+    // selain 401, baru anggap fatal
+    console.error("CekLoginPegawai gagal:", error);
     return { isLoggedIn: false };
   }
 }

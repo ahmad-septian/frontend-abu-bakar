@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import {} from "@mui/icons-material";
-import ListSiswa from "./component/list-siswa";
 import { useNavigate } from "react-router-dom";
-import { GetSiswaPaginated } from "../../../../api/siswa.api";
+import { GetPegawaiPaginated } from "../../../../api/pegawai.api";
+import ListPegawai from "./component/ListPegawai";
 
-export default function SiswaSD() {
+export default function PegawaiSd() {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -23,16 +23,16 @@ export default function SiswaSD() {
   };
 
   const handleClickTambah = () => {
-    navigate(`/admin/siswa/sd/tambah-siswa-sd`);
+    navigate(`/admin/pegawai/sd/tambah-pegawai-sd`);
   };
 
   const handleClickDetail = (id) => {
-    navigate(`/admin/siswa/sd/detail-siswa-sd/${id}`);
+    navigate(`/admin/pegawai/sd/detail-pegawai-sd/${id}`);
   };
 
   const getDataPaginated = async () => {
     try {
-      const response = await GetSiswaPaginated(page + 1, rowsPerPage, search);
+      const response = await GetPegawaiPaginated(page + 1, rowsPerPage, search);
       setData(response.data);
       setTotalItems(response.meta.total);
     } catch (error) {
@@ -45,8 +45,8 @@ export default function SiswaSD() {
   }, [page, rowsPerPage, search]);
   return (
     <div>
-      <Typography sx={{ fontSize: "1.5rem" }}>List Siswa SD</Typography>
-      <ListSiswa
+      <Typography sx={{ fontSize: "1.5rem" }}>List Pegawai SD</Typography>
+      <ListPegawai
         handleClickTambah={handleClickTambah}
         handleClickDetail={handleClickDetail}
         handleChangePage={handleChangePage}

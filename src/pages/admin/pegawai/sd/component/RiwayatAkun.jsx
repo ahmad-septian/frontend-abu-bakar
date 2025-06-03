@@ -13,12 +13,12 @@ import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  GetOneSiswa,
-  StatusSiswa,
-  UpdatePasswordSiswa,
-} from "../../../../../api/siswa.api";
+  GetOnePegawai,
+  StatusPegawai,
+  UpdatePasswordPegawai,
+} from "../../../../../api/pegawai.api";
 
-export default function RiwayatAkunSd() {
+export default function RiwayatAkunPegawai() {
   const { id } = useParams();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -38,7 +38,7 @@ export default function RiwayatAkunSd() {
     }
 
     try {
-      const resp = await UpdatePasswordSiswa(id, password, confirmPassword);
+      const resp = await UpdatePasswordPegawai(id, password, confirmPassword);
       if (resp.status === 200 || resp.status === 201) {
         toast.success("Password berhasil diubah!");
         setPassword("");
@@ -53,22 +53,22 @@ export default function RiwayatAkunSd() {
     const newStatus = event.target.value;
     setStatus(newStatus);
     try {
-      const resp = await StatusSiswa(id, newStatus);
+      const resp = await StatusPegawai(id, newStatus);
       if (resp.status === 200 || resp.status === 201) {
-        toast.success("Status siswa berhasil diubah!");
+        toast.success("Status pegawai berhasil diubah!");
       }
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Gagal mengubah status siswa."
+        error.response?.data?.message || "Gagal mengubah status pegawai."
       );
     }
   };
 
   const getOneData = async () => {
     try {
-      const response = await GetOneSiswa(id);
+      const response = await GetOnePegawai(id);
       const data = response.data;
-      setStatus(data.statusSiswa);
+      setStatus(data.statusPegawai || "");
     } catch (error) {
       console.error("Error Fetching All Schedules", error);
     }
@@ -77,6 +77,7 @@ export default function RiwayatAkunSd() {
   useEffect(() => {
     getOneData();
   }, []);
+
   return (
     <div>
       <div className="bg-white p-6 rounded-xl border border-gray-200 mx-auto mt-2">
@@ -167,7 +168,7 @@ export default function RiwayatAkunSd() {
           variant="h6"
           className="text-[#85193C] font-semibold mb-4 text-center"
         >
-          Ganti Status Siswa
+          Ganti Status Pegawai
         </Typography>
 
         <form
@@ -175,7 +176,7 @@ export default function RiwayatAkunSd() {
           className="grid grid-cols-1 md:grid-cols-1 gap-4"
         >
           <div className="mt-3">
-            <Typography>Status Siswa</Typography>
+            <Typography>Status Pegawai</Typography>
             <FormControl fullWidth margin="dense" size="small">
               <Select
                 labelId="demo-simple-select-label"
@@ -185,8 +186,7 @@ export default function RiwayatAkunSd() {
               >
                 <MenuItem value="AKTIF">AKTIF</MenuItem>
                 <MenuItem value="TIDAK_AKTIF">TIDAK AKTIF</MenuItem>
-                <MenuItem value="LULUS">LULUS</MenuItem>
-                <MenuItem value="KELUAR">KELUAR</MenuItem>
+                <MenuItem value="RESIGN">RESIGN</MenuItem>
               </Select>
             </FormControl>
           </div>
