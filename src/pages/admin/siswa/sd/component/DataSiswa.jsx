@@ -39,6 +39,7 @@ export default function DataSiswaSd() {
     alamat: "",
     tahunAjaran: "",
     foto: "",
+    emailOrangTua: "",
   });
   const [dataKelas, setDataKelas] = useState([]);
   const [dataTahunAjaran, setDataTahunAjaran] = useState([]);
@@ -70,6 +71,7 @@ export default function DataSiswaSd() {
         alamat: data.alamat || "",
         tahunAjaran: data.tahunAjaran?.id || "",
         foto: data.foto || "",
+        emailOrangTua: data.emailOrangTua || "",
       });
     } catch (error) {
       console.error("Error Fetching All Schedules", error);
@@ -107,6 +109,7 @@ export default function DataSiswaSd() {
       "kelas",
       "tahunAjaran",
       "alamat",
+      "emailOrangTua",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -132,7 +135,8 @@ export default function DataSiswaSd() {
         formData.alamat,
         formData.tahunMasuk,
         formData.kelas,
-        formData.tahunAjaran
+        formData.tahunAjaran,
+        formData.emailOrangTua
       );
       toast.success("Siswa berhasil diupdate!");
     } catch (error) {
@@ -270,6 +274,17 @@ export default function DataSiswaSd() {
             size="small"
             margin="dense"
             value={formData.namaIbu}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mt-3">
+          <Typography>Email Orang Tua</Typography>
+          <TextField
+            name="emailOrangTua"
+            fullWidth
+            size="small"
+            margin="dense"
+            value={formData.emailOrangTua}
             onChange={handleChange}
           />
         </div>

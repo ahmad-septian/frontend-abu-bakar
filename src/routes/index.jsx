@@ -37,6 +37,10 @@ import TambahSiswa from "../pages/admin/siswa/sd/component/tambah-siswa";
 import PegawaiSd from "../pages/admin/pegawai/sd";
 import TambahPegawai from "../pages/admin/pegawai/sd/component/TambahPegawai";
 import DetailPegawai from "../pages/admin/pegawai/sd/component/DetailPegawai";
+import { CekLoginSiswa } from "../api/loginSiswa.api";
+import InvoiceTagihan from "../pages/siswa/pembayaran/component/InvoiceTagihan";
+import DetailTagihan from "../pages/siswa/pembayaran/component/DetailTagihan";
+import ProfileSiswa from "../pages/siswa/profile-siswa";
 
 export async function checkAdminAuth() {
   try {
@@ -51,6 +55,22 @@ export async function checkAdminAuth() {
   } catch (error) {
     console.error("Cek login admin gagal:", error);
     return redirect("/auth/admin/login");
+  }
+}
+
+export async function cekLoginSiswa() {
+  try {
+    const isLoggedIn = await CekLoginSiswa();
+    console.log("Cek login admin:", isLoggedIn?.isLoggedIn);
+
+    if (!isLoggedIn?.isLoggedIn) {
+      return redirect("/auth/siswa/login");
+    }
+
+    return null; // lanjutkan ke halaman admin
+  } catch (error) {
+    console.error("Cek login admin gagal:", error);
+    return redirect("/auth/siswa/login");
   }
 }
 
@@ -272,29 +292,24 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        // loader: async () => {
-        //   try {
-        //     const isLoggedIn = await cekLogin();
-        //     if (isLoggedIn.status === 200) {
-        //       return redirect("/lapang");
-        //     }
+        loader: async () => {
+          const isLoggedIn = await CekLoginSiswa();
+          if (isLoggedIn?.isLoggedIn) {
+            return redirect("/siswa/home");
+          }
 
-        //     return null;
-        //   } catch (error) {
-        //     console.error(error);
-        //     return null;
-        //   }
-        // },
+          return null;
+        },
         element: <LoginFormSiswa />,
       },
     ],
   },
 
-  // KONTEN SISWA
   {
     path: "/siswa",
     element: <ContentSiswa />,
     errorElement: "",
+    loader: cekLoginSiswa,
     children: [
       {
         path: "",
@@ -317,8 +332,25 @@ const router = createBrowserRouter([
         element: <MataPelajaran />,
       },
       {
+        path: "profile",
+        element: <ProfileSiswa />,
+      },
+      {
         path: "pembayaran",
-        element: <PembayaranSiswa />,
+        children: [
+          {
+            path: "",
+            element: <PembayaranSiswa />,
+          },
+          {
+            path: "invoice/:codePembayaran",
+            element: <InvoiceTagihan />,
+          },
+          {
+            path: "detail/:codePembayaran",
+            element: <DetailTagihan />,
+          },
+        ],
       },
       {
         path: "informasi-kelas",

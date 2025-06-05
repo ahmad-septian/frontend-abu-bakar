@@ -1,15 +1,37 @@
-import React from "react";
-import {
-  Typography,
-  TextField,
-  Button,
-  Checkbox,
-  Alert,
-  IconButton,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import React, { useState } from "react";
+import { Typography, TextField, Button } from "@mui/material";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { LoginSiswa } from "../../../api/loginSiswa.api";
 
 const LoginFormSiswa = () => {
+  const navigate = useNavigate();
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!login || !password) {
+      toast.error("Email dan Password wajib diisi!");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await LoginSiswa(login, password);
+      const { access_token, siswa } = response.data;
+
+      localStorage.setItem("tokenSiswa", access_token);
+
+      toast.success(`Selamat datang, ${siswa.namaLengkap}!`);
+      navigate(`/siswa/home`);
+    } catch (error) {
+      toast.error("Login gagal. Periksa kembali email dan password.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col md:flex-row ">
       <div className="w-full md:w-1/2">
@@ -22,31 +44,6 @@ const LoginFormSiswa = () => {
 
       <div className="w-full md:w-1/2 flex items-center justify-center p-10 bg-white">
         <div className="w-full max-w-md">
-          {/* {open && (
-            <Alert
-              severity="error"
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setOpen(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              sx={{ mb: 2 }}
-            >
-              {messageErr.map((item, index) => (
-                <div key={index}>
-                  <Typography>- {item.message}</Typography>
-                </div>
-              ))}
-            </Alert>
-          )} */}
-
           <Typography
             sx={{
               fontSize: {
@@ -69,6 +66,8 @@ const LoginFormSiswa = () => {
               placeholder="Masukan Email"
               fullWidth
               variant="outlined"
+              value={login}
+              onChange={(e) => setLogin(e.target.value)}
             />
           </div>
 
@@ -79,20 +78,23 @@ const LoginFormSiswa = () => {
               type="password"
               fullWidth
               variant="outlined"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
           <div className="mt-5">
             <Button
               variant="contained"
-              type="submit"
+              onClick={handleLogin}
+              disabled={loading}
               sx={{
                 backgroundColor: "#85193C",
                 paddingX: "45%",
                 paddingY: "10px",
               }}
             >
-              Login
+              {loading ? "Memuat..." : "Login"}
             </Button>
           </div>
         </div>

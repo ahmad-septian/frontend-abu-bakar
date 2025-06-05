@@ -1,4 +1,12 @@
-import { AppBar, Avatar, Toolbar, Typography, Box } from "@mui/material";
+import { Notifications } from "@mui/icons-material";
+import {
+  AppBar,
+  Avatar,
+  Toolbar,
+  Typography,
+  Box,
+  IconButton,
+} from "@mui/material";
 import React from "react";
 
 export default function HeaderSiswa() {
@@ -19,21 +27,19 @@ export default function HeaderSiswa() {
             color: "#85193C",
             fontFamily: "'Segoe UI', sans-serif",
             fontSize: {
-              xs: "1rem", // mobile
-              sm: "1.25rem", // tablet
-              md: "1.5rem", // desktop
+              xs: "1rem",
+              sm: "1.25rem",
+              md: "1.5rem",
             },
           }}
         >
           Abu Bakar Ash Shiddiq
         </Typography>
 
-        <Box className="flex items-center gap-3">
-          <Avatar
-            alt="User"
-            src="/user.png" // ganti dengan path gambar atau kosong jika ingin inisial
-            sx={{ bgcolor: "#85193C" }}
-          />
+        <Box className="flex items-center gap-1">
+          <IconButton size="small" aria-label="">
+            <Notifications sx={{ color: "#85193C" }} />
+          </IconButton>
         </Box>
       </Toolbar>
     </AppBar>

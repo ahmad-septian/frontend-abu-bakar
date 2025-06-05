@@ -1,4 +1,5 @@
 import api from "../lib/axios";
+import { AxiosError } from "axios";
 
 export async function LoginSiswa(login, password) {
   try {
@@ -23,18 +24,33 @@ export async function LoginSiswa(login, password) {
 
 export async function CekLoginSiswa() {
   const token = localStorage.getItem("tokenSiswa");
-  if (!token) throw new Error("No access token found");
+
+  if (!token) {
+    return { isLoggedIn: false }; // token tidak ada, dianggap belum login
+  }
 
   try {
     const resp = await api.get(`/auth-siswa/check-login`, {
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
-    return resp;
+
+    return {
+      isLoggedIn: true,
+      user: resp.data,
+    };
   } catch (error) {
-    console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
-    throw error;
+    if (error instanceof AxiosError) {
+      // kalau 401 atau token expired
+      if (error.response?.status === 401) {
+        return { isLoggedIn: false };
+      }
+    }
+
+    // selain 401, baru anggap fatal
+    console.error("CekLoginPegawai gagal:", error);
+    return { isLoggedIn: false };
   }
 }

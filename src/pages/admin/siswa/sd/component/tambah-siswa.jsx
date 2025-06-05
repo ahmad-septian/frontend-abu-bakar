@@ -32,6 +32,7 @@ export default function TambahSiswa() {
     kelas: "",
     alamat: "",
     tahunAjaran: "",
+    emailOrangTua: "",
   });
 
   const handleChange = (e) => {
@@ -51,6 +52,7 @@ export default function TambahSiswa() {
       "kelas",
       "tahunAjaran",
       "alamat",
+      "emailOrangTua",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -75,7 +77,8 @@ export default function TambahSiswa() {
         formData.alamat,
         formData.tahunMasuk,
         formData.kelas,
-        formData.tahunAjaran
+        formData.tahunAjaran,
+        formData.emailOrangTua
       );
       toast.success("Siswa berhasil ditambahkan!");
       setFormData({
@@ -94,6 +97,7 @@ export default function TambahSiswa() {
         kelas: "",
         alamat: "",
         tahunAjaran: "",
+        emailOrangTua: "",
       });
     } catch (error) {
       toast.error(error?.response?.data?.message || "Gagal menambahkan siswa!");
@@ -185,6 +189,17 @@ export default function TambahSiswa() {
             size="small"
             margin="dense"
             value={formData.namaIbu}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mt-3">
+          <Typography>Email Orang Tua</Typography>
+          <TextField
+            name="emailOrangTua"
+            fullWidth
+            size="small"
+            margin="dense"
+            value={formData.emailOrangTua}
             onChange={handleChange}
           />
         </div>
