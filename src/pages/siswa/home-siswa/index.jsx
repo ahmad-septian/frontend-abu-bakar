@@ -4,11 +4,26 @@ import {} from "@mui/icons-material";
 import {} from "react-router-dom";
 import HeroSection from "./component/hero-siswa";
 import CardMenu from "./component/card-menu";
+import { GetProfile } from "../../../api/profile-siswa.api";
 
 export default function HomeSiswa() {
+  const [profile, setProfile] = useState("");
+
+  const fetchProfile = async () => {
+    const resp = await GetProfile();
+    if (resp?.data) {
+      setProfile(resp.data);
+    } else {
+      console.error("Gagal mendapatkan data profil");
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
   return (
     <div>
-      <HeroSection />
+      <HeroSection profile={profile} />
 
       <div>
         <Typography

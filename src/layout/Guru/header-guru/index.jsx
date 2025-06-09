@@ -1,7 +1,45 @@
-import { AppBar, Avatar, Toolbar, Typography, Box } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import {} from "@mui/icons-material";
+import { AppBar, Avatar, Toolbar, Typography, MenuItem } from "@mui/material";
+import MenuProfile from "./component/menu-profile";
+import { GetProfile } from "../../../api/profile-siswa.api";
+import { useNavigate } from "react-router-dom";
+import { stringAvatar } from "../../../component-global/format-avatar";
+import { GetProfileGuru } from "../../../api/profile-guru.api";
 
 export default function HeaderGuru() {
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [profileName, setProfileName] = useState("");
+  const openProfile = Boolean(anchorEl);
+
+  const fetchProfile = async () => {
+    const resp = await GetProfileGuru();
+    if (resp?.data) {
+      setProfileName(resp.data.namaLengkap);
+    } else {
+      console.error("Gagal mendapatkan data profil");
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setOpen(false);
+  };
+
+  const handleProfileClick = () => {
+    navigate(`/guru/profile`);
+  };
   return (
     <AppBar
       position="static"
@@ -19,23 +57,42 @@ export default function HeaderGuru() {
             color: "#85193C",
             fontFamily: "'Segoe UI', sans-serif",
             fontSize: {
-              xs: "1rem", // mobile
-              sm: "1.25rem", // tablet
-              md: "1.5rem", // desktop
+              xs: "1rem",
+              sm: "1.25rem",
+              md: "1.5rem",
             },
           }}
         >
-          Guru Abu Bakar Ash Shiddiq
+          Abu Bakar Ash Shiddiq
         </Typography>
 
-        <Box className="flex items-center gap-3">
-          <Avatar
-            alt="User"
-            src="/user.png" // ganti dengan path gambar atau kosong jika ingin inisial
-            sx={{ bgcolor: "#85193C" }}
-          />
-        </Box>
+        <div>
+          <MenuItem
+            sx={{ paddingRight: "0px", paddingLeft: "0px" }}
+            onClick={handleClick}
+            id="demo-customized-button"
+            aria-controls={open ? "demo-customized-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+          >
+            <Avatar
+              {...stringAvatar(profileName)}
+              sx={{
+                ...stringAvatar(profileName).sx,
+                width: "45px",
+                height: "45px",
+                fontSize: "1.4rem",
+              }}
+            />
+          </MenuItem>
+        </div>
       </Toolbar>
+      <MenuProfile
+        openProfile={openProfile}
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        handleProfileClick={handleProfileClick}
+      />
     </AppBar>
   );
 }

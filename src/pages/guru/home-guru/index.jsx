@@ -2,13 +2,28 @@ import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import {} from "@mui/icons-material";
 import {} from "react-router-dom";
-import HeroSection from "./component/hero-siswa";
+import HeroSection from "./component/hero-guru";
 import CardMenu from "./component/card-menu";
+import { GetProfileGuru } from "../../../api/profile-guru.api";
 
 export default function HomeGuru() {
+  const [profile, setProfile] = useState("");
+
+  const fetchProfile = async () => {
+    const resp = await GetProfileGuru();
+    if (resp?.data) {
+      setProfile(resp.data);
+    } else {
+      console.error("Gagal mendapatkan data profil");
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
   return (
     <div>
-      <HeroSection />
+      <HeroSection profile={profile} />
 
       <div>
         <Typography

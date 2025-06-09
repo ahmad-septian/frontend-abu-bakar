@@ -7,32 +7,28 @@ import {
 } from "@mui/material";
 import { Password, AccountCircle, ArrowBack } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import {
-  GetProfile,
-  UpdatePasswordProfile,
-  UpdateProfile,
-} from "../../../api/profile-siswa.api";
 import { toast } from "react-toastify";
 import EditProfile from "./component/EditProfile";
-import PasswordSiswaSd from "./component/Password";
+import {
+  GetProfileGuru,
+  UpdatePasswordProfileGuru,
+  UpdateProfileGuru,
+} from "../../../api/profile-guru.api";
+import PasswordGuru from "./component/Password";
 
-export default function ProfileSiswa() {
+export default function ProfileGuru() {
   const Navigate = useNavigate();
   const initialMenuIndex = parseInt(localStorage.getItem("indexMenu")) || 0;
   const [indexMenu, setindexMenu] = useState(initialMenuIndex);
   const [formData, setFormData] = useState({
     namaLengkap: "",
-    jenisKelamin: "",
     tempatLahir: "",
     tanggalLahir: "",
-    emailOrangTua: "",
-    namaAyah: "",
-    namaIbu: "",
-    namaWali: "",
-    noHpAyah: "",
-    noHpIbu: "",
-    noHpWali: "",
     alamat: "",
+    noHp: "",
+    email: "",
+    jenisKelamin: "",
+    pendidikanTerakhir: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -56,7 +52,7 @@ export default function ProfileSiswa() {
     }
 
     try {
-      const resp = await UpdatePasswordProfile(password, confirmPassword);
+      const resp = await UpdatePasswordProfileGuru(password, confirmPassword);
       if (resp.status === 200 || resp.status === 201) {
         toast.success("Password berhasil diubah!");
         setPassword("");
@@ -72,17 +68,13 @@ export default function ProfileSiswa() {
 
     const requiredFields = [
       "namaLengkap",
-      "jenisKelamin",
       "tempatLahir",
       "tanggalLahir",
-      "emailOrangTua",
-      "namaAyah",
-      "namaIbu",
-      "namaWali",
-      "noHpAyah",
-      "noHpIbu",
-      "noHpWali",
       "alamat",
+      "noHp",
+      "email",
+      "jenisKelamin",
+      "pendidikanTerakhir",
     ];
     for (const field of requiredFields) {
       if (!formData[field]) {
@@ -92,23 +84,19 @@ export default function ProfileSiswa() {
     }
 
     try {
-      await UpdateProfile(
-        formData.namaLengkap,
-        formData.jenisKelamin,
-        formData.tempatLahir,
-        formData.tanggalLahir,
-        formData.emailOrangTua,
-        formData.namaAyah,
-        formData.namaIbu,
-        formData.namaWali,
-        formData.noHpAyah,
-        formData.noHpIbu,
-        formData.noHpWali,
-        formData.alamat
+      await UpdateProfileGuru(
+        formData.namaLengkap || "",
+        formData.tempatLahir || "",
+        formData.tanggalLahir || "",
+        formData.alamat || "",
+        formData.noHp || "",
+        formData.email || "",
+        formData.jenisKelamin || "",
+        formData.pendidikanTerakhir || ""
       );
-      toast.success("Siswa berhasil diupdate!");
+      toast.success("Guru berhasil diupdate!");
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Gagal menambahkan siswa!");
+      toast.error(error?.response?.data?.message || "Gagal menambahkan guru!");
     }
   };
 
@@ -127,7 +115,7 @@ export default function ProfileSiswa() {
       );
     } else if (indexMenu === 1) {
       return (
-        <PasswordSiswaSd
+        <PasswordGuru
           showPassword={showPassword}
           setShowPassword={setShowPassword}
           showConfirm={showConfirm}
@@ -144,22 +132,18 @@ export default function ProfileSiswa() {
 
   const getOneData = async () => {
     try {
-      const response = await GetProfile();
+      const response = await GetProfileGuru();
       const data = response.data;
 
       setFormData({
-        namaLengkap: data.namaLengkap || "",
-        jenisKelamin: data.jenisKelamin || "",
-        tempatLahir: data.tempatLahir || "",
-        tanggalLahir: data.tanggalLahir || "",
-        emailOrangTua: data.emailOrangTua || "",
-        namaAyah: data.namaAyah || "",
-        namaIbu: data.namaIbu || "",
-        namaWali: data.namaWali || "",
-        noHpAyah: data.noHpAyah || "",
-        noHpIbu: data.noHpIbu || "",
-        noHpWali: data.noHpWali || "",
-        alamat: data.alamat || "",
+        namaLengkap: data.namaLengkap,
+        tempatLahir: data.tempatLahir,
+        tanggalLahir: data.tanggalLahir,
+        alamat: data.alamat,
+        noHp: data.noHp,
+        email: data.email,
+        jenisKelamin: data.jenisKelamin,
+        pendidikanTerakhir: data.pendidikanTerakhir,
       });
     } catch (error) {
       console.error("Error Fetching All Schedules", error);

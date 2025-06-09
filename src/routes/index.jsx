@@ -32,7 +32,7 @@ import TahunAjaranSd from "../pages/admin/tahun-ajaran/sd";
 import MataPelajaranTk from "../pages/admin/mata-pelajaran/tk";
 import PembayaranSd from "../pages/admin/pembayaran/sd";
 import JadwalPelajaranSd from "../pages/admin/jadwal-pelajaran/sd";
-import { CekLoginPegawai } from "../api/loginPegawai.api";
+import { CekLoginGuru, CekLoginPegawai } from "../api/loginPegawai.api";
 import TambahSiswa from "../pages/admin/siswa/sd/component/tambah-siswa";
 import PegawaiSd from "../pages/admin/pegawai/sd";
 import TambahPegawai from "../pages/admin/pegawai/sd/component/TambahPegawai";
@@ -41,11 +41,11 @@ import { CekLoginSiswa } from "../api/loginSiswa.api";
 import InvoiceTagihan from "../pages/siswa/pembayaran/component/InvoiceTagihan";
 import DetailTagihan from "../pages/siswa/pembayaran/component/DetailTagihan";
 import ProfileSiswa from "../pages/siswa/profile-siswa";
+import ProfileGuru from "../pages/guru/profile-guru";
 
 export async function checkAdminAuth() {
   try {
     const isLoggedIn = await CekLoginPegawai();
-    console.log("Cek login admin:", isLoggedIn?.isLoggedIn);
 
     if (!isLoggedIn?.isLoggedIn) {
       return redirect("/auth/admin/login");
@@ -61,7 +61,6 @@ export async function checkAdminAuth() {
 export async function cekLoginSiswa() {
   try {
     const isLoggedIn = await CekLoginSiswa();
-    console.log("Cek login admin:", isLoggedIn?.isLoggedIn);
 
     if (!isLoggedIn?.isLoggedIn) {
       return redirect("/auth/siswa/login");
@@ -71,6 +70,21 @@ export async function cekLoginSiswa() {
   } catch (error) {
     console.error("Cek login admin gagal:", error);
     return redirect("/auth/siswa/login");
+  }
+}
+
+export async function cekLoginGuru() {
+  try {
+    const isLoggedIn = await CekLoginGuru();
+
+    if (!isLoggedIn?.isLoggedIn) {
+      return redirect("/auth/guru/login");
+    }
+
+    return null; // lanjutkan ke halaman admin
+  } catch (error) {
+    console.error("Cek login admin gagal:", error);
+    return redirect("/auth/guru/login");
   }
 }
 
@@ -261,19 +275,14 @@ const router = createBrowserRouter([
       },
       {
         path: "login",
-        // loader: async () => {
-        //   try {
-        //     const isLoggedIn = await cekLogin();
-        //     if (isLoggedIn.status === 200) {
-        //       return redirect("/lapang");
-        //     }
+        loader: async () => {
+          const isLoggedIn = await CekLoginGuru();
+          if (isLoggedIn?.isLoggedIn) {
+            return redirect("/guru/home");
+          }
 
-        //     return null;
-        //   } catch (error) {
-        //     console.error(error);
-        //     return null;
-        //   }
-        // },
+          return null;
+        },
         element: <LoginFormGuru />,
       },
     ],
@@ -364,6 +373,7 @@ const router = createBrowserRouter([
     path: "/guru",
     element: <ContentGuru />,
     errorElement: "",
+    loader: cekLoginGuru,
     children: [
       {
         path: "",
@@ -392,6 +402,10 @@ const router = createBrowserRouter([
       {
         path: "informasi-kelas",
         element: <InfoKelasGuru />,
+      },
+      {
+        path: "profile",
+        element: <ProfileGuru />,
       },
     ],
   },

@@ -18,11 +18,11 @@ export default function HeroSection(props) {
             /> */}
             <Avatar
               onClick={() => {
-                navigate("/siswa/profile");
+                navigate("/guru/profile");
               }}
-              {...stringAvatar(profile.namaLengkap)}
+              {...stringAvatar(profile?.namaLengkap)}
               sx={{
-                ...stringAvatar(profile.namaLengkap).sx,
+                ...stringAvatar(profile?.namaLengkap).sx,
                 width: "50px",
                 height: "50px",
                 fontSize: "1.2rem",
@@ -34,11 +34,12 @@ export default function HeroSection(props) {
               Assalamualaikum... 👋
             </h2>
             <h1 className="text-sm sm:text-md md:text-md font-bold uppercase">
-              {profile.namaLengkap}
+              {profile?.jenisKelamin === "L" ? "Bpk." : "Ibu."}{" "}
+              {profile?.namaLengkap}
             </h1>
             <div>
               <p className="text-[10px] sm:text-md md:text-md">
-                {profile.kelas?.namaKelas}
+                Wali Kelas {profile.kelasDiwalikan?.[0]?.namaKelas}
               </p>
             </div>
           </div>

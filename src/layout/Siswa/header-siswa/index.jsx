@@ -1,15 +1,44 @@
-import { Notifications } from "@mui/icons-material";
-import {
-  AppBar,
-  Avatar,
-  Toolbar,
-  Typography,
-  Box,
-  IconButton,
-} from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import {} from "@mui/icons-material";
+import { AppBar, Avatar, Toolbar, Typography, MenuItem } from "@mui/material";
+import MenuProfile from "./component/menu-profile";
+import { GetProfile } from "../../../api/profile-siswa.api";
+import { useNavigate } from "react-router-dom";
+import { stringAvatar } from "../../../component-global/format-avatar";
 
 export default function HeaderSiswa() {
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [profileName, setProfileName] = useState("");
+  const openProfile = Boolean(anchorEl);
+
+  const fetchProfile = async () => {
+    const resp = await GetProfile();
+    if (resp?.data) {
+      setProfileName(resp.data.namaLengkap);
+    } else {
+      console.error("Gagal mendapatkan data profil");
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setOpen(false);
+  };
+
+  const handleProfileClick = () => {
+    navigate(`/siswa/profile`);
+  };
   return (
     <AppBar
       position="static"
@@ -36,12 +65,33 @@ export default function HeaderSiswa() {
           Abu Bakar Ash Shiddiq
         </Typography>
 
-        <Box className="flex items-center gap-1">
-          <IconButton size="small" aria-label="">
-            <Notifications sx={{ color: "#85193C" }} />
-          </IconButton>
-        </Box>
+        <div>
+          <MenuItem
+            sx={{ paddingRight: "0px", paddingLeft: "0px" }}
+            onClick={handleClick}
+            id="demo-customized-button"
+            aria-controls={open ? "demo-customized-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+          >
+            <Avatar
+              {...stringAvatar(profileName)}
+              sx={{
+                ...stringAvatar(profileName).sx,
+                width: "45px",
+                height: "45px",
+                fontSize: "1.4rem",
+              }}
+            />
+          </MenuItem>
+        </div>
       </Toolbar>
+      <MenuProfile
+        openProfile={openProfile}
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        handleProfileClick={handleProfileClick}
+      />
     </AppBar>
   );
 }

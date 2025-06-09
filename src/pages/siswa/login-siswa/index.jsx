@@ -23,7 +23,7 @@ const LoginFormSiswa = () => {
 
       localStorage.setItem("tokenSiswa", access_token);
 
-      toast.success(`Selamat datang, ${siswa.namaLengkap}!`);
+      toast.success(`Assalamualaikum... 👋 ${siswa.namaLengkap}!`);
       navigate(`/siswa/home`);
     } catch (error) {
       toast.error("Login gagal. Periksa kembali email dan password.");
@@ -62,8 +62,8 @@ const LoginFormSiswa = () => {
 
           <div className="mb-6">
             <TextField
-              id="email"
-              placeholder="Masukan Email"
+              id="nis"
+              placeholder="Masukan NIS"
               fullWidth
               variant="outlined"
               value={login}
