@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import { stringAvatar } from "@/component-global/format-avatar";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,7 @@ export default function HeroSection(props) {
   const { profile } = props;
   const navigate = useNavigate();
   return (
-    <div className="bg-[#85193C] text-white p-5 shadow-md relative overflow-hidden">
+    <div className="bg-[#85193C] text-white p-4 shadow-md relative overflow-hidden">
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12  rounded-full flex items-center justify-center shadow">

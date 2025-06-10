@@ -40,6 +40,7 @@ export default function DataSiswaSd() {
     tahunAjaran: "",
     foto: "",
     emailOrangTua: "",
+    kelompok: "",
   });
   const [dataKelas, setDataKelas] = useState([]);
   const [dataTahunAjaran, setDataTahunAjaran] = useState([]);
@@ -72,6 +73,7 @@ export default function DataSiswaSd() {
         tahunAjaran: data.tahunAjaran?.id || "",
         foto: data.foto || "",
         emailOrangTua: data.emailOrangTua || "",
+        kelompok: data.kelompok || "",
       });
     } catch (error) {
       console.error("Error Fetching All Schedules", error);
@@ -136,7 +138,8 @@ export default function DataSiswaSd() {
         formData.tahunMasuk,
         formData.kelas,
         formData.tahunAjaran,
-        formData.emailOrangTua
+        formData.emailOrangTua,
+        formData.kelompok
       );
       toast.success("Siswa berhasil diupdate!");
     } catch (error) {
@@ -338,6 +341,22 @@ export default function DataSiswaSd() {
             >
               <MenuItem value="L">Laki Laki</MenuItem>
               <MenuItem value="P">Perempuan</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div className="mt-3">
+          <Typography>Kelompok</Typography>
+          <FormControl fullWidth margin="dense" size="small">
+            <Select
+              name="kelompok"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={formData.kelompok}
+              onChange={handleChange}
+            >
+              <MenuItem value="KELOMPOK1">Kelompok 1</MenuItem>
+              <MenuItem value="KELOMPOK2">Kelompok 2</MenuItem>
+              <MenuItem value="KELOMPOK3">Kelompok 3</MenuItem>
             </Select>
           </FormControl>
         </div>

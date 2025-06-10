@@ -1,49 +1,15 @@
 import { Card, CardContent, Typography, Avatar } from "@mui/material";
-import {
-  AssignmentTurnedIn,
-  School,
-  MenuBook,
-  MonetizationOn,
-  Store,
-  EventAvailable,
-  AssignmentLate,
-} from "@mui/icons-material";
+
 import { useNavigate } from "react-router-dom";
 
-const menus = [
-  {
-    title: "Absensi Guru",
-    icon: <EventAvailable />,
-    url: "/guru/absen-guru",
-  },
-  {
-    title: "Absensi Siswa",
-    icon: <AssignmentTurnedIn />,
-    url: "/guru/absen-siswa",
-  },
-  {
-    title: "Input E-Rapot",
-    icon: <School />,
-    url: "/guru/input-rapot",
-  },
-  {
-    title: "Jadwal Hari Ini",
-    icon: <MenuBook />,
-    url: "/guru/jadwal-guru",
-  },
-  {
-    title: "Info Kelas",
-    icon: <AssignmentLate />,
-    url: "/guru/informasi-kelas",
-  },
-];
-
-export default function CardMenu() {
+export default function CardMenu(props) {
+  const { filteredMenus } = props;
   const navigate = useNavigate();
+
   return (
     <div className="px-3">
       <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
-        {menus.map((menu, index) => (
+        {filteredMenus.map((menu, index) => (
           <Card
             key={index}
             className="rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200"

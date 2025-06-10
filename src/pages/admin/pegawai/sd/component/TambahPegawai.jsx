@@ -25,6 +25,7 @@ export default function TambahPegawai() {
     role: "",
     pendidikanTerakhir: "",
     jenisKelamin: "",
+    kelompok: "",
   });
 
   const handleChange = (e) => {
@@ -63,7 +64,8 @@ export default function TambahPegawai() {
         formData.email,
         formData.role,
         formData.pendidikanTerakhir,
-        formData.jenisKelamin
+        formData.jenisKelamin,
+        formData.kelompok
       );
       if (resp.status === 201) {
         toast.success("Pegawai berhasil ditambahkan!");
@@ -79,6 +81,7 @@ export default function TambahPegawai() {
           role: "",
           pendidikanTerakhir: "",
           jenisKelamin: "",
+          kelompok: "",
         });
       }
     } catch (error) {
@@ -166,6 +169,22 @@ export default function TambahPegawai() {
               >
                 <MenuItem value="L">Laki Laki</MenuItem>
                 <MenuItem value="P">Perempuan</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="mt-3">
+            <Typography>Kelompok</Typography>
+            <FormControl fullWidth margin="dense" size="small">
+              <Select
+                name="kelompok"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={formData.kelompok}
+                onChange={handleChange}
+              >
+                <MenuItem value="KELOMPOK1">Kelompok 1</MenuItem>
+                <MenuItem value="KELOMPOK2">Kelompok 2</MenuItem>
+                <MenuItem value="KELOMPOK3">Kelompok 3</MenuItem>
               </Select>
             </FormControl>
           </div>

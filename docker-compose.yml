@@ -1,0 +1,61 @@
+version: "3.9"
+
+networks:
+  default:
+    name: proxynet
+
+services:
+  database:
+    image: postgres:16.6-alpine3.20
+    env_file:
+      - ./.env.dbase
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backendbase: &backendbase
+    image: hub.docker.com/ahmadseptian/abu-bakar-backend:latest
+    env_file:
+      - ./.env.backend
+
+  backend-server:
+    <<: *backendbase
+    platform: linux/x86_64
+    depends_on:
+      - database
+    restart: always
+    entrypoint: ["sh", "-c", "pnpm start:prod"]
+    volumes:
+      - ./files:/usr/files
+
+  db-migration:
+    <<: *backendbase
+    platform: linux/x86_64
+    depends_on:
+      - database
+    entrypoint: ["sh", "-c", "pnpm migration:run"]
+
+  db-seed:
+    <<: *backendbase
+    platform: linux/x86_64
+    depends_on:
+      - database
+    entrypoint: ["sh", "-c", "pnpm seed:run"]
+
+  frontend:
+    image: hub.docker.com/ahmadseptian/abu-bakar-frontend:latest
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: webserver
+    restart: unless-stopped
+    depends_on:
+      - backend-server
+    ports:
+      - 80:80
+      # - 443:443
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+
+volumes:
+  pgdata:
+    external: true

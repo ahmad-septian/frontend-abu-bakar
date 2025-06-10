@@ -31,6 +31,7 @@ export default function DataPegawai() {
     role: "",
     pendidikanTerakhir: "",
     jenisKelamin: "",
+    kelompok: "",
   });
 
   const handleChange = (e) => {
@@ -56,6 +57,7 @@ export default function DataPegawai() {
         pendidikanTerakhir: data.pendidikanTerakhir || "",
         foto: data.foto || "",
         jenisKelamin: data.jenisKelamin || "",
+        kelompok: data.kelompok || "",
       });
     } catch (error) {
       console.error("Error Fetching All Schedules", error);
@@ -115,7 +117,8 @@ export default function DataPegawai() {
         formData.email,
         formData.role,
         formData.pendidikanTerakhir,
-        formData.jenisKelamin
+        formData.jenisKelamin,
+        formData.kelompok
       );
       toast.success("Pegawai berhasil diupdate!");
     } catch (error) {
@@ -247,6 +250,22 @@ export default function DataPegawai() {
             >
               <MenuItem value="L">Laki Laki</MenuItem>
               <MenuItem value="P">Perempuan</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div className="mt-3">
+          <Typography>Kelompok</Typography>
+          <FormControl fullWidth margin="dense" size="small">
+            <Select
+              name="kelompok"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={formData.kelompok}
+              onChange={handleChange}
+            >
+              <MenuItem value="KELOMPOK1">Kelompok 1</MenuItem>
+              <MenuItem value="KELOMPOK2">Kelompok 2</MenuItem>
+              <MenuItem value="KELOMPOK3">Kelompok 3</MenuItem>
             </Select>
           </FormControl>
         </div>

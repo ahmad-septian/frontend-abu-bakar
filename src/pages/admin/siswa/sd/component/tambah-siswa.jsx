@@ -33,6 +33,7 @@ export default function TambahSiswa() {
     alamat: "",
     tahunAjaran: "",
     emailOrangTua: "",
+    kelompok: "",
   });
 
   const handleChange = (e) => {
@@ -78,7 +79,8 @@ export default function TambahSiswa() {
         formData.tahunMasuk,
         formData.kelas,
         formData.tahunAjaran,
-        formData.emailOrangTua
+        formData.emailOrangTua,
+        formData.kelompok
       );
       toast.success("Siswa berhasil ditambahkan!");
       setFormData({
@@ -98,6 +100,7 @@ export default function TambahSiswa() {
         alamat: "",
         tahunAjaran: "",
         emailOrangTua: "",
+        kelompok: "",
       });
     } catch (error) {
       toast.error(error?.response?.data?.message || "Gagal menambahkan siswa!");
@@ -249,6 +252,23 @@ export default function TambahSiswa() {
             >
               <MenuItem value="L">Laki Laki</MenuItem>
               <MenuItem value="P">Perempuan</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+
+        <div className="mt-3">
+          <Typography>Kelompok</Typography>
+          <FormControl fullWidth margin="dense" size="small">
+            <Select
+              name="kelompok"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={formData.kelompok}
+              onChange={handleChange}
+            >
+              <MenuItem value="KELOMPOK1">Kelompok 1</MenuItem>
+              <MenuItem value="KELOMPOK2">Kelompok 2</MenuItem>
+              <MenuItem value="KELOMPOK3">Kelompok 3</MenuItem>
             </Select>
           </FormControl>
         </div>

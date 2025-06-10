@@ -75,7 +75,8 @@ export async function CreateSiswa(
   tahunMasuk,
   kelas,
   tahunAjaran,
-  emailemailOrangTua
+  emailOrangTua,
+  kelompok
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -100,6 +101,7 @@ export async function CreateSiswa(
         kelas,
         tahunAjaran,
         emailOrangTua,
+        kelompok,
       },
       {
         headers: {
@@ -110,7 +112,7 @@ export async function CreateSiswa(
     );
     return resp;
   } catch (error) {
-    console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
+    console.error("Sepertinya Terjadi Kesalahan:", error);
     throw error;
   }
 }

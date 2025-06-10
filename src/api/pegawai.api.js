@@ -70,7 +70,8 @@ export async function CreatePegawai(
   email,
   role,
   pendidikanTerakhir,
-  jenisKelamin
+  jenisKelamin,
+  kelompok
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -90,6 +91,7 @@ export async function CreatePegawai(
         role,
         pendidikanTerakhir,
         jenisKelamin,
+        kelompok,
       },
       {
         headers: {
@@ -117,7 +119,8 @@ export async function UpdatePegawai(
   email,
   role,
   pendidikanTerakhir,
-  jenisKelamin
+  jenisKelamin,
+  kelompok
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
@@ -137,6 +140,7 @@ export async function UpdatePegawai(
         role,
         pendidikanTerakhir,
         jenisKelamin,
+        kelompok,
       },
       {
         headers: {
@@ -205,11 +209,31 @@ export async function UploadFotoPegawai(id, formData) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
 
-  
   try {
     const resp = await api.post(`/pegawai/${id}/upload-foto`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return resp;
+  } catch (error) {
+    console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
+    throw error;
+  }
+}
+
+export async function GetListSiswaPerWalikelas(search) {
+  const token = localStorage.getItem("tokenGuru");
+  if (!token) throw new Error("No access token found");
+
+  try {
+    const resp = await api.get(`/pegawai/walikelas`, {
+      params: {
+        search,
+      },
+      headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });

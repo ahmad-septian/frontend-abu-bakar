@@ -1,53 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
-  Container,
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow,
-  TableContainer,
-  Paper,
-  Grid,
-  Stack,
   Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Divider,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
 } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import { ArrowBack } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import ListSiswa from "./component/ListSiswa";
+import { GetListSiswaPerWalikelas } from "../../../api/pegawai.api";
+import {
+  AbsensiSiswa,
+  getAbsensiByTanggal,
+} from "../../../api/absensi-siswa.api";
 
 const statusIcons = {
-  hadir: { icon: <CheckCircleIcon sx={{ color: "green" }} />, label: "Hadir" },
-  absen: { icon: <CancelIcon sx={{ color: "red" }} />, label: "Absen" },
+  masuk: { icon: <CheckCircleIcon sx={{ color: "green" }} />, label: "Masuk" },
+  alfa: { icon: <CancelIcon sx={{ color: "red" }} />, label: "Tidak Masuk" },
   izin: { icon: <DescriptionIcon sx={{ color: "blue" }} />, label: "Izin" },
   sakit: { icon: <LocalHospitalIcon sx={{ color: "teal" }} />, label: "Sakit" },
 };
 
 const AbsenSiswaGuru = () => {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [siswaData, setSiswaData] = useState([]);
+  const [summartData, setSummartData] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogStatus, setDialogStatus] = useState("");
+  const [formKeterangan, setFormKeterangan] = useState("");
+  const [formUcapan, setFormUcapan] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [search, setSearch] = useState("");
 
-  const [siswaData, setSiswaData] = useState([
-    { no: 1, nama: "Budi Anggara", status: null },
-    { no: 2, nama: "Puspita Ningsih", status: "hadir" },
-    { no: 3, nama: "Bayu Aji Restu", status: null },
-    { no: 4, nama: "Pratiwi Ajeng", status: null },
-    { no: 5, nama: "Anita Mayangsari", status: "absen" },
-    { no: 6, nama: "Arif Wijaya", status: "izin" },
-    { no: 7, nama: "Adi Nugroho", status: null },
-    { no: 8, nama: "Arif Wijaya", status: "hadir" },
-    { no: 9, nama: "Kurnia Fatmawati", status: "sakit" },
-    { no: 10, nama: "Bayu Aji Restu", status: null },
-  ]);
+  const fetchDataSiswa = async () => {
+    try {
+      // Ambil data siswa
+      const siswaResponse = await GetListSiswaPerWalikelas(search);
+      const siswaList = siswaResponse.data.data;
+
+      // Ambil data absensi sekaligus summary dari API
+      const tanggalFormatted = selectedDate.toISOString().split("T")[0];
+      const absensiResponse = await getAbsensiByTanggal(tanggalFormatted);
+
+      // Data absensi siswa
+      const dataAbsensi = absensiResponse.data.data || [];
+      // Summary absensi
+      const summaryAbsensi = absensiResponse.data.summary || {
+        MASUK: 0,
+        ALFA: 0,
+        IZIN: 0,
+        SAKIT: 0,
+      };
+
+      // Mapping status dari API ke kode internal
+      const mapStatus = {
+        MASUK: "masuk",
+        ALFA: "alfa",
+        IZIN: "izin",
+        SAKIT: "sakit",
+      };
+
+      // Gabungkan data siswa dengan absensinya
+      const siswaGabungan = siswaList.map((siswa) => {
+        const absensi = dataAbsensi.find(
+          (a) => String(a.siswa.id) === String(siswa.id)
+        );
+
+        const statusAPI = absensi?.status || null;
+        const status = statusAPI ? mapStatus[statusAPI.toUpperCase()] : null;
+
+        return {
+          ...siswa,
+          status,
+          keterangan: absensi?.keterangan || "",
+          ucapan: absensi?.ucapan || "",
+        };
+      });
+
+      // Set state siswa dan summary
+      setSiswaData(siswaGabungan);
+      setSummartData(summaryAbsensi);
+    } catch (error) {
+      console.error("Gagal mengambil data siswa/absensi:", error);
+    }
+  };
 
   const handleOpenMenu = (event, index) => {
     setAnchorEl(event.currentTarget);
@@ -61,108 +107,160 @@ const AbsenSiswaGuru = () => {
 
   const handleStatusChange = (status) => {
     if (selectedIndex !== null) {
-      setSiswaData((prevData) =>
-        prevData.map((siswa, idx) =>
-          idx === selectedIndex ? { ...siswa, status } : siswa
+      if (status === "izin" || status === "sakit") {
+        setDialogOpen(true);
+        setDialogStatus(status);
+        return;
+      }
+      setSiswaData((prev) =>
+        prev.map((s, idx) =>
+          idx === selectedIndex
+            ? { ...s, status, keterangan: "", ucapan: "" }
+            : s
         )
       );
     }
     handleCloseMenu();
   };
 
-  const countStatus = (status) =>
-    siswaData.filter((siswa) => siswa.status === status).length;
+  const handleDialogSubmit = () => {
+    if (selectedIndex !== null) {
+      setSiswaData((prev) =>
+        prev.map((s, idx) =>
+          idx === selectedIndex
+            ? {
+                ...s,
+                status: dialogStatus,
+                keterangan: formKeterangan,
+                ucapan: dialogStatus === "sakit" ? formUcapan : "",
+              }
+            : s
+        )
+      );
+    }
+    setDialogOpen(false);
+    setFormKeterangan("");
+    setFormUcapan("");
+    handleCloseMenu();
+  };
+
+  const handleAbsensiSiswa = async () => {
+    const dataAbsen = siswaData
+      .filter((s) => s.status)
+      .map((s) => ({
+        idSiswa: s.id,
+        status: s.status.toUpperCase(),
+        keterangan: s.keterangan || "",
+        ucapan: s.ucapan || "",
+      }));
+
+    if (dataAbsen.length === 0)
+      return toast.warning("Belum ada siswa yang diabsen");
+
+    try {
+      const response = await AbsensiSiswa({
+        tanggal: selectedDate.toISOString().split("T")[0], // Kirim tanggal ke backend
+        absen: dataAbsen,
+      });
+      setSummartData(response.data.summary);
+      toast.success("Siswa berhasil di-absen");
+      fetchDataSiswa();
+    } catch (error) {
+      console.error("Error submitting absensi siswa:", error);
+      toast.error("Terjadi kesalahan saat meng-absen siswa");
+    }
+  };
+
+  useEffect(() => {
+    fetchDataSiswa();
+  }, [selectedDate, search]);
+
+  const statusList = [
+    { key: "hadir", label: "Masuk", color: "green" },
+    { key: "izin", label: "Izin", color: "blue" },
+    { key: "sakit", label: "Sakit", color: "orange" },
+    { key: "absen", label: "Tidak Masuk", color: "red" },
+  ];
+
+  const rekapTanggal = [
+    { tanggal: "2025-06-30", hadir: 20, izin: 1, sakit: 0, absen: 2 },
+    { tanggal: "2025-07-01", hadir: 25, izin: 0, sakit: 1, absen: 3 },
+  ];
+
+  const events = rekapTanggal.flatMap((item) =>
+    statusList.map((status) => ({
+      title: `${status.label}: ${item[status.key]} Siswa`,
+      date: item.tanggal,
+      color: status.color,
+      allDay: true,
+    }))
+  );
 
   return (
-    <Container maxWidth="md">
-      <Box my={4}>
-        <Card elevation={4}>
-          <CardContent>
-            {/* Header */}
-            <Grid container spacing={5} mb={2}>
-              <Grid item xs={4} pl={4}>
-                <Typography variant="subtitle2">Nama Kelas</Typography>
-                <Typography variant="subtitle1" fontWeight="bold">Kelas 1</Typography>
-              </Grid>
-              
-              <Grid item xs={4}>
-                <Typography variant="subtitle2">Guru Pengajar</Typography>
-                <Typography variant="subtitle1" fontWeight="bold">Bambang Maulana SPd</Typography>
-              </Grid>
-            </Grid>
+    <Box>
+      <Button
+        onClick={() => navigate(-1)}
+        startIcon={<ArrowBack />}
+        sx={{ color: "#85193C" }}
+      >
+        Kembali
+      </Button>
 
-            {/* Keterangan Ikon */}
-            <Stack direction="row" spacing={2} justifyContent="space-between" mb={2}>
-              {Object.entries(statusIcons).map(([key, { icon, label }]) => (
-                <Stack key={key} direction="row" alignItems="center" spacing={1}>
-                  {icon}
-                  <Typography variant="body2">{`Siswa ${label}`}</Typography>
-                </Stack>
-              ))}
-            </Stack>
+      <ListSiswa
+        siswaData={siswaData}
+        events={events}
+        statusIcons={statusIcons}
+        anchorEl={anchorEl}
+        handleCloseMenu={handleCloseMenu}
+        handleStatusChange={handleStatusChange}
+        handleOpenMenu={handleOpenMenu}
+        handleAbsensiSiswa={handleAbsensiSiswa}
+        summartData={summartData}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+        setSearch={setSearch}
+        search={search}
+      />
 
-            {/* Tabel Siswa */}
-            <TableContainer component={Paper} variant="outlined">
-              <Table>
-                <TableBody>
-                  {siswaData.map((siswa, index) => (
-                    <TableRow key={siswa.no}>
-                      <TableCell>{siswa.no}</TableCell>
-                      <TableCell>{siswa.nama}</TableCell>
-                      <TableCell align="right">
-                        <IconButton onClick={(e) => handleOpenMenu(e, index)}>
-                          {siswa.status
-                            ? statusIcons[siswa.status].icon
-                            : <MoreHorizIcon />}
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-
-            {/* Jumlah dan Selanjutnya */}
-            <Box mt={2} display="flex" justifyContent="space-between">
-              <Typography variant="body2">{siswaData.length} dari 30</Typography>
-              <Button size="small">Selanjutnya</Button>
-            </Box>
-
-            {/* Ringkasan Status */}
-            <Divider sx={{ my: 2 }} />
-            <Grid container spacing={2} textAlign="center">
-              {["hadir", "absen", "izin", "sakit"].map((stat) => (
-                <Grid item xs={3} key={stat}>
-                  <Typography fontWeight="bold">{countStatus(stat)}</Typography>
-                  <Typography variant="body2">Siswa {statusIcons[stat].label}</Typography>
-                </Grid>
-              ))}
-            </Grid>
-
-            {/* Tombol Mulai */}
-            <Box mt={3}>
-              <Button fullWidth variant="contained" sx={{ py: 1.5, fontWeight: "bold" }}>
-                SELESAI
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
-
-      {/* Popup Menu Status */}
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
-        {Object.entries(statusIcons).map(([status, { icon, label }]) => (
-          <MenuItem key={status} onClick={() => handleStatusChange(status)}>
-            <Box display="flex" alignItems="center" gap={1}>
-              {icon}
-              <Typography>{label}</Typography>
-            </Box>
-          </MenuItem>
-        ))}
-      </Menu>
-    </Container>
+      {/* Dialog Keterangan */}
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>
+          {dialogStatus === "izin"
+            ? "Isi Keterangan Izin"
+            : "Isi Keterangan dan Ucapan Sakit"}
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            label="Keterangan"
+            value={formKeterangan}
+            onChange={(e) => setFormKeterangan(e.target.value)}
+            margin="normal"
+          />
+          {dialogStatus === "sakit" && (
+            <TextField
+              fullWidth
+              label="Ucapan"
+              value={formUcapan}
+              onChange={(e) => setFormUcapan(e.target.value)}
+              margin="normal"
+            />
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Batal</Button>
+          <Button onClick={handleDialogSubmit} variant="contained">
+            Simpan
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 
 export default AbsenSiswaGuru;
-

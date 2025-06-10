@@ -1,18 +1,80 @@
 import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
-import {} from "@mui/icons-material";
+import {
+  AssignmentTurnedIn,
+  School,
+  MenuBook,
+  MonetizationOn,
+  Store,
+  Class,
+  AssignmentLate,
+} from "@mui/icons-material";
 import {} from "react-router-dom";
 import HeroSection from "./component/hero-siswa";
 import CardMenu from "./component/card-menu";
 import { GetProfile } from "../../../api/profile-siswa.api";
 
+const allMenus = [
+  { title: "Absen", icon: <AssignmentTurnedIn />, url: "/siswa/absen" },
+  { title: "E-Rapot", icon: <School />, url: "/siswa/rapot" },
+  { title: "Mata Pelajaran", icon: <MenuBook />, url: "/siswa/mata-pelajaran" },
+  {
+    title: "Informasi Kelas",
+    icon: <AssignmentLate />,
+    url: "/siswa/informasi-kelas",
+  },
+  { title: "Pembayaran", icon: <MonetizationOn />, url: "/siswa/pembayaran" },
+  { title: "Koperasi", icon: <Store />, url: "/koperasi" },
+];
+
+const getMenusByGroup = (kelompok) => {
+  switch (kelompok) {
+    case 1:
+    case "KELOMPOK1":
+      return allMenus.filter((menu) =>
+        ["E-Rapot", "Koperasi", "Informasi Kelas", "Mata Pelajaran"].includes(
+          menu.title
+        )
+      );
+    case 2:
+    case "KELOMPOK2":
+      return allMenus.filter((menu) =>
+        ["Absen", "Koperasi", "Informasi Kelas", "Mata Pelajaran"].includes(
+          menu.title
+        )
+      );
+    case 3:
+    case "KELOMPOK3":
+      return allMenus.filter((menu) =>
+        [
+          "Pembayaran",
+          "Koperasi",
+          "Informasi Kelas",
+          "Mata Pelajaran",
+        ].includes(menu.title)
+      );
+    case null:
+    case undefined:
+      return allMenus;
+    default:
+      // Fallback untuk nilai lain: Semua menu
+      return allMenus;
+  }
+};
 export default function HomeSiswa() {
   const [profile, setProfile] = useState("");
+  const [userGroup, setUserGroup] = useState("");
+  const [filteredMenus, setFilteredMenus] = useState([]);
 
   const fetchProfile = async () => {
     const resp = await GetProfile();
     if (resp?.data) {
       setProfile(resp.data);
+      const kelompokValue = resp.data.kelompok;
+      setUserGroup(kelompokValue);
+
+      const allowedMenus = getMenusByGroup(kelompokValue);
+      setFilteredMenus(allowedMenus);
     } else {
       console.error("Gagal mendapatkan data profil");
     }
@@ -38,7 +100,7 @@ export default function HomeSiswa() {
         >
           Rekomendasi Menu
         </Typography>
-        <CardMenu />
+        <CardMenu filteredMenus={filteredMenus} />
       </div>
     </div>
   );
