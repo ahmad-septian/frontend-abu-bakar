@@ -4,9 +4,6 @@ import {
   AssignmentTurnedIn,
   School,
   MenuBook,
-  MonetizationOn,
-  Store,
-  EventAvailable,
   AssignmentLate,
 } from "@mui/icons-material";
 import {} from "react-router-dom";
@@ -16,11 +13,11 @@ import { GetProfileGuru } from "../../../api/profile-guru.api";
 import AbsensiGuru from "./component/card-absensi";
 
 const allMenus = [
-  {
-    title: "Absensi Guru",
-    icon: <EventAvailable />,
-    url: "/guru/absen-guru",
-  },
+  // {
+  //   title: "Absensi Guru",
+  //   icon: <EventAvailable />,
+  //   url: "/guru/absen-guru",
+  // },
   {
     title: "Absensi Siswa",
     icon: <AssignmentTurnedIn />,
@@ -98,7 +95,7 @@ export default function HomeGuru() {
   return (
     <div>
       <HeroSection profile={profile} />
-      <AbsensiGuru />
+      {/* <AbsensiGuru /> */}
 
       <div>
         <Typography

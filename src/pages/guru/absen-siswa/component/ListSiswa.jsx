@@ -19,12 +19,13 @@ import {
   Divider,
   TextField,
 } from "@mui/material";
-import { MoreHoriz } from "@mui/icons-material";
-import {} from "react-router-dom";
+import { MoreHoriz, ArrowBack } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
 export default function ListSiswa(props) {
+  const navigate = useNavigate();
   const {
     siswaData,
     events,
@@ -46,15 +47,24 @@ export default function ListSiswa(props) {
         <Card elevation={4}>
           <CardContent>
             <div className="my-3">
+              <Button
+                onClick={() => navigate(-1)}
+                startIcon={<ArrowBack />}
+                sx={{ color: "#85193C" }}
+              >
+                Kembali
+              </Button>
               <Typography variant="h6" fontWeight="bold" mb={2}>
                 Kalender Kehadiran Siswa
               </Typography>
-              <FullCalendar
-                plugins={[dayGridPlugin]}
-                initialView="dayGridMonth"
-                events={events}
-                height="auto"
-              />
+              <div className="w-full max-w-full overflow-x-auto">
+                <FullCalendar
+                  plugins={[dayGridPlugin]}
+                  initialView="dayGridMonth"
+                  events={events}
+                  height="auto"
+                />
+              </div>
             </div>
 
             {/* Keterangan Ikon */}

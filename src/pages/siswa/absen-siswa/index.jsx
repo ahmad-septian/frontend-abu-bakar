@@ -1,63 +1,146 @@
 import React, { useEffect, useState } from "react";
-import { Typography, TextField } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import {
+  getRekapAbsensiForSiswa,
+  getRekapAbsensiSummaryForSiswa,
+} from "../../../api/absensi-siswa.api";
+import { useNavigate } from "react-router-dom";
+import { FormatTanggal } from "../../../component-global/format-tanggal";
 
 export default function AbsensiSiswa() {
-  const [time, setTime] = useState(new Date());
+  const navigate = useNavigate();
+  const [rekapData, setRekapData] = useState([]);
+  const [summary, setSummary] = useState("");
+
+  const fetchRekapAbsenSiswa = async () => {
+    try {
+      const response = await getRekapAbsensiForSiswa();
+      setRekapData(response.data);
+    } catch (error) {
+      console.error("Error fetching rekap absensi siswa:", error);
+    }
+  };
+
+  const fetchSummaryAbsenSiswa = async () => {
+    try {
+      const response = await getRekapAbsensiSummaryForSiswa();
+      setSummary(response.data);
+    } catch (error) {
+      console.error("Error fetching summary absensi siswa:", error);
+    }
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    fetchRekapAbsenSiswa();
+    fetchSummaryAbsenSiswa();
   }, []);
 
-  const formattedDate = time.toLocaleDateString("id-ID", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const statusList = [
+    { key: "MASUK", label: "Masuk", color: "green" },
+    { key: "SAKIT", label: "Sakit", color: "orange" },
+    { key: "IZIN", label: "Izin", color: "blue" },
+    { key: "ALFA", label: "Alfa", color: "red" },
+  ];
+
+  const events = rekapData.map((item) => {
+    const status = statusList.find((s) => s.key === item.status);
+    return {
+      date: item.tanggal,
+      color: status ? status.color : "gray",
+      allDay: true,
+    };
   });
 
-  const formattedTime = time.toLocaleTimeString("id-ID", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  const statusMap = {
+    MASUK: { color: "#4CAF50", label: "MASUK" }, // green
+    SAKIT: { color: "#FF9800", label: "SAKIT" }, // orange
+    IZIN: { color: "#2196F3", label: "IZIN" }, // blue
+    ALFA: { color: "#F44336", label: "ALFA" }, // red
+  };
 
   return (
-    <div>
-      {/* History Absen */}
+    <div className="mt-3 px-3">
+      <Button
+        onClick={() => navigate(-1)}
+        startIcon={<ArrowBack />}
+        sx={{ color: "#85193C" }}
+      >
+        Kembali
+      </Button>
 
-      <div className="mt-3 px-3">
-        <Typography
-          variant="h6"
-          sx={{ mb: 1, textAlign: "center" }}
-          className="text-[#85193C] font-semibold"
-        >
-          Riwayat Absensi
-        </Typography>
+      <div className="w-full max-w-full overflow-x-auto">
+        <FullCalendar
+          plugins={[dayGridPlugin]}
+          initialView="dayGridMonth"
+          events={events}
+          height="auto"
+        />
+      </div>
+      <div className="flex flex-wrap gap-3 items-center mt-3 mb-2">
+        {statusList.map((status) => (
+          <div key={status.key} className="flex items-center gap-2">
+            <span
+              className="inline-block w-4 h-4 rounded"
+              style={{ backgroundColor: status.color }}
+            />
+            <span className="text-sm text-gray-700">{status.key}</span>
+          </div>
+        ))}
+      </div>
 
-        <div className="space-y-2">
-          {[
-            { date: "Jumat, 03 Mei 2024", clockIn: "08:01", clockOut: "16:02" },
-            { date: "Kamis, 02 Mei 2024", clockIn: "08:03", clockOut: "16:00" },
-            { date: "Rabu, 01 Mei 2024", clockIn: "08:05", clockOut: "15:45" },
-          ].map((item, index) => (
-            <div
-              key={index}
-              className="bg-[#FDF8F5] rounded-xl px-4 py-3 shadow-sm border border-[#f1e3e3] my-4"
-            >
-              <Typography variant="body1" className="font-medium text-gray-800">
-                {item.date}
-              </Typography>
-              <div className="flex justify-between text-sm text-gray-600">
-                <span>
-                  Masuk: <strong>{item.clockIn}</strong>
-                </span>
-                <span>
-                  Pulang: <strong>{item.clockOut}</strong>
-                </span>
-              </div>
-            </div>
-          ))}
+      {/* Card List */}
+      <div className="px-1 mt-4 h-[calc(100vh-200px)] flex flex-col">
+        {/* Judul Bulan */}
+        <h2 className="text-xl font-semibold text-center mb-4">
+          Riwayat Absen
+        </h2>
+
+        {/* Scrollable Riwayat */}
+        <div className="overflow-y-auto flex-1 pr-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {rekapData.map((item) => {
+              const status = statusMap[item.status];
+              return (
+                <div
+                  key={item.tanggal}
+                  className="rounded-lg shadow-md p-4 text-white"
+                  style={{ backgroundColor: status?.color || "#9E9E9E" }}
+                >
+                  <p className="text-sm font-medium">
+                    {FormatTanggal(item.tanggal)}
+                  </p>
+                  <p className="text-lg font-bold">
+                    {status?.label || item.status}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Rekap (tidak ikut scroll) */}
+        <div className="mt-2 flex justify-center items-center bg-[#85193C] text-white sticky bottom-0 z-10 py-2 shadow-md rounded-md">
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6} textAlign={"center"}>
+              <Typography fontWeight="bold">{summary.MASUK}</Typography>
+              <Typography variant="body2">Masuk</Typography>
+            </Grid>
+            <Grid item xs={12} sm={6} textAlign={"center"}>
+              <Typography fontWeight="bold">{summary.ALFA}</Typography>
+              <Typography variant="body2">Tidak Masuk</Typography>
+            </Grid>
+            <Grid item xs={12} sm={6} textAlign={"center"}>
+              <Typography fontWeight="bold">{summary.IZIN}</Typography>
+              <Typography variant="body2">Izin</Typography>
+            </Grid>
+            <Grid item xs={12} sm={6} textAlign={"center"}>
+              <Typography fontWeight="bold">{summary.SAKIT}</Typography>
+              <Typography variant="body2">Sakit</Typography>
+            </Grid>
+          </Grid>
         </div>
       </div>
     </div>

@@ -20,6 +20,7 @@ import { GetListSiswaPerWalikelas } from "../../../api/pegawai.api";
 import {
   AbsensiSiswa,
   getAbsensiByTanggal,
+  getRekapAbsensi,
 } from "../../../api/absensi-siswa.api";
 
 const statusIcons = {
@@ -41,6 +42,7 @@ const AbsenSiswaGuru = () => {
   const [formUcapan, setFormUcapan] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [search, setSearch] = useState("");
+  const [rekapData, setRekapData] = useState([]);
 
   const fetchDataSiswa = async () => {
     try {
@@ -165,31 +167,37 @@ const AbsenSiswaGuru = () => {
       setSummartData(response.data.summary);
       toast.success("Siswa berhasil di-absen");
       fetchDataSiswa();
+      getRekapAbsensi();
     } catch (error) {
       console.error("Error submitting absensi siswa:", error);
       toast.error("Terjadi kesalahan saat meng-absen siswa");
     }
   };
 
+  const getRekapData = async () => {
+    try {
+      const response = await getRekapAbsensi();
+      setRekapData(response.data);
+    } catch (error) {
+      console.error("Error fetching rekap absensi:", error);
+    }
+  };
+
   useEffect(() => {
+    getRekapData();
     fetchDataSiswa();
   }, [selectedDate, search]);
 
   const statusList = [
-    { key: "hadir", label: "Masuk", color: "green" },
-    { key: "izin", label: "Izin", color: "blue" },
-    { key: "sakit", label: "Sakit", color: "orange" },
-    { key: "absen", label: "Tidak Masuk", color: "red" },
+    { key: "MASUK", label: "M", color: "green" },
+    { key: "SAKIT", label: "S", color: "orange" },
+    { key: "IZIN", label: "I", color: "blue" },
+    { key: "ALFA", label: "A", color: "red" },
   ];
 
-  const rekapTanggal = [
-    { tanggal: "2025-06-30", hadir: 20, izin: 1, sakit: 0, absen: 2 },
-    { tanggal: "2025-07-01", hadir: 25, izin: 0, sakit: 1, absen: 3 },
-  ];
-
-  const events = rekapTanggal.flatMap((item) =>
+  const events = rekapData.flatMap((item) =>
     statusList.map((status) => ({
-      title: `${status.label}: ${item[status.key]} Siswa`,
+      title: `${status.label}: ${item[status.key]}`,
       date: item.tanggal,
       color: status.color,
       allDay: true,
@@ -198,14 +206,6 @@ const AbsenSiswaGuru = () => {
 
   return (
     <Box>
-      <Button
-        onClick={() => navigate(-1)}
-        startIcon={<ArrowBack />}
-        sx={{ color: "#85193C" }}
-      >
-        Kembali
-      </Button>
-
       <ListSiswa
         siswaData={siswaData}
         events={events}
