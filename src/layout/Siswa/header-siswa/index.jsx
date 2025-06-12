@@ -11,12 +11,14 @@ export default function HeaderSiswa() {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [profileName, setProfileName] = useState("");
+  const [profile, setProfile] = useState("");
   const openProfile = Boolean(anchorEl);
 
   const fetchProfile = async () => {
     const resp = await GetProfile();
     if (resp?.data) {
       setProfileName(resp.data.namaLengkap);
+      setProfile(resp.data);
     } else {
       console.error("Gagal mendapatkan data profil");
     }
@@ -74,15 +76,30 @@ export default function HeaderSiswa() {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar
-              {...stringAvatar(profileName)}
-              sx={{
-                ...stringAvatar(profileName).sx,
-                width: "45px",
-                height: "45px",
-                fontSize: "1.4rem",
-              }}
-            />
+            {profile.foto ? (
+              <Avatar
+                alt={profileName}
+                src={
+                  `${import.meta.env.VITE_API}/siswa/foto-siswa/` + profile.foto
+                }
+                sx={{
+                  ...stringAvatar(profileName).sx,
+                  width: "50px",
+                  height: "50px",
+                  fontSize: "1.2rem",
+                }}
+              />
+            ) : (
+              <Avatar
+                {...stringAvatar(profileName)}
+                sx={{
+                  ...stringAvatar(profileName).sx,
+                  width: "45px",
+                  height: "45px",
+                  fontSize: "1.4rem",
+                }}
+              />
+            )}
           </MenuItem>
         </div>
       </Toolbar>

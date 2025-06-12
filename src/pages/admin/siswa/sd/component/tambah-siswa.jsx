@@ -33,7 +33,7 @@ export default function TambahSiswa() {
     alamat: "",
     tahunAjaran: "",
     emailOrangTua: "",
-    kelompok: "",
+    kelompok: null,
   });
 
   const handleChange = (e) => {
@@ -100,7 +100,7 @@ export default function TambahSiswa() {
         alamat: "",
         tahunAjaran: "",
         emailOrangTua: "",
-        kelompok: "",
+        kelompok: null,
       });
     } catch (error) {
       toast.error(error?.response?.data?.message || "Gagal menambahkan siswa!");

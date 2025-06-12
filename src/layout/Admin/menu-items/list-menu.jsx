@@ -24,11 +24,11 @@ export const listMenu = [
         path: "/admin/dashboard/sd",
         menuName: "DashboardSDActive",
       },
-      {
-        label: "Dashboard TK",
-        path: "/admin/dashboard/tk",
-        menuName: "DashboardTKActive",
-      },
+      // {
+      //   label: "Dashboard TK",
+      //   path: "/admin/dashboard/tk",
+      //   menuName: "DashboardTKActive",
+      // },
     ],
   },
   {
@@ -42,11 +42,11 @@ export const listMenu = [
         path: "/admin/siswa/sd",
         menuName: "SiswaSDActive",
       },
-      {
-        label: "Siswa TK",
-        path: "/admin/siswa/tk",
-        menuName: "SiswaTKActive",
-      },
+      // {
+      //   label: "Siswa TK",
+      //   path: "/admin/siswa/tk",
+      //   menuName: "SiswaTKActive",
+      // },
     ],
   },
   {
@@ -60,11 +60,11 @@ export const listMenu = [
         path: "/admin/pegawai/sd",
         menuName: "PegawaiSDActive",
       },
-      {
-        label: "Pegawai TK",
-        path: "/admin/pegawai/tk",
-        menuName: "PegawaiTKActive",
-      },
+      // {
+      //   label: "Pegawai TK",
+      //   path: "/admin/pegawai/tk",
+      //   menuName: "PegawaiTKActive",
+      // },
     ],
   },
   {
@@ -78,11 +78,11 @@ export const listMenu = [
         path: "/admin/kelas/sd",
         menuName: "KelasSDActive",
       },
-      {
-        label: "Kelas TK",
-        path: "/admin/kelas/tk",
-        menuName: "KelasTKActive",
-      },
+      // {
+      //   label: "Kelas TK",
+      //   path: "/admin/kelas/tk",
+      //   menuName: "KelasTKActive",
+      // },
     ],
   },
   {
@@ -96,11 +96,11 @@ export const listMenu = [
         path: "/admin/mata-pelajaran/sd",
         menuName: "MataPelajaranSDActive",
       },
-      {
-        label: "Mata Pelajaran TK",
-        path: "/admin/mata-pelajaran/tk",
-        menuName: "MataPelajaranTKActive",
-      },
+      // {
+      //   label: "Mata Pelajaran TK",
+      //   path: "/admin/mata-pelajaran/tk",
+      //   menuName: "MataPelajaranTKActive",
+      // },
     ],
   },
   {
@@ -114,11 +114,11 @@ export const listMenu = [
         path: "/admin/jadwal-pelajaran/sd",
         menuName: "JadwalPelajaranSDActive",
       },
-      {
-        label: "Jadwal Pelajaran TK",
-        path: "/admin/jadwal-pelajaran/tk",
-        menuName: "JadwalPelajaranTKActive",
-      },
+      // {
+      //   label: "Jadwal Pelajaran TK",
+      //   path: "/admin/jadwal-pelajaran/tk",
+      //   menuName: "JadwalPelajaranTKActive",
+      // },
     ],
   },
   {
@@ -132,11 +132,11 @@ export const listMenu = [
         path: "/admin/tahun-ajaran/sd",
         menuName: "TahunAjaranSDActive",
       },
-      {
-        label: "Tahun Ajaran TK",
-        path: "/admin/tahun-ajaran/tk",
-        menuName: "TahunAjaranTKActive",
-      },
+      // {
+      //   label: "Tahun Ajaran TK",
+      //   path: "/admin/tahun-ajaran/tk",
+      //   menuName: "TahunAjaranTKActive",
+      // },
     ],
   },
   {
@@ -150,11 +150,11 @@ export const listMenu = [
         path: "/admin/pembayaran/sd",
         menuName: "TransaksiSDActive",
       },
-      {
-        label: "Pembayaran TK",
-        path: "/admin/pembayaran/tk",
-        menuName: "TransaksiTKActive",
-      },
+      // {
+      //   label: "Pembayaran TK",
+      //   path: "/admin/pembayaran/tk",
+      //   menuName: "TransaksiTKActive",
+      // },
     ],
   },
 ];

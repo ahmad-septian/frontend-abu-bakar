@@ -11,23 +11,33 @@ export default function HeroSection(props) {
       <div className="flex justify-between items-start">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12  rounded-full flex items-center justify-center shadow">
-            {/* <img
-              src="/logo_katalis.png"
-              alt="Logo"
-              className="w-8 h-8 object-contain"
-            /> */}
-            <Avatar
-              onClick={() => {
-                navigate("/siswa/profile");
-              }}
-              {...stringAvatar(profile.namaLengkap)}
-              sx={{
-                ...stringAvatar(profile.namaLengkap).sx,
-                width: "50px",
-                height: "50px",
-                fontSize: "1.2rem",
-              }}
-            />
+            {profile.foto ? (
+              <Avatar
+                alt={profile.namaLengkap}
+                src={
+                  `${import.meta.env.VITE_API}/siswa/foto-siswa/` + profile.foto
+                }
+                sx={{
+                  ...stringAvatar(profile.namaLengkap).sx,
+                  width: "50px",
+                  height: "50px",
+                  fontSize: "1.2rem",
+                }}
+              />
+            ) : (
+              <Avatar
+                onClick={() => {
+                  navigate("/siswa/profile");
+                }}
+                {...stringAvatar(profile.namaLengkap)}
+                sx={{
+                  ...stringAvatar(profile.namaLengkap).sx,
+                  width: "50px",
+                  height: "50px",
+                  fontSize: "1.2rem",
+                }}
+              />
+            )}
           </div>
           <div>
             <h2 className="text-sm sm:text-md md:text-md mb-1 ">

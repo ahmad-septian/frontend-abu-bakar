@@ -31,7 +31,7 @@ export default function DataPegawai() {
     role: "",
     pendidikanTerakhir: "",
     jenisKelamin: "",
-    kelompok: "",
+    kelompok: null,
   });
 
   const handleChange = (e) => {
@@ -57,7 +57,7 @@ export default function DataPegawai() {
         pendidikanTerakhir: data.pendidikanTerakhir || "",
         foto: data.foto || "",
         jenisKelamin: data.jenisKelamin || "",
-        kelompok: data.kelompok || "",
+        kelompok: data.kelompok || null,
       });
     } catch (error) {
       console.error("Error Fetching All Schedules", error);
@@ -343,7 +343,7 @@ export default function DataPegawai() {
             variant="contained"
             sx={{ backgroundColor: "#85193C", color: "#fff" }}
           >
-            Simpan Siswa
+            Simpan Pegawai
           </Button>
         </div>
       </form>

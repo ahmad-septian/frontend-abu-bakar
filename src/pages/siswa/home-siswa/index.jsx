@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Card, CardContent, Box, Avatar } from "@mui/material";
+import { Typography } from "@mui/material";
 import {
   AssignmentTurnedIn,
   School,
   MenuBook,
   MonetizationOn,
-  Store,
-  Class,
   AssignmentLate,
 } from "@mui/icons-material";
 import {} from "react-router-dom";
@@ -14,7 +12,7 @@ import HeroSection from "./component/hero-siswa";
 import CardMenu from "./component/card-menu";
 import { GetProfile } from "../../../api/profile-siswa.api";
 import { getUcapanSiswa } from "../../../api/absensi-siswa.api";
-import { Player } from "@lottiefiles/react-lottie-player";
+import UcapanSiswaSakit from "./component/ucapan";
 
 const allMenus = [
   { title: "Absen", icon: <AssignmentTurnedIn />, url: "/siswa/absen" },
@@ -88,7 +86,7 @@ export default function HomeSiswa() {
     if (resp.data) {
       setUcapan(resp.data);
     } else {
-      console.error("Gagal mendapatkan data Ucapan");
+      setUcapan(null);
     }
   };
 
@@ -101,85 +99,7 @@ export default function HomeSiswa() {
       <HeroSection profile={profile} />
 
       <div className="p-3">
-        {ucapan?.ucapan && (
-          <Card
-            sx={{
-              my: 3,
-              px: 2,
-              py: 2,
-              bgcolor: "#FFEDED",
-              border: "2px dashed #FF9AA2",
-              borderRadius: "16px",
-              maxWidth: 360,
-              mx: "auto",
-              boxShadow: "0 4px 8px rgba(255, 154, 162, 0.3)",
-              position: "relative",
-              overflow: "visible",
-            }}
-          >
-            <Avatar
-              sx={{
-                bgcolor: "#FFD1DC",
-                width: 60,
-                height: 60,
-                fontSize: 32,
-                position: "absolute",
-                top: -30,
-                left: "calc(50% - 30px)",
-                border: "2px solid white",
-              }}
-            >
-              <Player
-                autoplay
-                loop
-                src="/assets/emote-sick.json"
-                style={{ height: "50px", width: "50px" }}
-              />
-            </Avatar>
-
-            <CardContent sx={{ paddingBottom: "10px !important" }}>
-              <Typography
-                sx={{
-                  color: "#D7263D",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  fontSize: "1.2rem",
-                  mt: 1,
-                  mb: 1,
-                  fontFamily: '"Comic Sans MS", cursive',
-                }}
-              >
-                {profile.namaLengkap}
-              </Typography>
-
-              <Typography
-                variant="body2"
-                sx={{
-                  color: "#444",
-                  textAlign: "center",
-                  fontSize: "1rem",
-                  fontFamily: '"Comic Sans MS", cursive',
-                }}
-              >
-                {ucapan.ucapan}
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{
-                  display: "block",
-                  textAlign: "center",
-                  color: "#888",
-                  fontSize: "0.75rem",
-                  fontStyle: "italic",
-                  mt: 1,
-                  fontFamily: '"Comic Sans MS", cursive',
-                }}
-              >
-                Pesan ini ditulis oleh wali kelasmu ❤️
-              </Typography>
-            </CardContent>
-          </Card>
-        )}
+        <UcapanSiswaSakit ucapan={ucapan} />
         <Typography
           variant="h5"
           className="text-[#85193C] font-semibold mt-5 mb-3"
@@ -192,7 +112,7 @@ export default function HomeSiswa() {
         >
           Rekomendasi Menu
         </Typography>
-        <CardMenu filteredMenus={filteredMenus} />
+        <CardMenu filteredMenus={filteredMenus} profile={profile} />
       </div>
     </div>
   );

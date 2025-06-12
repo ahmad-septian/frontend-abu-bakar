@@ -25,7 +25,7 @@ export default function TambahPegawai() {
     role: "",
     pendidikanTerakhir: "",
     jenisKelamin: "",
-    kelompok: "",
+    kelompok: null,
   });
 
   const handleChange = (e) => {
@@ -81,7 +81,7 @@ export default function TambahPegawai() {
           role: "",
           pendidikanTerakhir: "",
           jenisKelamin: "",
-          kelompok: "",
+          kelompok: null,
         });
       }
     } catch (error) {
@@ -262,7 +262,7 @@ export default function TambahPegawai() {
               variant="contained"
               sx={{ backgroundColor: "#85193C", color: "#fff" }}
             >
-              Simpan Siswa
+              Simpan Pegawai
             </Button>
           </div>
         </form>

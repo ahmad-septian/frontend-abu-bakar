@@ -21,9 +21,9 @@ import { GetAllTahunAjaran } from "../../../../../api/tahunAjaran.api";
 
 export default function DataSiswaSd() {
   const { id } = useParams();
-
   const [formData, setFormData] = useState({
     nisn: "",
+    nis: "",
     namaLengkap: "",
     tempatLahir: "",
     namaAyah: "",
@@ -40,7 +40,7 @@ export default function DataSiswaSd() {
     tahunAjaran: "",
     foto: "",
     emailOrangTua: "",
-    kelompok: "",
+    kelompok: null,
   });
   const [dataKelas, setDataKelas] = useState([]);
   const [dataTahunAjaran, setDataTahunAjaran] = useState([]);
@@ -57,6 +57,7 @@ export default function DataSiswaSd() {
 
       setFormData({
         nisn: data.nisn || "",
+        nis: data.nis || "",
         namaLengkap: data.namaLengkap || "",
         tempatLahir: data.tempatLahir || "",
         namaAyah: data.namaAyah || "",
@@ -73,7 +74,7 @@ export default function DataSiswaSd() {
         tahunAjaran: data.tahunAjaran?.id || "",
         foto: data.foto || "",
         emailOrangTua: data.emailOrangTua || "",
-        kelompok: data.kelompok || "",
+        kelompok: data.kelompok || null,
       });
     } catch (error) {
       console.error("Error Fetching All Schedules", error);
@@ -165,6 +166,8 @@ export default function DataSiswaSd() {
     }
   };
 
+  
+
   useEffect(() => {
     getAllDataKelas();
     getAllDataTahunAjaran();
@@ -179,7 +182,9 @@ export default function DataSiswaSd() {
       <div className="flex justify-center mb-4 flex-col items-center">
         {formData.foto ? (
           <img
-            src={"http://localhost:5001/api/siswa/foto-siswa/" + formData.foto}
+            src={
+              `${import.meta.env.VITE_API}/siswa/foto-siswa/` + formData.foto
+            }
             alt="Foto Siswa"
             className="w-32 h-32 rounded-full object-cover border-2 border-[#85193C]"
           />
@@ -233,6 +238,18 @@ export default function DataSiswaSd() {
             size="small"
             margin="dense"
             value={formData.nisn}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mt-3">
+          <Typography>NIS</Typography>
+          <TextField
+            name="nis"
+            fullWidth
+            size="small"
+            margin="dense"
+            disabled
+            value={formData.nis}
             onChange={handleChange}
           />
         </div>
