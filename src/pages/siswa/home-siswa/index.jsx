@@ -99,7 +99,7 @@ export default function HomeSiswa() {
       <HeroSection profile={profile} />
 
       <div className="p-3">
-        <UcapanSiswaSakit ucapan={ucapan} />
+        <UcapanSiswaSakit ucapan={ucapan} profile={profile} />
         <Typography
           variant="h5"
           className="text-[#85193C] font-semibold mt-5 mb-3"
@@ -108,6 +108,7 @@ export default function HomeSiswa() {
             textAlign: "center",
             mt: 2,
             mb: 2,
+            fontFamily: "Comic Neue",
           }}
         >
           Rekomendasi Menu

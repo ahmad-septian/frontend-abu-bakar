@@ -6,6 +6,7 @@ import { Player } from "@lottiefiles/react-lottie-player";
 
 export default function UcapanSiswaSakit(props) {
   const { ucapan, profile } = props;
+
   return (
     <div>
       {ucapan?.tanggal && ucapan?.ucapan && (
@@ -53,7 +54,7 @@ export default function UcapanSiswaSakit(props) {
                 fontSize: "1.2rem",
                 mt: 1,
                 mb: 1,
-                fontFamily: '"Comic Sans MS", cursive',
+                fontFamily: "Comic Neue",
               }}
             >
               {profile?.namaLengkap}
@@ -65,7 +66,7 @@ export default function UcapanSiswaSakit(props) {
                 color: "#444",
                 textAlign: "center",
                 fontSize: "1rem",
-                fontFamily: '"Comic Sans MS", cursive',
+                fontFamily: "Comic Neue",
               }}
             >
               {ucapan.ucapan}
@@ -79,7 +80,7 @@ export default function UcapanSiswaSakit(props) {
                 fontSize: "0.75rem",
                 fontStyle: "italic",
                 mt: 1,
-                fontFamily: '"Comic Sans MS", cursive',
+                fontFamily: "Comic Neue",
               }}
             >
               Pesan ini ditulis oleh wali kelasmu ❤️
