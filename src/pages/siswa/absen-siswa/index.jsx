@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid, Typography } from "@mui/material";
-import { ArrowBack, Call } from "@mui/icons-material";
+import { ArrowBack, Assignment, LocalHospital } from "@mui/icons-material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import {
@@ -9,22 +9,11 @@ import {
 } from "../../../api/absensi-siswa.api";
 import { useNavigate } from "react-router-dom";
 import { FormatTanggal } from "../../../component-global/format-tanggal";
-import { GetProfile } from "../../../api/profile-siswa.api";
 
 export default function AbsensiSiswa() {
   const navigate = useNavigate();
   const [rekapData, setRekapData] = useState([]);
   const [summary, setSummary] = useState("");
-  const [waliKelas, setWaliKelas] = useState("");
-
-  const fetchWaliKelas = async () => {
-    try {
-      const response = await GetProfile();
-      setWaliKelas(response.data?.kelas?.waliKelas);
-    } catch (error) {
-      console.error("Error fetching wali kelas:", error);
-    }
-  };
 
   const fetchRekapAbsenSiswa = async () => {
     try {
@@ -45,7 +34,6 @@ export default function AbsensiSiswa() {
   };
 
   useEffect(() => {
-    fetchWaliKelas();
     fetchRekapAbsenSiswa();
     fetchSummaryAbsenSiswa();
   }, []);
@@ -72,13 +60,6 @@ export default function AbsensiSiswa() {
     IZIN: { color: "#2196F3", label: "IZIN" }, // blue
     ALFA: { color: "#F44336", label: "ALFA" }, // red
   };
-
-  const noHpWaliKelas = "6285155123714";
-  const namaWali = waliKelas?.namaLengkap;
-
-  const message = `Assalamualaikum Bpk/Ibu ${namaWali}`;
-  const encodedMessage = encodeURIComponent(message); // encode supaya URL valid
-  const whatsappUrl = `https://wa.me/${noHpWaliKelas}?text=${encodedMessage}`;
 
   return (
     <div className="mt-3 px-3">
@@ -110,22 +91,25 @@ export default function AbsensiSiswa() {
         ))}
       </div>
 
-      <div className="flex justify-center items-center mt-4">
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ width: "100%" }}
+      <div className="flex justify-center justify-space-between items-center mt-4 gap-3">
+        <Button
+          sx={{ py: 1.5, borderRadius: "5px" }}
+          color="warning"
+          startIcon={<LocalHospital />}
+          fullWidth
+          variant="contained"
         >
-          <Button
-            sx={{ backgroundColor: "#85193C", py: 1.5, borderRadius: "50px" }}
-            startIcon={<Call />}
-            fullWidth
-            variant="contained"
-          >
-            Hubungi Wali Kelas
-          </Button>
-        </a>
+          Sakit
+        </Button>
+        <Button
+          sx={{ py: 1.5, borderRadius: "5px" }}
+          startIcon={<Assignment />}
+          color="primary"
+          fullWidth
+          variant="contained"
+        >
+          Izin
+        </Button>
       </div>
 
       {/* Card List */}

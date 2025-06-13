@@ -131,7 +131,7 @@ export default function MenuItems() {
                         handlePageChange(child.path, child.menuName)
                       }
                       sx={{
-                        pl: 4,
+                        pl: 3,
                         mb: 0.5,
                         borderRadius:
                           activeMenu === child.menuName ? "0px" : "none",
@@ -145,6 +145,17 @@ export default function MenuItems() {
                         },
                       }}
                     >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: 3,
+                          justifyContent: "center",
+                          color:
+                            activeMenu === child.menuName ? "#85193C" : "#fff",
+                        }}
+                      >
+                        {child.icon}
+                      </ListItemIcon>
                       <ListItemText
                         primary={child.label}
                         sx={{

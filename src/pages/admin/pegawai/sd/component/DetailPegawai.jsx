@@ -17,7 +17,7 @@ export default function DetailPegawai() {
   };
 
   useEffect(() => {
-    const savedTab = localStorage.getItem("tabsSiswa");
+    const savedTab = localStorage.getItem("tabsPegawai");
     if (savedTab) {
       setValue(savedTab);
     }

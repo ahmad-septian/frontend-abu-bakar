@@ -24,6 +24,7 @@ const ListSiswa = (props) => {
     rowsPerPage,
     page,
     search,
+    setSearch,
   } = props;
 
   const getChipColorByStatus = (statusSiswa) => {
@@ -57,6 +58,8 @@ const ListSiswa = (props) => {
           size="small"
           placeholder="Cari Siswa..."
           variant="outlined"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           sx={{
             backgroundColor: "#fff",
             borderRadius: "10px",
@@ -88,25 +91,31 @@ const ListSiswa = (props) => {
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
-                Jenis Kelamin
+                Nomer Hp Ayah
               </TableCell>
               <TableCell
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
-                Tanggal Lahir
+                Nomor Hp Ibu
               </TableCell>
               <TableCell
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
-                Tanggal Lahir
+                Email Orang Tua
               </TableCell>
               <TableCell
                 align="center"
                 sx={{ fontWeight: "bold", color: "#fff" }}
               >
-                Tahun Masuk
+                Kelas
+              </TableCell>
+              <TableCell
+                align="center"
+                sx={{ fontWeight: "bold", color: "#fff" }}
+              >
+                Tahun Ajaran
               </TableCell>
               <TableCell
                 align="center"
@@ -130,12 +139,13 @@ const ListSiswa = (props) => {
               >
                 <TableCell align="center">{siswa.nis}</TableCell>
                 <TableCell align="center">{siswa.namaLengkap}</TableCell>
-                <TableCell align="center">{siswa.jenisKelamin}</TableCell>
-                <TableCell align="center">{siswa.tempatLahir}</TableCell>
+                <TableCell align="center">{siswa.noHpAyah}</TableCell>
+                <TableCell align="center">{siswa.noHpIbu}</TableCell>
+                <TableCell align="center">{siswa.emailOrangTua}</TableCell>
+                <TableCell align="center">{siswa.kelas?.namaKelas} </TableCell>
                 <TableCell align="center">
-                  {FormatTanggal(siswa.tanggalLahir)}{" "}
+                  {siswa.tahunAjaran?.tahunAjaran}
                 </TableCell>
-                <TableCell align="center">{siswa.tahunMasuk}</TableCell>
                 <TableCell align="center">
                   <Chip
                     label={siswa.statusSiswa}
