@@ -7,7 +7,6 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import DataPegawai from "./DataPegawai";
 import RiwayatAkunPegawai from "./RiwayatAkun";
-import Erapot from "./Erapott";
 import ListMapel from "./ListMapel";
 
 export default function DetailPegawai() {
