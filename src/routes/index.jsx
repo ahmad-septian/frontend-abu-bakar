@@ -48,7 +48,7 @@ import DetailTugas from "../pages/siswa/rapot/component/DetailTugas";
 import DetailUTS from "../pages/siswa/rapot/component/RapotUTS";
 import DetailUAS from "../pages/siswa/rapot/component/RapotUAS";
 import AssessmentPeriod from "../pages/admin/assessment-period";
-import Erapot from "../pages/admin/pegawai/sd/component/ERAPOT";
+import Erapot from "../pages/admin/pegawai/sd/component/Erapott";
 
 export async function checkAdminAuth() {
   try {
