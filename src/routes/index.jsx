@@ -48,8 +48,7 @@ import DetailTugas from "../pages/siswa/rapot/component/DetailTugas";
 import DetailUTS from "../pages/siswa/rapot/component/RapotUTS";
 import DetailUAS from "../pages/siswa/rapot/component/RapotUAS";
 import AssessmentPeriod from "../pages/admin/assessment-period";
-import Erapot from "../pages/admin/pegawai/sd/component/Erapott";
-
+import Rapot from "../pages/admin/pegawai/sd/component/Rapot";
 export async function checkAdminAuth() {
   try {
     const isLoggedIn = await CekLoginPegawai();
@@ -172,7 +171,7 @@ const router = createBrowserRouter([
               },
               {
                 path: "e-rapot/:id/:japelId",
-                element: <Erapot />,
+                element: <Rapot />,
               },
             ],
           },
