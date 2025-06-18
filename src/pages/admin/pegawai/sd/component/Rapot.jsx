@@ -52,7 +52,7 @@ export default function Rapot() {
       {/* Header */}
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <h1 className="text-2xl font-semibold text-gray-900 mb-1">
-          {data.jadwalPelajaran?.namaMapel || "Loading..."}
+          {data.jadwalPelajaran?.namaMataPelajaran || "Loading..."}
         </h1>
         <p className="text-gray-600">
           Kelas {data.jadwalPelajaran?.kelas || "-"}

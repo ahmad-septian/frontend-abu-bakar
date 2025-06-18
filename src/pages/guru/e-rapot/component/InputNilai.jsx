@@ -90,7 +90,7 @@ export default function InputNilai() {
           my: 1,
         }}
       >
-        Input Nilai {mapel?.namaMapel}
+        Input Nilai {mapel?.namaMataPelajaran}
       </Typography>
 
       <div className="max-w-4xl mx-auto p-4">

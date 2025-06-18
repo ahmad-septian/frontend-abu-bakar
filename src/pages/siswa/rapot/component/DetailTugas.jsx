@@ -2,43 +2,52 @@ import React, { useState, useEffect } from "react";
 import { Typography, Button } from "@mui/material";
 import { ArrowBack, PictureAsPdf } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { ExportSiswa, GetRapotSiswa } from "../../../../api/rapot.api";
 
 export default function DetailTugas() {
   const navigate = useNavigate();
-  const rapotData = {
-    nama: "SARAH FADILA ASHALINA",
-    nis: "0125604726 / 192001020",
-    sekolah: "SDN Bintara Jaya III",
-    alamat:
-      "Jl. Bintara Jaya Raya RT.010/RW.009, Bintara Jaya, Bekasi Barat, Kota Bekasi",
-    kelas: "IV / B",
-    semester: "1 (Ganjil)",
-    tahun: "2022 / 2023",
-    npsn: "20223543",
-    nilai: [
-      {
-        no: 1,
-        mapel: "Pendidikan Agama dan Budi Pekerti",
-        nilai: 80,
-        capaian:
-          "Ananda cukup baik memahami sifat-sifat bagi Allah, beberapa Asmaulhusna... (disingkat)",
-      },
-      {
-        no: 2,
-        mapel: "Pendidikan Pancasila dan Kewarganegaraan",
-        nilai: 80,
-        capaian:
-          "Ananda cukup mempraktikkan nilai-nilai Pancasila secara individual di kelas...",
-      },
-      {
-        no: 3,
-        mapel: "Bahasa Indonesia",
-        nilai: 80,
-        capaian:
-          "Ananda cukup memahami dan menjelaskan permasalahan yang dihadapi tokoh cerita...",
-      },
-    ],
+  const [dataSiswa, setDataSiswa] = useState("");
+  const [nilai, setNilai] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await GetRapotSiswa();
+      setDataSiswa(response.data?.siswa);
+      setNilai(response.data.nilai.tugas);
+    } catch (error) {
+      console.error("Error Fetching All Schedules", error);
+    }
   };
+
+  const handleExport = async () => {
+    try {
+      const response = await ExportSiswa("tugas");
+
+      // Ambil nama file dari header
+      const disposition = response.headers["content-disposition"];
+      let filename = "rapot.pdf"; // fallback
+
+      if (disposition && disposition.includes("filename=")) {
+        const match = disposition.match(/filename="?(.+)"?/);
+        if (match && match[1]) {
+          filename = match[1];
+        }
+      }
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename); // pakai nama dari backend
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error("Error Fetching All Schedules", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="p-4 max-w-4xl mx-auto text-sm">
@@ -55,6 +64,7 @@ export default function DetailTugas() {
           sx={{ backgroundColor: "#85193C", color: "white" }}
           variant="contained"
           size="medium"
+          onClick={handleExport}
         >
           Cetak
         </Button>
@@ -69,27 +79,21 @@ export default function DetailTugas() {
                 <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
                   Nama Siswa:
                 </span>
-                <span className="text-gray-900">{rapotData.nama}</span>
+                <span className="text-gray-900">{dataSiswa.namaLengkap}</span>
               </div>
               <div className="flex flex-col sm:flex-row">
                 <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
-                  NIS / NISN:
+                  NIS:
                 </span>
-                <span className="text-gray-900">{rapotData.nis}</span>
+                <span className="text-gray-900">{dataSiswa.nis}</span>
               </div>
             </div>
             <div className="space-y-2">
               <div className="flex flex-col sm:flex-row">
                 <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
-                  Kelas / Fase:
+                  Kelas :
                 </span>
-                <span className="text-gray-900">{rapotData.kelas}</span>
-              </div>
-              <div className="flex flex-col sm:flex-row">
-                <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
-                  Semester:
-                </span>
-                <span className="text-gray-900">{rapotData.semester}</span>
+                <span className="text-gray-900">{dataSiswa.kelas}</span>
               </div>
             </div>
           </div>
@@ -101,13 +105,13 @@ export default function DetailTugas() {
                 <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
                   Nama Sekolah:
                 </span>
-                <span className="text-gray-900">{rapotData.sekolah}</span>
+                <span className="text-gray-900">SDIT Abu Bakar Ash Siddiq</span>
               </div>
               <div className="flex flex-col sm:flex-row">
                 <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
                   Alamat:
                 </span>
-                <span className="text-gray-900">{rapotData.alamat}</span>
+                <span className="text-gray-900">-</span>
               </div>
             </div>
             <div className="space-y-2">
@@ -115,20 +119,14 @@ export default function DetailTugas() {
                 <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
                   Tahun Pelajaran:
                 </span>
-                <span className="text-gray-900">{rapotData.tahun}</span>
-              </div>
-              <div className="flex flex-col sm:flex-row">
-                <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
-                  NPSN:
-                </span>
-                <span className="text-gray-900">{rapotData.npsn}</span>
+                <span className="text-gray-900">{dataSiswa.tahunAjaran}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <h2 className="font-bold mb-2">Nilai Kuis</h2>
+      <h2 className="font-bold mb-2">Nilai Tugas</h2>
       <div className="overflow-x-auto">
         <table className="w-full border text-xs md:text-sm">
           <thead className="bg-gray-100">
@@ -139,10 +137,12 @@ export default function DetailTugas() {
             </tr>
           </thead>
           <tbody>
-            {rapotData.nilai.map((item) => (
-              <tr key={item.no}>
-                <td className="border p-2 align-top text-center">{item.no}</td>
-                <td className="border p-2 align-top">{item.mapel}</td>
+            {nilai.map((item, index) => (
+              <tr key={index}>
+                <td className="border p-2 align-top text-center">
+                  {index + 1}
+                </td>
+                <td className="border p-2 align-top">{item.mataPelajaran}</td>
                 <td className="border p-2 align-top text-center">
                   {item.nilai}
                 </td>
