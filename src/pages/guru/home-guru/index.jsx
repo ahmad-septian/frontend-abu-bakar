@@ -26,7 +26,7 @@ const allMenus = [
   {
     title: "Input E-Rapot",
     icon: <School />,
-    url: "/guru/input-rapot",
+    url: "/guru/e-rapot",
   },
   {
     title: "Jadwal Hari Ini",

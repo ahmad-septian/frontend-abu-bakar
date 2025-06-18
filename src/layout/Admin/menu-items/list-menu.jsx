@@ -64,6 +64,12 @@ export const listMenu = [
         path: "/admin/pegawai/sd",
         menuName: "PegawaiSDActive",
       },
+      {
+        icon: <ArrowRight sx={{ fontSize: "1.8em" }} />,
+        label: "Assessment Period",
+        path: "/admin/pegawai/assessment-period",
+        menuName: "AssessmentPeriodActive",
+      },
       // {
       //   label: "Pegawai TK",
       //   path: "/admin/pegawai/tk",

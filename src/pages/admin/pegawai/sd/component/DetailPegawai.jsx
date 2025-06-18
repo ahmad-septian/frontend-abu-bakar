@@ -7,6 +7,8 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import DataPegawai from "./DataPegawai";
 import RiwayatAkunPegawai from "./RiwayatAkun";
+import Erapot from "./ERAPOT";
+import ListMapel from "./ListMapel";
 
 export default function DetailPegawai() {
   const [value, setValue] = React.useState("1");
@@ -50,10 +52,17 @@ export default function DetailPegawai() {
                 }}
               />
               <Tab
-                label="RIWAYAT & AKUN PEGAWAI"
+                label="E-RAPOT"
                 value="2"
                 sx={{
                   color: value === "2" ? "#85193C" : "inherit",
+                }}
+              />
+              <Tab
+                label="RIWAYAT & AKUN PEGAWAI"
+                value="3"
+                sx={{
+                  color: value === "3" ? "#85193C" : "inherit",
                 }}
               />
             </TabList>
@@ -62,6 +71,9 @@ export default function DetailPegawai() {
             <DataPegawai />
           </TabPanel>
           <TabPanel value="2">
+            <ListMapel />
+          </TabPanel>
+          <TabPanel value="3">
             <RiwayatAkunPegawai />
           </TabPanel>
         </TabContext>

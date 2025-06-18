@@ -16,7 +16,7 @@ import UcapanSiswaSakit from "./component/ucapan";
 
 const allMenus = [
   { title: "Absen", icon: <AssignmentTurnedIn />, url: "/siswa/absen" },
-  { title: "E-Rapot", icon: <School />, url: "/siswa/rapot" },
+  { title: "E-Rapot", icon: <School />, url: "/siswa/e-rapot" },
   { title: "Mata Pelajaran", icon: <MenuBook />, url: "/siswa/mata-pelajaran" },
   {
     title: "Informasi Kelas",

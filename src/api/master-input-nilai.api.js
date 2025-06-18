@@ -1,11 +1,11 @@
 import api from "../lib/axios";
 
-export async function GetAllTahunAjaran() {
+export async function GetAllAssessmentPeriod() {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
 
   try {
-    const resp = await api.get(`/tahun-ajaran/all`, {
+    const resp = await api.get(`/assessment-periods/all`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -18,7 +18,7 @@ export async function GetAllTahunAjaran() {
   }
 }
 
-export async function GetTahunAjaranPaginated(
+export async function GetAssessmentPeriodPaginated(
   page = 1,
   take = 10,
   search = ""
@@ -27,7 +27,7 @@ export async function GetTahunAjaranPaginated(
   if (!token) throw new Error("No access token found");
 
   try {
-    const resp = await api.get(`/tahun-ajaran/paginated`, {
+    const resp = await api.get(`/assessment-periods/paginated`, {
       params: {
         page,
         take,
@@ -45,12 +45,12 @@ export async function GetTahunAjaranPaginated(
   }
 }
 
-export async function GetOneTahunAjaran(id) {
+export async function GetOneAssessmentPeriod(id) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
 
   try {
-    const resp = await api.get(`/tahun-ajaran/${id}`, {
+    const resp = await api.get(`/assessment-periods/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -63,27 +63,25 @@ export async function GetOneTahunAjaran(id) {
   }
 }
 
-export async function CreateTahunAjaran(
-  tahunAjaran,
-  code,
-  semester,
-  tanggalMulai,
-  tanggalSelesai,
-  aktif
+export async function CreateAssessmentPeriod(
+  assessmentTypes,
+  tahunAjaranId,
+  startDate,
+  endDate,
+  isLocked
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
 
   try {
     const resp = await api.post(
-      "/tahun-ajaran/new",
+      "/assessment-periods/new",
       {
-        tahunAjaran,
-        code,
-        semester,
-        tanggalMulai,
-        tanggalSelesai,
-        aktif,
+        assessmentTypes,
+        tahunAjaranId,
+        startDate,
+        endDate,
+        isLocked,
       },
       {
         headers: {
@@ -99,28 +97,26 @@ export async function CreateTahunAjaran(
   }
 }
 
-export async function UpdateTahunAjaran(
+export async function UpdateAssessmentPeriod(
   id,
-  tahunAjaran,
-  code,
-  semester,
-  tanggalMulai,
-  tanggalSelesai,
-  aktif
+  assessmentType,
+  tahunAjaranId,
+  startDate,
+  endDate,
+  isLocked
 ) {
   const token = localStorage.getItem("tokenPegawai");
   if (!token) throw new Error("No access token found");
 
   try {
     const resp = await api.put(
-      `/tahun-ajaran/${id}/update`,
+      `/assessment-periods/${id}/update`,
       {
-        tahunAjaran,
-        code,
-        semester,
-        tanggalMulai,
-        tanggalSelesai,
-        aktif,
+        assessmentType,
+        tahunAjaranId,
+        startDate,
+        endDate,
+        isLocked,
       },
       {
         headers: {
@@ -136,3 +132,20 @@ export async function UpdateTahunAjaran(
   }
 }
 
+export async function DeleteAssessmentPeriod(id) {
+  const token = localStorage.getItem("tokenPegawai");
+  if (!token) throw new Error("No access token found");
+
+  try {
+    const resp = await api.delete(`/assessment-periods/${id}/remove`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return resp;
+  } catch (error) {
+    console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
+    throw error;
+  }
+}

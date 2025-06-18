@@ -16,7 +16,7 @@ import InformasiTerkini from "../pages/siswa/kelas";
 import ContentGuru from "../layout/Guru/content-guru";
 import HomeGuru from "../pages/guru/home-guru";
 import AbsenSiswaGuru from "../pages/guru/absen-siswa";
-import InputRapot from "../pages/guru/input-rapot";
+import ERapot from "../pages/guru/e-rapot";
 import JadwalGuru from "../pages/guru/jadwal-guru";
 import InfoKelasGuru from "../pages/guru/info-kelas";
 import AbsenGuru from "../pages/guru/absen-guru";
@@ -42,6 +42,13 @@ import InvoiceTagihan from "../pages/siswa/pembayaran/component/InvoiceTagihan";
 import DetailTagihan from "../pages/siswa/pembayaran/component/DetailTagihan";
 import ProfileSiswa from "../pages/siswa/profile-siswa";
 import ProfileGuru from "../pages/guru/profile-guru";
+import InputNilai from "../pages/guru/e-rapot/component/InputNilai";
+import DetailKuis from "../pages/siswa/rapot/component/DetailKuis";
+import DetailTugas from "../pages/siswa/rapot/component/DetailTugas";
+import DetailUTS from "../pages/siswa/rapot/component/RapotUTS";
+import DetailUAS from "../pages/siswa/rapot/component/RapotUAS";
+import AssessmentPeriod from "../pages/admin/assessment-period";
+import Erapot from "../pages/admin/pegawai/sd/component/ERAPOT";
 
 export async function checkAdminAuth() {
   try {
@@ -163,7 +170,16 @@ const router = createBrowserRouter([
                 path: "detail-pegawai-sd/:id",
                 element: <DetailPegawai />,
               },
+              {
+                path: "e-rapot/:id/:japelId",
+                element: <Erapot />,
+              },
             ],
+          },
+
+          {
+            path: "assessment-period",
+            element: <AssessmentPeriod />,
           },
         ],
       },
@@ -333,8 +349,29 @@ const router = createBrowserRouter([
         element: <AbsenSiswa />,
       },
       {
-        path: "rapot",
-        element: <RapotSiswa />,
+        path: "e-rapot",
+        children: [
+          {
+            path: "",
+            element: <RapotSiswa />,
+          },
+          {
+            path: "detail/kuis",
+            element: <DetailKuis />,
+          },
+          {
+            path: "detail/tugas",
+            element: <DetailTugas />,
+          },
+          {
+            path: "detail/uts",
+            element: <DetailUTS />,
+          },
+          {
+            path: "detail/uas",
+            element: <DetailUAS />,
+          },
+        ],
       },
       {
         path: "mata-pelajaran",
@@ -392,8 +429,33 @@ const router = createBrowserRouter([
         element: <AbsenGuru />,
       },
       {
-        path: "input-rapot",
-        element: <InputRapot />,
+        path: "e-rapot",
+        children: [
+          {
+            path: "",
+            element: <ERapot />,
+          },
+          {
+            path: "input-nilai/:japelId",
+            element: <InputNilai />,
+          },
+          // {
+          //   path: "kuis",
+          //   element: <KuisInput />,
+          // },
+          // {
+          //   path: "tugas",
+          //   element: <TugasInput />,
+          // },
+          // {
+          //   path: "uts",
+          //   element: <UtsInput />,
+          // },
+          // {
+          //   path: "uas",
+          //   element: <UasInput />,
+          // },
+        ],
       },
       {
         path: "jadwal-guru",

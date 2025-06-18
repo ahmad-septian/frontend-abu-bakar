@@ -168,6 +168,7 @@ const AbsenSiswaGuru = () => {
       toast.success("Siswa berhasil di-absen");
       fetchDataSiswa();
       getRekapAbsensi();
+      getRekapData();
     } catch (error) {
       console.error("Error submitting absensi siswa:", error);
       toast.error("Terjadi kesalahan saat meng-absen siswa");
@@ -241,6 +242,7 @@ const AbsenSiswaGuru = () => {
             value={formKeterangan}
             onChange={(e) => setFormKeterangan(e.target.value)}
             margin="normal"
+            
           />
           {dialogStatus === "sakit" && (
             <TextField
