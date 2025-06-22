@@ -3,6 +3,7 @@ import { Typography, Button } from "@mui/material";
 import { ArrowBack, PictureAsPdf } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { ExportSiswa, GetRapotSiswa } from "../../../../api/rapot.api";
+import { FormatTanggal } from "../../../../component-global/format-tanggal";
 
 export default function DetailTugas() {
   const navigate = useNavigate();

@@ -16,46 +16,6 @@ import {} from "react-router-dom";
 import { FormatTanggal } from "../../../../../component-global/format-tanggal";
 import PaginationComponent from "../../../../../component-global/pagination";
 
-const dataTahunAjaran = [
-  {
-    id: 1,
-    code: "2021-GANJIL",
-    namaTahunAjaran: "2021/2022 Ganjil",
-    semester: "GANJIL",
-    startDate: "2021-07-01",
-    endDate: "2022-06-30",
-    isActive: true,
-  },
-  {
-    id: 2,
-    code: "2022-GENAP",
-    namaTahunAjaran: "2022/2023 Genap",
-    semester: "GENAP",
-    startDate: "2022-07-01",
-    endDate: "2023-06-30",
-    isActive: true,
-  },
-  {
-    id: 3,
-    code: "2023-GANJIL",
-    namaTahunAjaran: "2023/2024 Ganjil",
-    semester: "GANJIL",
-    startDate: "2023-07-01",
-    endDate: "2024-06-30",
-    isActive: true,
-  },
-
-  {
-    id: 4,
-    code: "2024-GENAP",
-    namaTahunAjaran: "2024/2025 Genap",
-    semester: "GENAP",
-    startDate: "2024-07-01",
-    endDate: "2025-06-30",
-    isActive: true,
-  },
-];
-
 export default function ListTahunAjaran(props) {
   const {
     ClickOpenTambahTahunAjaran,

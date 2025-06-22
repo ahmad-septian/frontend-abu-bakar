@@ -110,3 +110,48 @@ export async function getUcapanSiswa() {
     throw error;
   }
 }
+
+export async function getRekapAbsenExcel(start, end) {
+  const token = localStorage.getItem("tokenPegawai");
+  if (!token) throw new Error("No access token found");
+
+  try {
+    const resp = await api.get(`/absensi-siswa/rekap`, {
+      params: {
+        start,
+        end,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
+    throw error;
+  }
+}
+
+export async function getRekapAbsenPaginated(page = 1, take = 10, search = "") {
+  const token = localStorage.getItem("tokenPegawai");
+  if (!token) throw new Error("No access token found");
+
+  try {
+    const resp = await api.get(`/absensi-siswa/rekap-paginated`, {
+      params: {
+        page,
+        take,
+        search,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    console.error("Sepertinya Terjadi Kesalahan:", error.response?.data);
+    throw error;
+  }
+}

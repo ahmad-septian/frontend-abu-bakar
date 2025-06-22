@@ -1,8 +1,7 @@
 import * as React from "react";
 import {
-  Home,
   Dashboard,
-  GroupAdd,
+  AssignmentTurnedIn,
   Groups,
   ManageAccounts,
   RoomPreferences,
@@ -175,6 +174,25 @@ export const listMenu = [
       //   label: "Pembayaran TK",
       //   path: "/admin/pembayaran/tk",
       //   menuName: "TransaksiTKActive",
+      // },
+    ],
+  },
+  {
+    label: "Presensi",
+    path: "/admin/presensi",
+    menuName: "PresensiActive",
+    icon: <AssignmentTurnedIn sx={{ fontSize: "1.8em" }} />,
+    children: [
+      {
+        icon: <ArrowRight sx={{ fontSize: "1.8em" }} />,
+        label: "Presensi SD",
+        path: "/admin/presensi/sd",
+        menuName: "PresensiSDActive",
+      },
+      // {
+      //   label: "Presensi TK",
+      //   path: "/admin/presensi/tk",
+      //   menuName: "PresensiTKActive",
       // },
     ],
   },

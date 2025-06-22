@@ -51,6 +51,7 @@ import AssessmentPeriod from "../pages/admin/assessment-period";
 import Rapot from "../pages/admin/pegawai/sd/component/Rapot";
 import PenambahanWaktu from "../pages/guru/e-rapot/component/PenambahanWaktu";
 import RequestPenambahanWaktu from "../pages/admin/request-penambahan-waktu";
+import PresensiAdmin from "../pages/admin/presensi";
 export async function checkAdminAuth() {
   try {
     const isLoggedIn = await CekLoginPegawai();
@@ -250,6 +251,15 @@ const router = createBrowserRouter([
           {
             path: "sd",
             element: <PembayaranSd />,
+          },
+        ],
+      },
+      {
+        path: "presensi",
+        children: [
+          {
+            path: "sd",
+            element: <PresensiAdmin />,
           },
         ],
       },

@@ -32,7 +32,8 @@
     "react-number-format": "^5.4.4",
     "react-router-dom": "^6.25.1",
     "react-toastify": "^11.0.5",
-    "tailwindcss": "^4.1.4"
+    "tailwindcss": "^4.1.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
