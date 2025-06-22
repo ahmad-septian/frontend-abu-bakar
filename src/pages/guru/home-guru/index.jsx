@@ -19,9 +19,9 @@ const allMenus = [
   //   url: "/guru/absen-guru",
   // },
   {
-    title: "Absensi Siswa",
+    title: "Presensi Siswa",
     icon: <AssignmentTurnedIn />,
-    url: "/guru/absen-siswa",
+    url: "/guru/presensi-siswa",
   },
   {
     title: "Input E-Rapot",
@@ -45,17 +45,14 @@ const getMenusByGroup = (kelompok) => {
     case 1:
     case "KELOMPOK1":
       return allMenus.filter((menu) =>
-        ["Input E-Rapot", "Jadwal Hari Ini", "Info Kelas"].includes(menu.title)
+        ["Input E-Rapot", "Jadwal Hari Ini"].includes(menu.title)
       );
     case 2:
     case "KELOMPOK2":
       return allMenus.filter((menu) =>
-        [
-          "Absensi Siswa",
-          "Absensi Guru",
-          "Jadwal Hari Ini",
-          "Info Kelas",
-        ].includes(menu.title)
+        ["Absensi Siswa", "Absensi Guru", "Jadwal Hari Ini"].includes(
+          menu.title
+        )
       );
     case 3:
     case "KELOMPOK3":

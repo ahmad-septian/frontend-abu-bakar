@@ -66,7 +66,7 @@ export default function AbsensiSiswa() {
       <Button
         onClick={() => navigate(-1)}
         startIcon={<ArrowBack />}
-        sx={{ color: "#85193C", fontFamily: "Comic Neue" }}
+        sx={{ color: "#85193C" }}
       >
         Kembali
       </Button>
@@ -91,9 +91,9 @@ export default function AbsensiSiswa() {
         ))}
       </div>
 
-      <div className="flex justify-center justify-space-between items-center mt-4 gap-3">
+      {/* <div className="flex justify-center justify-space-between items-center mt-4 gap-3">
         <Button
-          sx={{ py: 1.5, borderRadius: "5px", fontFamily: "Comic Neue" }}
+          sx={{ py: 1.5, borderRadius: "5px" }}
           color="warning"
           startIcon={<LocalHospital />}
           fullWidth
@@ -102,7 +102,7 @@ export default function AbsensiSiswa() {
           Sakit
         </Button>
         <Button
-          sx={{ py: 1.5, borderRadius: "5px", fontFamily: "Comic Neue" }}
+          sx={{ py: 1.5, borderRadius: "5px" }}
           startIcon={<Assignment />}
           color="primary"
           fullWidth
@@ -110,16 +110,13 @@ export default function AbsensiSiswa() {
         >
           Izin
         </Button>
-      </div>
+      </div> */}
 
       {/* Card List */}
       <div className="px-1 mt-4 h-[calc(100vh-200px)] flex flex-col">
         {/* Judul Bulan */}
-        <h2
-          style={{ fontFamily: "Comic Neue" }}
-          className="text-xl font-semibold text-center mb-4"
-        >
-          Riwayat Absen
+        <h2 style={{}} className="text-xl font-semibold text-center mb-4">
+          Riwayat Presensi
         </h2>
 
         {/* Scrollable Riwayat */}
@@ -149,34 +146,34 @@ export default function AbsensiSiswa() {
         <div className="mt-2 flex justify-center items-center bg-[#85193C] text-white sticky bottom-0 z-10 py-2 shadow-md rounded-md">
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} textAlign={"center"}>
-              <Typography sx={{ fontFamily: "Comic Neue" }} fontWeight="bold">
+              <Typography sx={{}} fontWeight="bold">
                 {summary.MASUK}
               </Typography>
-              <Typography sx={{ fontFamily: "Comic Neue" }} variant="body2">
+              <Typography sx={{}} variant="body2">
                 Masuk
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6} textAlign={"center"}>
-              <Typography sx={{ fontFamily: "Comic Neue" }} fontWeight="bold">
+              <Typography sx={{}} fontWeight="bold">
                 {summary.ALFA}
               </Typography>
-              <Typography sx={{ fontFamily: "Comic Neue" }} variant="body2">
+              <Typography sx={{}} variant="body2">
                 Tidak Masuk
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6} textAlign={"center"}>
-              <Typography sx={{ fontFamily: "Comic Neue" }} fontWeight="bold">
+              <Typography sx={{}} fontWeight="bold">
                 {summary.IZIN}
               </Typography>
-              <Typography sx={{ fontFamily: "Comic Neue" }} variant="body2">
+              <Typography sx={{}} variant="body2">
                 Izin
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6} textAlign={"center"}>
-              <Typography sx={{ fontFamily: "Comic Neue" }} fontWeight="bold">
+              <Typography sx={{}} fontWeight="bold">
                 {summary.SAKIT}
               </Typography>
-              <Typography sx={{ fontFamily: "Comic Neue" }} variant="body2">
+              <Typography sx={{}} variant="body2">
                 Sakit
               </Typography>
             </Grid>

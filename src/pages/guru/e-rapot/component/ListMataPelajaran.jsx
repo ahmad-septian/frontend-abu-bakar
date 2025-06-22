@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Paper, Typography } from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { GetJapelGuru } from "../../../../api/rapot.api";
@@ -33,6 +33,14 @@ export default function ListMataPelajaran() {
         >
           Pilih Mata Pelajaran yang ingin diinputkan.
         </Typography>
+
+        <Button
+          onClick={() => navigate(`/guru/e-rapot/penambahan-waktu`)}
+          variant="contained"
+          sx={{ mb: 2, backgroundColor: "#85193C" }}
+        >
+          Ajukan Penambahan Waktu
+        </Button>
         <div className=" space-y-4">
           {listMapel.map((item) => (
             <Paper

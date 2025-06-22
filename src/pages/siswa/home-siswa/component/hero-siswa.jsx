@@ -40,23 +40,14 @@ export default function HeroSection(props) {
             )}
           </div>
           <div>
-            <h2
-              style={{ fontFamily: "Comic Neue" }}
-              className="text-sm sm:text-md md:text-md mb-1 "
-            >
+            <h2 className="text-sm sm:text-md md:text-md mb-1 ">
               Assalamualaikum... 👋
             </h2>
-            <h1
-              style={{ fontFamily: "Comic Neue" }}
-              className="text-sm sm:text-md md:text-md font-bold uppercase"
-            >
+            <h1 className="text-sm sm:text-md md:text-md font-bold uppercase">
               {profile.namaLengkap}
             </h1>
             <div>
-              <p
-                className="text-[10px] sm:text-md md:text-md"
-                style={{ fontFamily: "Comic Neue" }}
-              >
+              <p className="text-[10px] sm:text-md md:text-md">
                 {profile.kelas?.namaKelas}
               </p>
             </div>

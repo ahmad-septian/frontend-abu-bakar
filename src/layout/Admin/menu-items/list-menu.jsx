@@ -70,6 +70,12 @@ export const listMenu = [
         path: "/admin/pegawai/assessment-period",
         menuName: "AssessmentPeriodActive",
       },
+      {
+        icon: <ArrowRight sx={{ fontSize: "1.8em" }} />,
+        label: "Penambahan Waktu",
+        path: "/admin/pegawai/request-penambahan-waktu",
+        menuName: "RequestPenambahanWaktuActive",
+      },
       // {
       //   label: "Pegawai TK",
       //   path: "/admin/pegawai/tk",

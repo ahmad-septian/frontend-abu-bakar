@@ -32,7 +32,6 @@ export default function CardMenu(props) {
               </Avatar>
               <Typography
                 variant="body2"
-                sx={{ fontFamily: "Comic Neue" }}
                 className="text-center text-sm font-medium text-[#85193C]"
               >
                 {menu.title}

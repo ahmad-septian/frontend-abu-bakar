@@ -15,14 +15,14 @@ import { getUcapanSiswa } from "../../../api/absensi-siswa.api";
 import UcapanSiswaSakit from "./component/ucapan";
 
 const allMenus = [
-  { title: "Absen", icon: <AssignmentTurnedIn />, url: "/siswa/absen" },
+  { title: "Presensi", icon: <AssignmentTurnedIn />, url: "/siswa/presensi" },
   { title: "E-Rapot", icon: <School />, url: "/siswa/e-rapot" },
   { title: "Mata Pelajaran", icon: <MenuBook />, url: "/siswa/mata-pelajaran" },
-  {
-    title: "Informasi Kelas",
-    icon: <AssignmentLate />,
-    url: "/siswa/informasi-kelas",
-  },
+  // {
+  //   title: "Informasi Kelas",
+  //   icon: <AssignmentLate />,
+  //   url: "/siswa/informasi-kelas",
+  // },
   { title: "Pembayaran", icon: <MonetizationOn />, url: "/siswa/pembayaran" },
   // { title: "Koperasi", icon: <Store />, url: "/koperasi" },
 ];
@@ -32,26 +32,17 @@ const getMenusByGroup = (kelompok) => {
     case 1:
     case "KELOMPOK1":
       return allMenus.filter((menu) =>
-        ["E-Rapot", "Koperasi", "Informasi Kelas", "Mata Pelajaran"].includes(
-          menu.title
-        )
+        ["E-Rapot", "Koperasi", "Mata Pelajaran"].includes(menu.title)
       );
     case 2:
     case "KELOMPOK2":
       return allMenus.filter((menu) =>
-        ["Absen", "Koperasi", "Informasi Kelas", "Mata Pelajaran"].includes(
-          menu.title
-        )
+        ["Presensi", "Koperasi", "Mata Pelajaran"].includes(menu.title)
       );
     case 3:
     case "KELOMPOK3":
       return allMenus.filter((menu) =>
-        [
-          "Pembayaran",
-          "Koperasi",
-          "Informasi Kelas",
-          "Mata Pelajaran",
-        ].includes(menu.title)
+        ["Pembayaran", "Koperasi", "Mata Pelajaran"].includes(menu.title)
       );
     case null:
     case undefined:
@@ -108,7 +99,6 @@ export default function HomeSiswa() {
             textAlign: "center",
             mt: 2,
             mb: 2,
-            fontFamily: "Comic Neue",
           }}
         >
           Rekomendasi Menu

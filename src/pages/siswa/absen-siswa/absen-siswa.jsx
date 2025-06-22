@@ -30,7 +30,7 @@ export default function AbsensiSiswa() {
           mb: 2,
         }}
       >
-        Absensi Siswa
+        Presensi Siswa
       </Typography>
 
       {/* Tampilan sebelum tap-in */}

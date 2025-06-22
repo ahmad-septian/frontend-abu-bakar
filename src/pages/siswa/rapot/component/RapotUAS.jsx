@@ -3,6 +3,7 @@ import { Typography, Button } from "@mui/material";
 import { ArrowBack, PictureAsPdf } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { ExportSiswa, GetRapotSiswa } from "../../../../api/rapot.api";
+import { FormatTanggal } from "../../../../component-global/format-tanggal";
 
 export default function DetailUAS() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function DetailUAS() {
     try {
       const response = await GetRapotSiswa();
       setDataSiswa(response.data?.siswa);
-      setNilai(response.data.nilai.kuis);
+      setNilai(response.data.nilai.uas);
     } catch (error) {
       console.error("Error Fetching All Schedules", error);
     }
@@ -95,6 +96,12 @@ export default function DetailUAS() {
                 </span>
                 <span className="text-gray-900">{dataSiswa.kelas}</span>
               </div>
+              <div className="flex flex-col sm:flex-row">
+                <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
+                  NISN:
+                </span>
+                <span className="text-gray-900">{dataSiswa.nisn || "-"}</span>
+              </div>
             </div>
           </div>
 
@@ -111,7 +118,7 @@ export default function DetailUAS() {
                 <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
                   Alamat:
                 </span>
-                <span className="text-gray-900">-</span>
+                <span className="text-gray-900">{dataSiswa?.alamat}</span>
               </div>
             </div>
             <div className="space-y-2">
@@ -120,6 +127,18 @@ export default function DetailUAS() {
                   Tahun Pelajaran:
                 </span>
                 <span className="text-gray-900">{dataSiswa.tahunAjaran}</span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row">
+                <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
+                  Tempat, Tgl Lahir:
+                </span>
+                <span className="text-gray-900">
+                  {dataSiswa.tempatLahir || "-"},{" "}
+                  {dataSiswa.tanggalLahir
+                    ? FormatTanggal(dataSiswa.tanggalLahir)
+                    : "-"}
+                </span>
               </div>
             </div>
           </div>

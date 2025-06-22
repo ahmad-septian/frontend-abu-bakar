@@ -95,6 +95,12 @@ export default function DetailTugas() {
                 </span>
                 <span className="text-gray-900">{dataSiswa.kelas}</span>
               </div>
+              <div className="flex flex-col sm:flex-row">
+                <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
+                  NISN:
+                </span>
+                <span className="text-gray-900">{dataSiswa.nisn || "-"}</span>
+              </div>
             </div>
           </div>
 
@@ -111,7 +117,7 @@ export default function DetailTugas() {
                 <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
                   Alamat:
                 </span>
-                <span className="text-gray-900">-</span>
+                <span className="text-gray-900">{dataSiswa?.alamat}</span>
               </div>
             </div>
             <div className="space-y-2">
@@ -120,6 +126,18 @@ export default function DetailTugas() {
                   Tahun Pelajaran:
                 </span>
                 <span className="text-gray-900">{dataSiswa.tahunAjaran}</span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row">
+                <span className="font-semibold text-gray-700 w-full sm:w-32 mb-1 sm:mb-0">
+                  Tempat, Tgl Lahir:
+                </span>
+                <span className="text-gray-900">
+                  {dataSiswa.tempatLahir || "-"},{" "}
+                  {dataSiswa.tanggalLahir
+                    ? FormatTanggal(dataSiswa.tanggalLahir)
+                    : "-"}
+                </span>
               </div>
             </div>
           </div>

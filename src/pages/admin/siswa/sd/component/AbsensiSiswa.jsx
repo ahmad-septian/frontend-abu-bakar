@@ -40,7 +40,7 @@ export default function AbsensiSiswaSd() {
       }}
     >
       <Typography variant="h5" fontWeight={600} mb={1} color={primaryColor}>
-        Absensi Siswa
+        Presensi Siswa
       </Typography>
 
       <FormControl sx={{ minWidth: 200, my: 3 }} size="small">
@@ -58,7 +58,7 @@ export default function AbsensiSiswaSd() {
       </FormControl>
 
       <Typography variant="h6" fontWeight={600} mb={1} color={primaryColor}>
-        Jumlah Absensi Kelas 1
+        Jumlah Presensi Kelas 1
       </Typography>
       <Table
         component={Paper}

@@ -54,7 +54,7 @@ export default function DetailSiswaSd() {
                 }}
               />
               <Tab
-                label="ABSENSI"
+                label="PRESENSI"
                 value="2"
                 sx={{
                   color: value === "2" ? "#85193C" : "inherit",
