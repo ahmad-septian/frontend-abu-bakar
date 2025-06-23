@@ -50,7 +50,7 @@ const getMenusByGroup = (kelompok) => {
     case 2:
     case "KELOMPOK2":
       return allMenus.filter((menu) =>
-        ["Absensi Siswa", "Absensi Guru", "Jadwal Hari Ini"].includes(
+        ["Presensi Siswa", "Absensi Guru", "Jadwal Hari Ini"].includes(
           menu.title
         )
       );
